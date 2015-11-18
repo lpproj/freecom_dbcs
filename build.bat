@@ -2,6 +2,7 @@
 
 set SWAP=YES-DXMS-SWAP____________________
 if NOT "%SWAP%"=="YES-DXMS-SWAP____________________" goto err1
+if exist Z:\rescan.com Z:\rescan -All
 : BEGIN Internal stuff for ska -- If one of these three commands
 :       fail for you, your distribution is broken! Please report.
 for %%a in (lib\lib.mak cmd\cmd.mak shell\command.mak) do if not exist %%a set SWAP=NO
