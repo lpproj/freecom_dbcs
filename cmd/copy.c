@@ -47,6 +47,9 @@
 #include "../include/misc.h"
 #include "../strings.h"
 #include "../include/openf.h"
+#ifdef JAPANESE
+ #include "../include/iskanji.h"
+#endif
 
 #define ASCII 1
 #define BINARY 2
@@ -586,7 +589,11 @@ int cmd_copy(char *rest)
 	struct CopySource *p = h;
   	do {
   		char *s = strchr(p->fnam, '\0') - 1;
+#if defined(JAPANESE)
+  		if(*s == '/' || (*s == '\\' && !iskanji(*(s - 1)))		/* forcedly be directory */
+#else
   		if(*s == '/' || *s == '\\'		/* forcedly be directory */
+#endif
   		 || 0 != (dfnstat(p->fnam) & DFN_DIRECTORY)) {
 			char **buf;
 			char *q;

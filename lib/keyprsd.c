@@ -50,10 +50,15 @@ int keypressed(void)
 
   r.r_ax = 0x0100;
 
+#if defined(NEC98)
+  intrpt(0x18, &r);
+  if (!(r.r_bx & 0x0100U))	/* bh=1 pressedl bh=0 no key */
+#else
   intrpt(0x16, &r);
 
   /* Check the zero flag.  Z=0 means a key was pressed; Z=1 means no key */
   if (r.r_flags & 0x40)
+#endif
     return 0;
   else
     return 1;

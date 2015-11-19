@@ -190,7 +190,11 @@ void readcommandEnhanced(char * const str, const int maxlen)
 			if (insert)
 			  _setcursortype(_NORMALCURSOR);
 			else
+#if defined(NEC98)
+			  _setcursortype(_LINECURSOR);
+#else /* IBMPC */
 			  _setcursortype(_SOLIDCURSOR);
+#endif
 			break;
 
 		case KEY_DELETE:           /* delete character under cursor */

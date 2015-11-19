@@ -151,6 +151,9 @@
  */
 
 #include "../config.h"
+#ifdef JAPANESE
+ #include "../include/iskanji.h"
+#endif
 
 #include <assert.h>
 #include <conio.h>
@@ -1184,7 +1187,11 @@ static int dir_print_body(char *arg, unsigned long *dircount)
 		assert(p);
 		if(!*pattern || (dfnstat(path) & DFN_DIRECTORY) != 0) {
 			pattern = strchr(pattern, '\0');
+#if defined(JAPANESE)
+			if(pattern[-1] != '\\' || iskanji(pattern[-2]))
+#else
 			if(pattern[-1] != '\\')
+#endif
 				++pattern;
 			rv = dir_list(pattern - path, "*.*", dircount, &filecount
 			 , &bytecount

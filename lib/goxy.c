@@ -54,6 +54,9 @@
 
 void goxy(const unsigned char x, const unsigned char y)
 {
+#if defined(NEC98)
+	/* todo */
+#else
     USEREGS
     _AH = 0x0F;
     geninterrupt( 0x10 );
@@ -61,4 +64,5 @@ void goxy(const unsigned char x, const unsigned char y)
     _DH = ( y - 1 );
     _DL = ( x - 1 );
     geninterrupt( 0x10 );
+#endif
 }

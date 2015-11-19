@@ -45,6 +45,7 @@
 #include "../config.h"
 
 #include <conio.h>
+#include <dos.h>
 
 #include "../include/command.h"
 #include "../include/keys.h"
@@ -60,6 +61,28 @@ static int mygetch( void )
 
 #define getch mygetch
 
+#if defined(NEC98)
+
+int cgetchar(void)
+{
+	int code, data;
+	struct REGPACK reg;
+	
+	reg.r_ax = 0;
+	intr(0x18, &reg);
+	code = (reg.r_ax >> 8);		/* AH */
+	data = (reg.r_ax & 0xff);	/* AL */
+	if(data == 0)
+		data = SCANCODE(code);
+
+	if(data == KEY_CTL_C) {
+		ctrlBreak = 1;
+	}
+
+	return data;
+}
+
+#else
 
 int cgetchar(void)
 {	int c;
@@ -73,3 +96,5 @@ int cgetchar(void)
 
 	return c;
 }
+
+#endif
