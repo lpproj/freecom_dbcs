@@ -5,9 +5,6 @@
 #include "../config.h"
 
 #include <assert.h>
-#if 0
-#include <conio.h>
-#endif
 #include <dos.h>
 #include <stdio.h>
 #include <io.h>

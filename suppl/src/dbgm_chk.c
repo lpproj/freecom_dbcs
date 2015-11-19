@@ -41,7 +41,6 @@ fi(le): dbgm_sr.c
 #include "initsupl.loc"
 
 #ifndef _MICROC_
-#include <conio.h>
 #include <stddef.h>
 #endif
 #include <portable.h>

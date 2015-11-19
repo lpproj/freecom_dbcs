@@ -44,7 +44,6 @@
 
 #include "../config.h"
 
-#include <conio.h>
 #include <dos.h>
 
 #include "../include/command.h"

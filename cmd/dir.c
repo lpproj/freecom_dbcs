@@ -156,7 +156,6 @@
 #endif
 
 #include <assert.h>
-#include <conio.h>
 #include <ctype.h>
 #include <dos.h>
 #include <io.h>
