@@ -5,7 +5,9 @@
 #include "../config.h"
 
 #include <assert.h>
+#if 0
 #include <conio.h>
+#endif
 #include <dos.h>
 #include <stdio.h>
 #include <io.h>
@@ -34,13 +36,19 @@ unsigned mywherey (void) {
 #undef _NORMALCURSOR
 #undef _SOLIDCURSOR
 #undef _HALFCURSOR
+#undef _LINECURSOR
 #define _NOCURSOR     3
 #define _HALFCURSOR   2
 #define _NORMALCURSOR 0
 #define _SOLIDCURSOR  1
+#define _LINECURSOR   4
 
 static void my_setcursortype( unsigned short state )
 {
+#if defined(NEC98)
+	/* NEC98: todo */
+	(void)state;
+#elif defined(IBMPC)
    IREGS regs;
    int cur_mode;
 
@@ -71,6 +79,10 @@ static void my_setcursortype( unsigned short state )
 #endif
    }
    intrpt( 0x10, &regs );
+#else
+	/* generic: nothing to do */
+	(void)state;
+#endif
 }
 
 #define wherex mywherex
@@ -362,7 +374,7 @@ void readcommandEnhanced(char * const str, const int maxlen)
 			}
 			break;
 
-
+#if defined(KEY_CTRL_LEFT)
 		case KEY_CTRL_LEFT:	/* move cursor left to begin of word */
 			while(current > 0) {
 			  current--;
@@ -376,7 +388,9 @@ void readcommandEnhanced(char * const str, const int maxlen)
 			     break;
 			}
 			break;
+#endif
 
+#if defined(KEY_CTRL_RIGHT)
 		case KEY_CTRL_RIGHT:	/* move cursor right to begin of word */
 			while(current < charcount) {
 			  current++;
@@ -390,6 +404,7 @@ void readcommandEnhanced(char * const str, const int maxlen)
 			     break;
 			}
 			break;
+#endif
 
 		default:                 /* insert character into string... */
 
