@@ -29,6 +29,8 @@ if "%1"=="wc"       goto special
 if "%1"=="tc"       goto special
 if "%1"=="tcpp"     goto special
 if "%1"=="bc"       goto special
+if "%1"=="nec98"    goto special
+if "%1"=="dbcs"     goto special
 goto run
 
 :special
@@ -38,6 +40,8 @@ if "%1"=="wc"       set COMPILER=WATCOM
 if "%1"=="tc"       set COMPILER=TC2
 if "%1"=="tcpp"     set COMPILER=TURBOCPP
 if "%1"=="bc"       set COMPILER=BC5
+if "%1"=="nec98"    set NEC98=1
+if "%1"=="dbcs"     set DBCS=1
 shift
 if not "%1" == "" goto loop_commandline
 
@@ -50,6 +54,8 @@ echo -r: Rebuild -- Clean before proceed
 echo clean: Remove *.OBJ, *.COM, *.LIB, etc. files, then exit
 echo xms-swap: Build FreeCOM with XMS-Only Swap support
 echo debug: Build FreeCOM with debug settings.
+echo nec98: Build FreeCOM for NEC PC-9801 series.
+echo dbcs: Build FreeCOM with double-byted characters support.
 echo You can select for which language to built FreeCOM by setting
 echo the environment variable LNG before running this script, e.g.:
 echo SET LNG=german
@@ -187,3 +193,6 @@ set TP1_BASE=
 set BC5_BASE=
 set XNASM=
 set LNG=
+set NEC98=
+set DBCS=
+

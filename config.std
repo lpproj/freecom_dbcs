@@ -28,6 +28,16 @@ NASMFLAGS =
 __XMS_SWAP = -DXMS_SWAP
 !endif
 
+!if $(NEC98)0 == 10
+__TARGET = -DNEC98
+!else
+__TARGET = -DIBMPC
+!endif
+
+!if $(DBCS)0 == 10
+__DBCS = -DDBCS -DJAPANESE
+!endif
+
 # Default configuration
 # added strings.h here because $(CFG) is included everywhere already
 ## Add -D_NO__DOS_DATE if your compiler does not have no dosdate_t (*)
@@ -43,6 +53,7 @@ $(CFG): $(CFG_DEPENDENCIES) ..\CONFIG.MAK
 	..\scripts\echoto $(CFG) $(INCLUDEPATH)
 	..\scripts\echoto $(CFG) -m$(SHELL_MMODEL) $(MMODEL)
 	..\scripts\echoto $(CFG) $(DEBUG) $(__XMS_SWAP)
+	..\scripts\echoto $(CFG) $(__TARGET) $(__DBCS)
 
 #		*Implicit Rules*
 .asm.obj:
