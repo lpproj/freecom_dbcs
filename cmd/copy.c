@@ -40,6 +40,8 @@
 #include "suppl.h"
 #include "supplio.h"
 
+#include "fmemory.h"
+
 #include "../include/lfnfuncs.h"
 #include "../include/command.h"
 #include "../include/cmdline.h"
@@ -175,7 +177,7 @@ ok:
 		if(asc) {
 			ctrlz = _fmemchr(buffer, 0x1a, rd);
 			if(ctrlz != 0)
-				rd = ctrlz - buffer;
+				rd = (unsigned)(unsigned long)(ctrlz - buffer);
 		}
 		
 		if(farwrite(fdout, buffer, rd) != rd) {

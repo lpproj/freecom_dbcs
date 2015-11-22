@@ -41,6 +41,9 @@
 #include <io.h>
 #include <fcntl.h>
 #include <dos.h>
+#if defined (__TURBOC__)
+#include <dir.h>
+#endif
 
 #include "../include/openf.h"
 #include "../include/lfnfuncs.h"
@@ -52,7 +55,7 @@ int devopen(char *const fnam, int mode)
 
   isDeviceName(fnam);           /* modify fnam if device */
   fd = -1;
-  if(mode & (O_CREAT|O_TRUNC) != O_CREAT|O_TRUNC)
+  if((mode & (O_CREAT|O_TRUNC)) != (O_CREAT|O_TRUNC))
     fd = dos_open(fnam, mode & ~(O_APPEND|O_CREAT|O_TRUNC));
   if(fd == -1 && (mode & O_CREAT))
     return dos_creat(fnam, 0);
