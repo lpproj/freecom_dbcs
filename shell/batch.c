@@ -347,6 +347,11 @@ static int getbline(int fd, char *textline, int len, int bufsize)
 	if (sz >= 0) {
 	  size += sz;
 	  textline[size] = '\n';
+	  if (sz == 0 && size < len) {
+		int retsize = size;
+		size = 0;
+		return retsize;
+	  }
 	  return size;
 	}
   }
