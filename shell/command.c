@@ -832,9 +832,13 @@ static void hangForever(void)
 	puts(TEXT_MSG_REBOOT_NOW);
 #endif
     beep();
+#if defined(NEC98)
+/* todo */
+#else
     delay(9000);  /* Keep the message on the screen for
               at least 1s, in case FreeCom has some problems
               with the keyboard */
+#endif
   }
 }
 

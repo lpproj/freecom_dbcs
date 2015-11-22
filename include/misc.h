@@ -243,4 +243,12 @@ void critEnableRepeatCheck(void);
 unsigned critDisableRepeatCheck(void);
 void critEndRepCheck(void);
 
+#if 1
+/* prf.c */
+int putch_int29(int c);
+int cputs_int29(const char *s);
+# define putch(c) putch_int29(c)
+# define cputs(s) cputs_int29(s)
+#endif
+
 #endif

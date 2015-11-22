@@ -60,6 +60,19 @@ static char const rcsid[] =
 # define offsetof(s_name, m_name) (size_t)&(((s_name*)0)->m_name)
 #endif
 
+#if 1
+static int mygetc(void)
+{
+    IREGS regs;
+    regs.r_ax = 0x0700;
+    intrpt(0x21, &regs);
+    return (regs.r_ax)&0xFF;
+}
+int cputs_int29(const char *s);
+# define getch mygetc
+# define cputs cputs_int29
+#endif
+
 static int checkItem(void *arg, word segm)
 {
     (void)arg;

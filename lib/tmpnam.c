@@ -80,7 +80,11 @@ char *tmpfn(void)
 
     _AX = 0x3305;               /* Get Boot drive, DOS 4+ */
     geninterrupt(0x21);
+#if defined(NEC98)
+    buf[0] = _CFLAG ? 'A' : _DL + 'A' - 1;
+#else
     buf[0] = _CFLAG ? 'C' : _DL + 'A' - 1;
+#endif
     fn = probefn(buf);          /* If fn is NULL still, no temporary
                                    file can be created */
     if (!fn)

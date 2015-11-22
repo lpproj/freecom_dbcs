@@ -55,7 +55,14 @@
 void goxy(const unsigned char x, const unsigned char y)
 {
 #if defined(NEC98)
-	/* todo */
+	static char s[] = "\x1b" "[" "01;01H";
+	if (x > 99) x = 99;
+	if (y > 99) y = 99;
+	s[2] = '0' + (y/10);
+	s[3] = '0' + (y%10);
+	s[5] = '0' + (x/10);
+	s[6] = '0' + (x%10);
+	cputs_int29(s);
 #else
     USEREGS
     _AH = 0x0F;

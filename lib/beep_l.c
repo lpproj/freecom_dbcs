@@ -46,8 +46,13 @@
 
 void beep_low(void)
 {
+#if defined(NEC98)
+  /* todo */
+  cputs_int29("\7");
+#else
   sound(900);
   delay(200); /* 400 */
   nosound();
   delay(100);
+#endif
 }

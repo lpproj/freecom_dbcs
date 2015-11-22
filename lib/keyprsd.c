@@ -52,7 +52,7 @@ int keypressed(void)
 
 #if defined(NEC98)
   intrpt(0x18, &r);
-  if (!(r.r_bx & 0x0100U))	/* bh=1 pressedl bh=0 no key */
+  if (!(r.r_bx & 0x0100U))	/* bh=1 pressed bh=0 no key */
 #else
   intrpt(0x16, &r);
 

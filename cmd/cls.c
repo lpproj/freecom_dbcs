@@ -58,7 +58,7 @@ int cmd_cls (char * param) {
 	/* Output stream is neither a file nor NUL nor CLOCK$ */
 	if(((fdattr(1) ^ 0x80) & (0x80 | 0x08 | 0x04)) == 0) {
 #if defined(NEC98)
-		/* todo */
+		cputs_int29("\x1b" "[m" "\x1b" "[2J");
 #else
 		/* Now roll the screen */
 		IREGS r;

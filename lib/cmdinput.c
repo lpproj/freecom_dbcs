@@ -16,6 +16,14 @@
 
 static unsigned orgx, orgy;		/* start of current line */
 
+#if defined(NEC98)
+unsigned mywherex (void) {
+    return 1U + *(unsigned char far *)MK_FP(0x60, 0x11c);
+}
+unsigned mywherey (void) {
+    return 1U + *(unsigned char far *)MK_FP(0x60, 0x110);
+}
+#elif defined(IBMPC)
 #define MK_PTR(type,seg,ofs) ((type FAR*) MK_FP (seg, ofs))
 /* safer edition of MK_FP (Arkady) */
 typedef struct { unsigned char col, row; } SCRPOS;
@@ -28,6 +36,7 @@ unsigned mywherex (void) {
 unsigned mywherey (void) {
     return _scr_pos_array [_scr_page].row + 1;
 }
+#endif
 
 #undef _NOCURSOR
 #undef _NORMALCURSOR
