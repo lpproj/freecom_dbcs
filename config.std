@@ -57,4 +57,4 @@ $(CFG): $(CFG_DEPENDENCIES) ..\CONFIG.MAK
 
 #		*Implicit Rules*
 .asm.obj:
-	$(NASM) $(NASMFLAGS) -f obj -DMODEL=$(SHELL_MMODEL) $<
+	$(NASM) $(NASMFLAGS) $(__TARGET) $(__DBCS) -f obj -DMODEL=$(SHELL_MMODEL) $<
