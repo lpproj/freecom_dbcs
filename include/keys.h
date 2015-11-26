@@ -45,6 +45,11 @@
 #define KEY_PUP		SCANCODE(0x37)	/* ROLL DOWN */
 #define KEY_PDOWN	SCANCODE(0x36)	/* ROLL UP */	/* 26�܂ł͋t */
 
+#define KEY_CTRL_PRESSED	0x2000
+
+#define KEY_CTRL_LEFT	(KEY_LEFT | KEY_CTRL_PRESSED)
+#define KEY_CTRL_RIGHT	(KEY_RIGHT | KEY_CTRL_PRESSED)
+
 #else /* IBMPC */
 
 #define KEY_F1	SCANCODE(59)
