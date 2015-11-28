@@ -128,7 +128,7 @@ int cgetchar(void)
 			if (c) break;
 			break;
 		}
-		intrpt(0x28, &r);
+		/* intrpt(0x28, &r); */
 	}while(c == 0);
 	
 	return c;
