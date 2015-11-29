@@ -168,6 +168,39 @@ Country *nlsInfo(void)
 	DBG_LEAVE( suppl_cntry.initialized? aS(suppl_cntry): nlsNewInfo())
 }
 
+void nlsWriteFallback(Country *nls)
+{
+	static char illchars[] = "\"+,./:;<=>[\\]|";
+	
+	nls->country = 1;
+	nls->charset = 437;
+	nls->datefmt = 0;
+	nls->curSymbol[0] = '$';
+	nls->thousendsSep[0] = ',';
+	nls->decimalSep[0] = '.';
+	nls->dateSep[0] = '-';
+	nls->timeSep[0] = ':';
+	nls->curFormat = 0;
+	nls->precision = 2;
+	nls->timefmt = 0;
+	nls->listSep[0] = ',';
+
+#if defined(JAPANESE)
+	nls->country = 81;
+	nls->charset = 932;
+	nls->datefmt = 2;
+	nls->curSymbol[0] = '\\';
+	nls->curFormat = 0;
+	nls->precision = 0;
+	nls->timefmt = 1;
+#endif
+
+	nls->inclFirst = 0; nls->inclLast = 0xff;
+	nls->exclFirst = 0; nls->exclLast = 0x20;
+	nls->illegalLen = strlen(illchars);
+	nls->illegalChars = (char far *)illchars;
+}
+
 Country *nlsNewInfo(void)
 {	unsigned char buf[50];
 #if 1
@@ -229,6 +262,7 @@ Country *nlsNewInfo(void)
 			, sizeof(suppl_cntry.field) - 1)
 
 	memzerostrct(suppl_cntry);
+	nlsWriteFallback(&suppl_cntry);
 
 	DOS(1)	{	/* Extended country inmformation */
 		cpyword(country, 3);
