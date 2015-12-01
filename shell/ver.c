@@ -42,6 +42,16 @@
 #include "../strings.h"
 
 const char shellver[] = "0.84-pre2"
+#if defined(DBCS)
+	"_DBCSwip"
+#endif
+#if defined(IBMPC)
+	" (IBMPC)"
+#elif defined(NEC98)
+	" (PC98)"
+#else
+	" (unknown platform)"
+#endif
 #ifdef FEATURE_XMS_SWAP
 	" XMS_Swap"
 #endif
