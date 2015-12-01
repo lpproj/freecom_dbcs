@@ -249,6 +249,19 @@ int putch_int29(int c);
 int cputs_int29(const char *s);
 # define putch(c) putch_int29(c)
 # define cputs(s) cputs_int29(s)
+/* xtra.c */
+int init_mymachine(void);
+enum MyMachine {
+	MYMACHINE_UNKNOWN = 0,
+	MYMACHINE_IBMPC,
+	MYMACHINE_NEC98,
+	MYMACHINE_FMR
+};
+extern int mymachine;
+void mydelay(unsigned ms);
+void mysound(unsigned f);
+void mynosound(void);
+
 #endif
 
 #endif

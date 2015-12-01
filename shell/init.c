@@ -206,6 +206,9 @@ int initialize(void)
 	set_isrfct(0x24, dummy_criter_handler);
 #endif
 
+	/* setup for machine specific routines */
+	init_mymachine();
+
   /* DOS shells patch the PPID to the own PID, how stupid this is, however,
     because then DOS won't terminate them, e.g. when a Critical Error
     occurs that is not detected by COMMAND.COM */

@@ -41,70 +41,10 @@ unsigned mywherey (void) {
 /* set cursor state for insert/overwrite mode */
 #if defined(NEC98)
 
-#define GDC_STATUS 0x60
-#define GDC_FIFOREAD 0x62
-#define GDC_COMMAND 0x62
-#define GDC_FIFOWRITE 0x60
-
-static int use_tstamp_wait;
-
-static void wait_for_gdc(void)
-{
-	/* tRCY,tWCY -> 4 clk (min) */
-	/* 400ns per clock (for 2.5Mhz) * 4 = 1600ns */
-	if (use_tstamp_wait) {
-		outp(0x5f, 0); /* wait (longer than) 600ns */
-		outp(0x5f, 0); /* wait (longer than) 600ns */
-		outp(0x5f, 0); /* wait (longer than) 600ns */
-	} else {
-		/* put `software wait' here if you need... */
-	}
-}
-static void outp_gdc(int port, unsigned char value)
-{
-	wait_for_gdc();
-	outp(port, value);
-}
-
 static void setcursorstate_nec98(int insert)
 {
-	int show_cursor;
-	unsigned char cursor_rows, top, bottom, blink_rate;
-	unsigned char f[3];
-
-	/* check port 5fh is capable of I/O wait... */
-	use_tstamp_wait =
-# if 1
-		((*(unsigned short far *)MK_FP(0, 0x500) & 0x1801) != 0);	/* not PC-9801(original)/E/F/M */
-# else
-		(*(unsigned char far *)MK_FP(0, 0x45b) & 0x80) || (*(unsigned char far *)MK_FP(0, 0x458) & 0x80);	/* time stamper or NESA machine */
-# endif
-
-	/* for NEC98: insert -> do not blink, not insert -> blink */
-	show_cursor = 1;
-	blink_rate = 0x0d;
-	cursor_rows = *(unsigned char far *)MK_FP(0x0, 0x53b);
-	top = 0;
-	bottom = cursor_rows;
-	f[0] = (cursor_rows & 0x1f) | (show_cursor ? 0x80 : 0x00);
-	f[1] = ((blink_rate & 3) << 6) | (insert ? 0x20 : 0x00) | (top & 0x1f);
-	f[2] = ((bottom & 0x1f) << 3) | ((blink_rate >> 2) & 7);
-	
-	/* wait until GDC is ready (FIFO Empty) */
-	while(1) {
-		enable();
-		wait_for_gdc();
-		disable();
-		if (inp(GDC_STATUS) & 0x04) break;
-	}
-	/* write command and parameters to GDC */
-	outp_gdc(GDC_COMMAND, 0x4b);	/* CCHAR (CSRFORM) command */
-	outp_gdc(GDC_FIFOWRITE, f[0]);
-	outp_gdc(GDC_FIFOWRITE, f[1]);
-	outp_gdc(GDC_FIFOWRITE, f[2]);
-	
-	wait_for_gdc();
-	enable();
+	extern void nec98_setcursorblink(int blink_rate);
+	nec98_setcursorblink(insert ? 0xff : 0x0d);
 	goxy(mywherex(), mywherey());
 }
 

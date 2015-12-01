@@ -25,6 +25,7 @@
 #include "../include/command.h"
 #include "../include/batch.h"
 #include "../include/cmdline.h"
+#include "../include/misc.h"
 #include "../err_fcts.h"
 #include "../strings.h"
 #ifdef FEATURE_NLS
@@ -832,13 +833,9 @@ static void hangForever(void)
 	puts(TEXT_MSG_REBOOT_NOW);
 #endif
     beep();
-#if defined(NEC98)
-/* todo */
-#else
-    delay(9000);  /* Keep the message on the screen for
+    mydelay(9000);  /* Keep the message on the screen for
               at least 1s, in case FreeCom has some problems
               with the keyboard */
-#endif
   }
 }
 

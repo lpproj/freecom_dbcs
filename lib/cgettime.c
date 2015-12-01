@@ -76,11 +76,7 @@ int cgetchar_timed(int secs)
 			memcpy(&start, &now, sizeof(now));
 			outnum(secs);
 		}
-#if defined(NEC98)
-		/* nec98: todo */
-#else
-		delay(100);
-#endif
+		mydelay(100);
 	}
 		/* Because "keypressed()" returned true, getchar() does not block */
 	return cgetchar();
