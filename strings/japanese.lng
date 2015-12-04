@@ -4,7 +4,7 @@
 #
 #	Language: Japanese
 #	Codepage: 932
-#	Author:   Suzu, Guri and all contributors
+#	Author:   Suzu, Guri, akm and all contributors
 # 
 # This file is used to generate all the messages that command.com
 # outputs.  This file is the input to the fixstrs program, and it
@@ -475,15 +475,15 @@ COMMAND.COMは現在以下のパスを想定しています.
 .
 
 :TEXT_ERROR_PERMISSION_DENIED#1%
-%s: Permission denied
+%s: アクセスは拒否されました.
 .
 
 :TEXT_ERROR_NO_SUCH_FILE#1%
-%s: No such file or directory
+%s: そのようなファイルまたはディレクトリは存在しません.
 .
 
 :TEXT_ERROR_UNKNOWN_ERROR#1%
-%s: Unknown error
+%s: 不明なエラーです.
 .
 
 #
@@ -522,11 +522,11 @@ BREAKは %s です.
 .
 
 :TEXT_MSG_LFNFOR_STATE#0%
-LFNFOR is %s
+LFNFORは %s です.
 .
 
 :TEXT_MSG_LFNFOR_COMPLETE_STATE#0%
-LFN Complete is %s
+LFN Completeは %s です.
 .
 
 :TEXT_MSG_CURRENT_DATE#0%
@@ -616,7 +616,7 @@ aabbccdd      d      a    b
 :PROMPT_APPEND_FILE#1%
 YyNnAaQq{BREAK}{ENTER}{ESC}
 aabbccdd      d      a    b
-Append to '%s' (Yes/No/All/Quit) ? \
+'%s' に追加しますか(Yes/No/All/Quit) ? \
 .
 
 # This prompt MUST include the pseudo key CBREAK!
@@ -769,7 +769,7 @@ Sat\
 [ディレクトリ履歴] \
 .
 :TEXT_SHOWCMD_FEATURE_LONG_FILENAMES#1
-[long filenames] \
+[ロングファイル名] \
 .
 :TEXT_SHOWCMD_FEATURE_KERNEL_SWAP_SHELL#1
 [カーネルスワップ] \
@@ -828,6 +828,8 @@ Updates are available from http://freedos.sourceforge.net/freecom
 日本語メッセージ対応 水城 珠洲
 日本語メッセージに関するバグレポートはminashirojp@yahoo.co.jpに送ってください.
 最新版は http://dos.minashiro.net/freecomj.html から入手できます.
+
+日本語メッセージ 更新ビルド作成 : akm (http://astra.digi2.jp).
 .
 
 :TEXT_MSG_VER_REDISTRIBUTION
@@ -844,6 +846,8 @@ Updates are available from http://freedos.sourceforge.net/freecom
 日本語メッセージ対応 水城 珠洲
 日本語メッセージに関するバグレポートはminashirojp@yahoo.co.jpに送ってください.
 最新版は http://dos.minashiro.net/freecomj.html から入手できます.
+
+日本語メッセージ 更新ビルド作成 : akm (http://astra.digi2.jp).
 .
 
 :TEXT_MSG_VER_DEVELOPERS
@@ -1182,7 +1186,7 @@ FOR %variable IN (set) DO command [command-parameters]
 バッチファイルでFOR文を使用するときは, %variableのかわりに%%variableを
 使用します.
 
-For example:
+例:
   FOR %f IN (---start--- a*.* ---end---) DO ECHO - %f -
 .
 
@@ -1222,13 +1226,13 @@ IF [NOT] EXIST filename command
 .
 
 :TEXT_CMDHELP_LFNFOR
-Enables/Disables long filenames within the FOR command or filename completion.
+FORコマンド内でロングファイル名または完全なファイル名を有効・無効にします.
 
 LFNFOR [ON | OFF]
 LFNFOR COMPLETE [ON | OFF]
 
-Type LFNFOR or LFNFOR COMPLETE without a parameter to display the current
-LFNFOR setting.
+パラメータを付けずにLFNFORまたはLFNFOR COMPLETEを実行すると現在のLFNFORの
+状態を表示します.
 .
 
 :TEXT_CMDHELP_LH
@@ -1375,10 +1379,10 @@ Type SET VAR to display the value of VAR
 
 /P プロンプトに文字列を示し、入力された値を変数に設定します.
 
-/E sets the given variable to the first line of output of the command
-pointed to by [string].
+/E 文字列で指定されたコマンドを実行し、その出力の最初の行を変数にセット
+します.
 
-/U changes the case of [string] to uppercase.
+/U 文字列を大文字に変換します.
 .
 
 :TEXT_CMDHELP_SHIFT#1
@@ -1516,29 +1520,29 @@ C:\\COMMAND.COM
 .
 
 :TEXT_TERMINATING
-Terminating now.
+終了しています.
 .
 
 :TEXT_HIDDEN_CRITER#0%
-%u Critical Error requests suppressed.
+%u 深刻なエラー要求が抑制されました.
 .
 
 # The exit reasons MUST be kept in this order!
 :TEXT_DISP_EXITCODE#0%
-Exit code (ERRORLEVEL): %u, reason: %u (%s)
+終了コード (ERRORLEVEL): %u, 理由: %u (%s)
 .
 :TEXT_EXIT_REASON_NEG_1
-DOS API error\
+DOS API エラー\
 .
 :TEXT_EXIT_REASON_0
-terminated normally\
+正常終了\
 .
 :TEXT_EXIT_REASON_1
-terminated by ^Break\
+^Breakにより終了\
 .
 :TEXT_EXIT_REASON_2
-terminated by critical error\
+深刻なエラーにより終了\
 .
 :TEXT_EXIT_REASON_3
-gone resident\
+常駐しました\
 .
