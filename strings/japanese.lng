@@ -4,7 +4,7 @@
 #
 #	Language: Japanese
 #	Codepage: 932
-#	Author:   all contributors
+#	Author:   Suzu, Guri and all contributors
 # 
 # This file is used to generate all the messages that command.com
 # outputs.  This file is the input to the fixstrs program, and it
@@ -93,143 +93,143 @@
 #
 ## Issued if a single character option is unknown
 :TEXT_ERROR_INVALID_SWITCH#0%
-Invalid switch. - /%c
+無効なスイッチです. - /%c
 .
 
 ## Issued if a longname option is unknown
 :TEXT_ERROR_INVALID_LSWITCH#0%
-Invalid switch. - /%s
+無効なスイッチです. - /%s
 .
 
 ## Issued if the context, the type of argument etc. is invalid
 :TEXT_ERROR_ILLFORMED_OPTION#0%
-Ill-formed option: '%s'
+不正なオプションです: '%s'
 .
 
 :TEXT_ERROR_OPT_ARG#0%
-Option '%s' can not have an argument
+オプション '%s' には引数を指定できません.
 .
 
 :TEXT_ERROR_OPT_NOARG#0%
-Option '%s' must have an argument
+オプション '%s' には引数を指定しなければなりません.
 .
 
 :TEXT_INVALID_NUMBER#0%
-Invalid number specified in '%s'
+'%s' で無効な数値が指定されています.
 .
 
 :TEXT_ERROR_CLOSE_QUOTE#0%
-Missing closing quote: %c
+クォートで閉じられていません: %c
 .
 
 :TEXT_ERROR_TEMPFILE
-Can not create temporary file
+テンポラリファイルを作成できません
 .
 
 :TEXT_ERROR_TOO_MANY_PARAMETERS_STR#0%
-Too many parameters. - '%s'
+パラメータが多すぎます. - '%s'
 .
 
 :TEXT_ERROR_TOO_MANY_PARAMETERS
-Too many parameters.
+パラメータが多すぎます.
 .
 
 :TEXT_ERROR_INVALID_PARAMETER#0%
-Invalid parameter. - '%s'
+無効なパラメータです. - '%s'
 .
 
 :TEXT_ERROR_PATH_NOT_FOUND
-Path not found.
+パスが見つかりません.
 .
 
 :TEXT_ERROR_FILE_NOT_FOUND
-File not found.
+ファイルが見つかりません.
 .
 
 :TEXT_ERROR_SFILE_NOT_FOUND#0%
-File not found. - '%s'
+ファイルが見つかりません. - '%s'
 .
 
 :TEXT_ERROR_REQ_PARAM_MISSING#0%
-Required parameter missing.
+必要なパラメータが足りません.
 .
 
 :TEXT_ERROR_INVALID_DRIVE#0%
-Invalid drive %c:.
+%c: は無効なドライブです.
 .
 
 :TEXT_ERROR_BADCOMMAND#2%
-Bad command or filename - "%s".
+無効なコマンド, またはファイル名です. - '%s'
 .
 
 :TEXT_ERROR_OUT_OF_MEMORY
-Out of memory error.
+メモリが足りません.
 .
 
 :TEXT_ERROR_OUT_OF_DOS_MEMORY#1
-Allocation of DOS memory failed.
+DOSメモリの確保に失敗しました.
 .
 
 :TEXT_ERROR_CANNOTPIPE
-Cannot pipe!  Cannot open temporary file!
+パイプできません！テンポラリファイルを作成できません！
 .
 
 :TEXT_ERROR_LONG_LINE_BATCHFILE#0%
-Line #%ld in batchfile '%s' too long.
+バッチファイル '%s' の #%ld 行目は長すぎます.
 .
 
 :TEXT_ERROR_BFILE_VANISHED#0%
-Batchfile '%s' not found.
+バッチファイル '%s' が見つかりません.
 .
 
 :TEXT_ERROR_BFILE_LABEL#0%
-Batchfile '%s' does not contain label '%s'.
+バッチファイル '%s' 内にラベル '%s' がありません.
 .
 
 :TEXT_ERROR_DIRFCT_FAILED#1%
-%s failed for '%s'.
+%s は '%s' が原因で失敗しました.
 .
 # The next three errors must remain in this order!
 :TEXT_ERROR_SET_ENV_VAR#0%
-Can not set environment variable '%s'.
-Environment full?
+環境変数 '%s' が設定できません. 環境領域が一杯になっていませんか？
 .
 :TEXT_ERROR_ENV_VAR_NOT_FOUND#0%
-Environment variable '%s' not found.
+環境変数 '%s' が見つかりません.
 .
 :TEXT_ERROR_NO_ENVIRONMENT
-No environment. Maybe memory short. Specify /E option.
+環境領域がありません. メモリが小さすぎるようです.
+オプション /E を指定してください.
 .
 
 # The next three errors must remain in this order!
 :TEXT_ERROR_SET_ALIAS#1%
-Can not set alias '%s'. Alias space full?
+エイリアス '%s' が設定できません. エイリアス領域が一杯になっていませんか？
 .
 :TEXT_ERROR_ALIAS_NOT_FOUND#1%
-Alias '%s' not found.
+エイリアス '%s' が見つかりません.
 .
 :TEXT_ERROR_NO_ALIAS_SEGMENT#1
-No alias space. Maybe memory short.
+エイリアス領域がありません. メモリが小さすぎるようです.
 .
 
 :TEXT_ERROR_SYNTAX_STR#0%
-Syntax error. - '%s'
+構文エラーです. - '%s'
 .
 
 :TEXT_ERROR_SYNTAX
-Syntax error.
+構文エラーです.
 .
 
 :TEXT_ERROR_FILENAME_TOO_LONG#0%
-Filename too long. - '%s'
+ファイル名が長すぎます. - '%s'
 .
 
 :TEXT_ERROR_SELFCOPY#0%
-Cannot copy '%s' to itself
+'%s' それ自体には複写できません.
 .
 
 :TEXT_ERROR_COMMAND_TOO_LONG
-Command line too long after alias expansion!
+エイリアス展開後のコマンドラインが長すぎます！
 .
 
 :TEXT_ERROR_LINE_TOO_LONG
@@ -237,243 +237,241 @@ Commandline longer than 125 characters.
 .
 
 :TEXT_ERROR_HISTORY_SIZE#1%
-Invalid history size '%s'.
+'%s' は無効なヒストリサイズです.
 .
 
 :TEXT_HISTORY_EMPTY#1
-Command line history empty.
+コマンドラインのヒストリが空です.
 .
 
 
 :TEXT_ERROR_BAD_MCB_CHAIN
-MCB chain corrupt, or MS-DOS incompatible system.
+MCB chainが壊れたか, MS-DOSと互換性の無いシステムです.
 .
 
 :TEXT_ERROR_UNDEFINED_ERROR#0%
-Undefined error %d.
+予期しないエラー %d.
 .
 
 :TEXT_ERROR_REGION_WARNING#0%
-Illegal memory region %d - ignored.
+%d は無効なメモリ領域です - 無視されます.
 .
 
 :TEXT_ERROR_ON_OR_OFF
-Must specify ON or OFF.
+ON か OFF を指定してください.
 .
 
 :TEXT_ERROR_BAD_VARIABLE
-Bad variable specification.
+無効な変数指定です.
 .
 
 :TEXT_ERROR_IN_MISSING#1
-FOR: IN missing.
+FOR: IN が足りません.
 .
 
 :TEXT_ERROR_MISSING_PARENTHESES#1
-One or both parentheses missing.
+かっこが片方もしくは両方ともありません.
 .
 
 :TEXT_ERROR_DO_MISSING#1
-FOR: DO missing.
+FOR: DO が足りません.
 .
 
 :TEXT_ERROR_NO_COMMAND_AFTER_DO#1
-FOR: No command after DO statement.
+FOR: DO に続くコマンドがありません.
 .
 
 :TEXT_ERROR_REDIRECT_FROM_FILE#0%
-Can not redirect input from file '%s'.
+ファイル '%s' からの入力をリダイレクトできません.
 .
 
 :TEXT_ERROR_REDIRECT_TO_FILE#0%
-Can not redirect output to file '%s'.
+ファイル '%s' への出力をリダイレクトできません.
 .
 
 :TEXT_ERROR_EMPTY_REDIRECTION#1
-Empty redirection.
+無意味なリダイレクションです.
 .
 
 :TEXT_ERROR_INVALID_DATE
-Invalid date.
+無効な日付です.
 .
 
 :TEXT_ERROR_INVALID_TIME
-Invalid time.
+無効な時刻です.
 .
 
 :TEXT_ERROR_NO_GOTO_LABEL
-No label specified for GOTO.
+GOTOで使われるラベルが指定されていません.
 .
 
 :TEXT_CTTY_NOTIMPLEMENTED
-The CTTY command has been excluded from this COMMAND.COM.
+CTTYはまだCOMMAND.COMに実装されていません.
 .
 
 :TEXT_ERROR_NORW_DEVICE#0%
-Invalid or no read-write device '%s'.
+読み書きデバイス '%s' が無効か, もしくは存在しません.
 .
 
 :TEXT_ERROR_CTTY_DUP#0%
-Failed to change file descriptors to TTY '%s'.
+ファイルディスクリプタをTTY '%s' に変更できませんでした.
 .
 
 :TEXT_ERROR_L_NOTIMPLEMENTED
-/L not implemented yet.
+/L は実装されていません.
 .
 
 :TEXT_ERROR_U_NOTIMPLEMENTED
-/U not implemented yet.
+/U は実装されていません.
 .
 
 :TEXT_ERROR_WRITING_DEST
-Error writing to destination.
+書き込み失敗エラーです.
 .
 
 :TEXT_ERROR_CANNOT_OPEN_SOURCE#0%
-Unable to open source. - '%s'
+読み込み元 '&s' を開くことができません.
 .
 
 :TEXT_ERROR_OPEN_FILE#0%
-Unable to open file '%s'
+ファイル '%s' を開くことができません.
 .
 
 :TEXT_ERROR_READ_FILE#0%
-Unable to read from file '%s'
+ファイル '%s' からの読み込みができません.
 .
 
 :TEXT_ERROR_WRITE_FILE#0%
-Unable to write to file '%s'
+ファイル '%s' への書き込みができません.
 .
 
 :TEXT_ERROR_LEADING_PLUS
-The concatenation character '+' cannot lead the arguments.
+結合記号 '+' からその引数を導くことはできません.
 .
 
 :TEXT_ERROR_TRAILING_PLUS
-The concatenation character '+' cannot trail the arguments.
+結合記号 '+' にその引数を続けることはできません.
 .
 
 :TEXT_ERROR_NOTHING_TO_DO
-Nothing to do.
+何もしません.
 .
 
 :TEXT_ERROR_COPY
-COPY failed
+COPYに失敗しました.
 .
 
 :TEXT_ERROR_IF_EXIST_NO_FILENAME#1
-IF EXIST: missing filename
+IF EXIST: ファイル名が足りません.
 .
 :TEXT_ERROR_IF_ERRORLEVEL_NO_NUMBER#1
-IF ERRORLEVEL: missing number
+IF ERRORLEVEL: 数値が足りません.
 .
 :TEXT_ERROR_IF_ERRORLEVEL_INVALID_NUMBER#1
-IF ERRORLEVEL: invalid number
+IF ERRORLEVEL: 無効な数値です.
 .
 :TEXT_ERROR_IF_MISSING_COMMAND#1
-IF: Missing command
+IF: コマンドがありません.
 .
 
 :TEXT_NOT_IMPLEMENTED_YET
-Sorry...not implemented yet.
+申し訳ありませんが, まだ実装されていません.
 .
 
 :TEXT_FAILED_LOAD_STRINGS
-Failed to load messages into memory.
+メモリにメッセージを読み込めません.
 .
 
 :TEXT_MSG_NOTIMPLEMENTED
-The /MSG option has been excluded from this COMMAND.COM.
+オプション /MSG はこのCOMMAND.COMでは削除されています.
 .
 
 :TEXT_MSG_ITEMS_DISPLAYED#1%
-%u items displayed.
+%u 項目を表示しました.
 .
 
 :TEXT_CORRUPT_COMMAND_LINE
-Corrupt command line. This is an internal error and is related to
-the system COMMAND.COM runs in. Please report this error.
+不正なコマンドラインです. この内部エラーはCOMMAND.COMが動作しているシステムに
+関係しています. ぜひこのエラーを報告してください.
 .
 
 :TEXT_QUOTED_C_OR_K#1
-The /C and /K options cannot be quoted, they are ignored.
+オプション /C と /K は指定できません. 無視されます.
 .
 
 :TEXT_INIT_FULLY_QUALIFIED#1%
-The path to COMMAND.COM must be fully qualified!
-That means including drive letter and beginning with a backslash.
-For example: C:\\FDOS
+COMMAND.COMのパスは絶対パスで与えられなければなりません.
+ドライブ文字とそれに続く \\ から始める必要があります.
+例： C:\\FDOS
 
-COMMAND.COM assumes this path now:
+COMMAND.COMは現在以下のパスを想定しています.
 %s
 .
 
 :TEXT_ERROR_RESTORE_SESSION
-The session information could not be restored, any local settings
-are lost. Please refer to above error messages for the reason
-of this problem.
+セッション情報が保存できませんでした. ローカルな設定は全部失われます.
+この問題の理由については, 上記のエラーメッセージを参照してください.
 .
 
 :TEXT_ERROR_SAVE_SESSION
-The current information cannot be preserved during the call of the
-program. Please refer to above error messages for the reason of
-this problem.
+現在のセッション情報はこのプログラムを呼び出している間, 保護されません.
+この問題の理由については, 上記のエラーメッセージを参照してください.
 .
 
 :TEXT_ERROR_CWD_FAILED#1%
-Drive %c: not responding.
+%c: ドライブが反応しないか, または内部メモリが不足しています.
 .
 
 :TEXT_ERROR_KSWAP_ALIAS_SIZE
-Swapping failed: Aliases allocate too much memory.
+スワップ失敗: エイリアスに割り当てられているメモリが多すぎます.
 .
 
 
 :TEXT_ERROR_KSWAP_ALLOCMEM
-Swapping failed: Cannot allocate far memory.
+スワップ失敗: farメモリを割り当てられませんでした.
 .
 
 :TEXT_ERROR_ALIAS_OUT_OF_MEM#1
-Out of alias space.
+エイリアス領域が溢れました.
 .
 
 :TEXT_ERROR_ALIAS_NO_SUCH#1%
-No such alias: '%s'
+エイリアス '%s' は存在しません
 .
 
 :TEXT_ERROR_ALIAS_INSERT#1
-Failed to insert alias.
+エイリアスの展開に失敗しました.
 .
 
 :TEXT_ALIAS_INVALID_NAME#1%
-Invalid alias name '%s'.
+エイリアス名 '%s' は無効です.
 .
 
 :TEXT_ERROR_LOADING_CONTEXT#1
-Cannot load Context module or Critical Error handler.
+コンテキストモジュールまたは重大エラーハンドラが読み込めません.
 .
 
 :TEXT_ERROR_CONTEXT_OUT_OF_MEMORY#1
-Context out of memory.
-If this error persists, consider to increase some internal buffer,
-such as history, direcory stack etc.
+コンテキストがメモリから溢れました.
+エラーが続くようであれば, ヒストリやディレクトリスタックの内部バッファを
+増やすことを考えてください.
 .
 
 :TEXT_ERROR_CONTEXT_LENGTH#1%
-Size of context totals %lu bytes exceeding maximal limit.
-Resizing context to %u bytes.
+コンテキストサイズが合計 %lu になり, 最大長を超えています.
+コンテキストサイズを %u に変更します.
 .
 
 :TEXT_ERROR_CONTEXT_ADD_STATUS#1
-Failed to add status information into context. This error may indicate
-memory corruption or an incorrectly determined minimum size of
-the context. Please inform the maintainer of FreeCOM at:
-freecom@freedos.org
+コンテキストにステータス情報を追加できませんでした.
+このエラーはおそらく, メモリ空間が破壊されたかコンテキストの最小サイズを
+誤って計算したことを暗示しています.
+ぜひこのエラーをFreeCOMの管理人(freecom@freedos.org)に報告してください.
 .
 
 :TEXT_ERROR_CONTEXT_AFTER_SWAP#1
-The context is missing after swap. The context is re-created,
-but all aliases etc. are lost.
+スワップ後にコンテキストが消失しました.
+コンテキスト自体は再生されますがエイリアスなどは失われます.
 .
 
 :TEXT_ERROR_PERMISSION_DENIED#1%
@@ -493,34 +491,34 @@ but all aliases etc. are lost.
 #
 
 :TEXT_MSG_PAUSE#1
-Press any key to continue . . .\
+継続する場合は, 何かキーを押してください . . .\
 .
 
 :TEXT_MSG_HISTORY_SIZE#0%
-History size is %d bytes.
+ヒストリのサイズは %d バイトです.
 .
 
 :TEXT_MSG_DOSKEY
-DOSKEY features are already enabled in the shell.
+DOSKEY機能はすでにシェルによって有効になっています.
 .
 
 :TEXT_MSG_ECHO_STATE#0%
-ECHO is %s
+ECHO は %s です.
 .
 
 :TEXT_MSG_VERIFY_STATE#0%
-VERIFY is %s
+VERIFY は %s です.
 .
 
 :TEXT_MSG_FDDEBUG_STATE#0%
-DEBUG output is %s.
+DEBUGの出力は %s です.
 .
 :TEXT_MSG_FDDEBUG_TARGET#0%
-DEBUG output is printed to '%s'.
+DEBUGの出力は '%s' に流れます.
 .
 
 :TEXT_MSG_BREAK_STATE#0%
-BREAK is %s
+BREAKは %s です.
 .
 
 :TEXT_MSG_LFNFOR_STATE#0%
@@ -532,22 +530,22 @@ LFN Complete is %s
 .
 
 :TEXT_MSG_CURRENT_DATE#0%
-Current date is %s
+現在の日付は %s です.
 .
 
 ## The three DATE prompts MUST be in this order!
 :TEXT_MSG_ENTER_DATE_AMERICAN#1%
-Enter new date (mm%sdd%s[cc]yy): \
+新しい日付を入力してください(mm%sdd%s[cc]yy): \
 .
 :TEXT_MSG_ENTER_DATE_EUROPE#1%
-Enter new date (dd%smm%s[cc]yy): \
+新しい日付を入力してください(dd%smm%s[cc]yy): \
 .
 :TEXT_MSG_ENTER_DATE_JAPANESE#1%
-Enter new date ([cc]yy%smm%sdd): \
+新しい日付を入力してください([cc]yy%smm%sdd): \
 .
 
 :TEXT_MSG_CURRENT_TIME#0%
-Current time is %s
+現在の時刻は %s です.
 .
 
 :TEXT_STRING_PM#1
@@ -558,7 +556,7 @@ Current time is %s
 .
 
 :TEXT_MSG_ENTER_TIME#1
-Enter new time: \
+新しい時刻を入力してください: \
 .
 
 # src-file <operation> target-file
@@ -574,8 +572,8 @@ Enter new time: \
 :PROMPT_DELETE_ALL#1%
 YyNn{CR}{LF}{CBREAK}
 aabb   b   b       b
-All files in '%s' will be deleted!
-Are you sure (Y/N)? \
+ディレクトリ '%s' のすべてのファイルが削除されます.
+よろしいですか(Y/N)? \
 .
 
 # This prompt MUST include the pseudo key CBREAK!
@@ -597,8 +595,8 @@ aabb   a   a       b    b
 :PROMPT_CANCEL_BATCH#1%
 YyNnAaQq{LF}{CR}{CBREAK}{ESC}
 aabbcccc   a   a       c    b
-Control-Break pressed.\r
-Terminate batch file '%s' (Yes/No/All) ? \
+Break (STOP) が押されました.\r
+バッチファイル '%s' を中止しますか(Yes/No/All) ? \
 .
 
 # This prompt MUST include the pseudo key CBREAK!
@@ -608,7 +606,7 @@ Terminate batch file '%s' (Yes/No/All) ? \
 :PROMPT_OVERWRITE_FILE#1%
 YyNnAaQq{BREAK}{ENTER}{ESC}
 aabbccdd      d      a    b
-Overwrite '%s' (Yes/No/All/Quit) ? \
+'%s' を上書きしますか(Yes/No/All/Quit) ? \
 .
 
 # This prompt MUST include the pseudo key CBREAK!
@@ -628,7 +626,7 @@ Append to '%s' (Yes/No/All/Quit) ? \
 :PROMPT_DELETE_FILE#1%
 YyNnAaQq{BREAK}{ENTER}{ESC}
 aabbccdd      d      a    b
-Delete '%s' (Yes/No/All/Quit) ? \
+'%s' を削除しますか(Yes/No/All/Quit) ? \
 .
 
 :TEXT_UNKNOWN_FILENAME#1
@@ -636,42 +634,42 @@ Delete '%s' (Yes/No/All/Quit) ? \
 .
 
 :TEXT_DIRSTACK_EMPTY
-Directory stack empty.
+ディレクトリスタックは空です.
 .
 
 ## Strings to construct the DIR output
 :TEXT_DIR_HDR_VOLUME#1%
- Volume in drive %c \
+ ドライブ %c のボリューム \
 .
 :TEXT_DIR_HDR_VOLUME_STRING#0%
-is %s
+は %s です.
 .
 :TEXT_DIR_HDR_VOLUME_NONE
-has no label
+ラベルはありません.
 .
 :TEXT_DIR_HDR_SERIAL_NUMBER#0%
- Volume Serial Number is %04X-%04X
+ ボリュームシリアル番号は %04X-%04X です.
 .
 :TEXT_DIR_FTR_FILES#1%
-%10s file(s)\
+%10s 個のファイル\
 .
 :TEXT_DIR_FTR_BYTES#0%
-   %12s bytes
+   %12s バイト
 .
 :TEXT_DIR_FTR_TOTAL_NUMBER
-Total files listed:
+表示されたファイルの総数:
 .
 :TEXT_DIR_FTR_DIRS#1%
-%10s dir(s)\
+%10s ディレクトリ
 .
 :TEXT_DIR_FTR_BYTES_FREE#0%
- %15s bytes free
+ %15s バイトの空き容量があります.
 .
 :TEXT_DIR_DIRECTORY#0%
-Directory of %s
+%s のディレクトリ
 .
 :TEXT_DIR_DIRECTORY_WITH_SPACE#0%
- Directory of %s
+ %s のディレクトリ
 .
 :TEXT_DIR_LINE_FILENAME_WIDE#1%
 %-15s\
@@ -700,7 +698,7 @@ Directory of %s
 PATH=%s
 .
 :TEXT_MSG_PATH_NONE#1
-No search path defined.
+検索パスが設定されていません.
 .
 
 ## The following names MUST be in this order!
@@ -729,78 +727,78 @@ Sat\
 # Displayed by DEL how many files were removed.
 # These three strings must be kept in order!
 :TEXT_MSG_DEL_CNT_FILES#1
-no file removed.
+ファイルを削除できません.
 .
 :TEXT_MSG_DEL_CNT_FILES_1#1
-one file removed.
+ファイルを削除しました.
 .
 :TEXT_MSG_DEL_CNT_FILES_2#1%
-%u files removed.
+%u 個のファイルを削除しました.
 .
 
 :TEXT_MSG_SHOWCMD_INTERNAL_COMMANDS
-Internal commands available:
+利用できるコマンド:
 .
 
 :TEXT_MSG_SHOWCMD_FEATURES
 
-Features available:
+利用できる機能:
 .
 
 ## Displayed within "?" <-> showcmd() to enumerate the included features
 ## Note the trailing single space
 :TEXT_SHOWCMD_FEATURE_ALIASES#1
-[aliases] \
+[エイリアス] \
 .
 :TEXT_SHOWCMD_FEATURE_ENHANCED_INPUT#1
-[enhanced input] \
+[拡張入力] \
 .
 :TEXT_SHOWCMD_FEATURE_HISTORY#1
-[history] \
+[ヒストリ] \
 .
 :TEXT_SHOWCMD_FEATURE_FILENAME_COMPLETION#1
-[filename completion] \
+[ファイル名補完] \
 .
 :TEXT_SHOWCMD_FEATURE_SWAP_EXEC#1
-[swapping] \
+[スワップ] \
 .
 :TEXT_SHOWCMD_FEATURE_CALL_LOGGING#1
-[start logging] \
+[ログの取得] \
 .
 :TEXT_SHOWCMD_FEATURE_LAST_DIR#1
-[last dir] \
+[ディレクトリ履歴] \
 .
 :TEXT_SHOWCMD_FEATURE_LONG_FILENAMES#1
 [long filenames] \
 .
 :TEXT_SHOWCMD_FEATURE_KERNEL_SWAP_SHELL#1
-[kernel swap] \
+[カーネルスワップ] \
 .
 :TEXT_SHOWCMD_FEATURE_XMS_SWAP#1
-[XMS swap] \
+[XMSスワップ] \
 .
 :TEXT_SHOWCMD_DEFAULT_TO_SWAP#1
-[default to swap] \
+[標準スワップ] \
 .
 :TEXT_SHOWCMD_FEATURE_INSTALLABLE_COMMANDS#1
-[installable commands] \
+[コマンドインストール] \
 .
 :TEXT_SHOWCMD_FEATURE_NLS#1
 [DOS NLS] \
 .
 :TEXT_SHOWCMD_FEATURE_DIRSTACK#1
-[directory stack (PUSHD)] \
+[ディレクトリスタック] \
 .
 :TEXT_SHOWCMD_FEATURE_DEBUG#1
-[FreeCOM debugging] \
+[FreeCOMデバッグ] \
 .
 
 :TEXT_MSG_INIT_BYPASS_AUTOEXEC#1
 
-Press F8 for trace mode, or F5 to bypass %s... \
+F8を押すとトレースモード, F5で %s をバイパスします... \
 .
 :TEXT_MSG_INIT_BYPASSING_AUTOEXEC#0%
-Bypassing '%s'.
+'%s' をバイパスしています.
 .
 
 :TEXT_MSG_VER_DOS_VERSION#0%
@@ -826,6 +824,10 @@ General Public License for more details.
 
 Send bug reports to freedos-freecom@lists.sourceforge.net.
 Updates are available from http://freedos.sourceforge.net/freecom
+
+日本語メッセージ対応 水城 珠洲
+日本語メッセージに関するバグレポートはminashirojp@yahoo.co.jpに送ってください.
+最新版は http://dos.minashiro.net/freecomj.html から入手できます.
 .
 
 :TEXT_MSG_VER_REDISTRIBUTION
@@ -838,6 +840,10 @@ your option) any later version.
 
 Send bug reports to freedos-freecom@lists.sourceforge.net.
 Updates are available from http://freedos.sourceforge.net/freecom
+
+日本語メッセージ対応 水城 珠洲
+日本語メッセージに関するバグレポートはminashirojp@yahoo.co.jpに送ってください.
+最新版は http://dos.minashiro.net/freecomj.html から入手できます.
 .
 
 :TEXT_MSG_VER_DEVELOPERS
@@ -859,61 +865,61 @@ Updates are available from http://freedos.sourceforge.net/freecom
 # All newlines must be prefixed by \r's !
 :TEXT_MSG_REBOOT_NOW#1
 \r\n\r
-The shell is about to be terminated, though, this is\r
-forbidden (usually by enabling the "/P" option).\r
-You must reboot the system or, if this shell runs in\r
-a multitasking environment, terminate this process/task manually.\r
+シェルを終了しようとしましたが, (多分, /P オプションが有効なので)\r
+それは許されていません.\r
+システムを再起動するか, マルチタスク環境で実行している場合は手動で\r
+プロセス／タスクを削除する必要があります.\r
 .
 
 # Displayed during the initialization phase of FreeCOM, if its own
 # filename could not be determined.
 :TEXT_MSG_FREECOM_NOT_FOUND#1
-FreeCOM executable not found.
-You must specify the complete path to COMMAND.COM
-as the first argument of COMMAND, for instance:
-C:\\FDOS
+FreeCOMの実行プログラムが見つかりません.
+COMMAND.COMへのパスは, 絶対パスでCOMMANDの最初の引数として渡されなければ
+なりません.
+  例: C:\\DOS
 .
 
 
 :TEXT_MEMORY_ENVIRONMENT#1%
-Environment segment    : max %5u bytes; free %5u bytes
+環境セグメント         : 最大 %5u バイト; 空き %5u バイト
 .
 :TEXT_MEMORY_CONTEXT#1%
-Context segment        : max %5u bytes; free %5u bytes
+コンテキストセグメント : 最大 %5u バイト; 空き %5u バイト
 .	
 :TEXT_MEMORY_HEAP#1%
-Heap                   : free %5lu bytes
+ヒープ領域             : 空き %5lu バイト
 .
 :TEXT_MEMORY_CTXT_ALIAS#1%
-\tAliases        : limit %5u bytes, current %5u bytes, %5u items
+エイリアス             : 最大 %5u バイト, 現在 %5u バイト, %5u 個の登録
 .
 :TEXT_MEMORY_CTXT_HISTORY#1%
-\tHistory        : limit %5u bytes, current %5u bytes, %5u items
+ヒストリ               : 最大 %5u バイト, 現在 %5u バイト, %5u 個の登録
 .
 :TEXT_MEMORY_CTXT_DIRSTACK#1%
-\tDirectory stack: limit %5u bytes, current %5u bytes, %5u items
+ディレクトリスタック   : 最大 %5u バイト, 現在 %5u バイト, %5u 個の登録
 .
 :TEXT_MEMORY_CTXT_LASTDIR#1%
-\tLast dir cache : used  %5u bytes, %5u items
+過去のディレクトリのキャッシュ: %5u バイト使用中, %5u 個の登録
 .
 :TEXT_MEMORY_CTXT_BATCH#1%
-\tBatch nesting  : used  %5u bytes, %5u items
+バッチのネスト                : %5u バイト使用中, %5u 個の登録
 .
 :TEXT_MEMORY_CTXT_SWAPINFO#1%
-\tSwapinfo       : used  %5u bytes, %5u items
+スワップ情報                  : %5u バイト使用中, %5u 個の登録
 .
 
 
 ## CHCP
 :TEXT_ERROR_GET_CODEPAGE#1
-Failed to aquire current code page from system.
+現在のコードページを取得できません.
 .
 :TEXT_ERROR_SET_CODEPAGE#1
-Failed to change current code page.
+現在のコードページを変更できません.
 .
 :TEXT_DISPLAY_CODEPAGE#1%
-The current codepage is %u.
-The system codepage (properly) is: %u.
+現在のコードページは %u です.
+システムのコードページは %u です.
 .
 
 #
@@ -921,42 +927,42 @@ The system codepage (properly) is: %u.
 #
 
 :TEXT_CMDHELP_ALIAS
-Displays, sets, or removes aliases.
+エイリアスの表示, 設定, 削除を行ないます.
 
 ALIAS [variable[=][string]]
 
-	variable  Specifies the alias name.
-	string    Specifies a series of characters to assign to the alias.
+  variable  エイリアス名.
+  string    エイリアスに割り付ける文字列.
 
 
-Type ALIAS without parameters to display the current aliases.
+パラメータを指定しなければ, エイリアスの一覧を表示します.
 .
 
 :TEXT_CMDHELP_BEEP
-Make a beep sound.
+ビープ音を鳴らします.
 .
 
 :TEXT_CMDHELP_BREAK
-Sets or clears extended CTRL+C checking.
+拡張CTRL+Cチェックを有効, または無効にします.
 
 BREAK [ON | OFF]
 
-Type BREAK without a parameter to display the current BREAK setting.
+パラメータを指定しなければ, 現在の BREAK の設定を表示します.
 .
 
 :TEXT_CMDHELP_CALL#1
-Calls one batch program from another.
+バッチファイルを呼び出します.
 
 CALL [/S | /N] [/Y] [drive:][path]filename [batch-parameters]
 
-  batch-parameters   Specifies any command-line information required by
-                     the batch program.
-  /S enforces, /N denies swapping of FreeCOM.
-  /Y enables tracemode during execution of the command.
+  batch-parameters   呼び出されるバッチファイルが必要とするパラメータ
+
+FreeCOMのスワップを/Sで指定, /Nで禁止します.
+スイッチ /Y はコマンド実行の間トレースモードを有効にします.
 .
 
 :TEXT_CMDHELP_CD
-Displays the name of or changes the current directory.
+カレントディレクトリの表示, または変更を行ないます.
 
 CHDIR [drive:][path]
 CHDIR[..]
@@ -964,261 +970,255 @@ CD [drive:][path]
 CD[..]
 CD -
 
-  ..   Specifies that you want to change to the parent directory.
-  -    If "last directory" feature is enabled, change to last directory.
+  ..   親ディレクトリへ変更します.
+  -    もし, ひとつ前のディレクトリに変更する機能が有効であれば,
+       ひとつ前のディレクトリに変更します.
 
-Type CD drive: to display the current directory in the specified drive.
-Type CD without parameters to display the current drive and directory.
-See also: CDD
+CD drive:と入力すると, 指定されたドライブのカレントディレクトリを表示します.
+パラメータを指定しなければ, カレントドライブのカレントディレクトリを表示します.
+CDDを参照してください.
 .
 
 :TEXT_CMDHELP_CDD
-Displays the name of or changes the current directory and drive.
+カレントディレクトリとドライブを表示, または変更します.
 
 CDD [drive:][path]
 CDD[..]
 
-  ..   Specifies that you want to change to the parent directory.
-  -    If "last directory" feature is enabled, change to last directory.
+  ..   親ディレクトリへ変更します.
+  -    もし, ひとつ前のディレクトリに変更する機能が有効であれば,    
+       ひとつ前のディレクトリに変更します.
 
-If drive: is specified, the current working drive is changed; this
-is the only different to "CHDIR".
-Type CD without parameters to display the current drive and directory.
+もしドライブ名が指定されていれば, 現在の作業ドライブは変更されます.
+これが "CHDIR" とひとつだけ異なる点です.
+パラメータを指定しなければ, カレントドライブとカレントディレクトリを表示します.
 .
 
 :TEXT_CMDHELP_CHCP
-Displays or sets the active code page number.
+コードページ番号を表示, または設定します.
 
 CHCP [nnn]
 
-  nnn   Specifies a code page number.
+  nnn   コードページ番号.
 
-Type CHCP without a parameter to display the active code page number.
+パラメータを指定しなければ, 現在のコードページ番号を表示します.
 .
 
 :TEXT_CMDHELP_CLS
-Clears the screen.
+画面を消去します.
 
 CLS
 .
 
 :TEXT_CMDHELP_COMMAND
-Starts a new copy of the FreeDOS command shell.
+FreeDOS コマンドシェルを新たに起動します.
 
 COMMAND [[drive:]path] [device] [/E:nnnnn] [/L:nnnn] [/U:nnn] [/P] [/MSG]
                        [/LOW] [/Y [/[C|K] command]]
-  [drive:]path    Specifies the directory containing COMMAND.COM.
-  device          Specifies the device to use for command input and output.
-  /E:nnnnn        Sets the initial environment size to nnnnn bytes.
-                  (nnnnn should be between 256 and 32,768).
-  /L:nnnn         Specifies internal buffers length (requires /P as well).
-                  (nnnn should be between 128 and 1,024).
-  /U:nnn          Specifies the input buffer length (requires /P as well).
-                  (nnn should be between 128 and 255).
-  /P              Makes the new command shell permanent (can't exit).
-  /MSG            Stores all error messages in memory (requires /P as well).
-  /LOW            Forces the command shell to keep its resident data in
-                  low memory.
-  /Y              Steps through the batch program specified by /C or /K.
-  /C command      Executes the specified command and returns.
-  /K command      Executes the specified command and continues running.
+  [drive:]path    COMMAND.COMがあるディレクトリ.
+  device          コマンドの入出力を行うデバイス.
+  /E:nnnnn        環境領域の初期化サイズnnnnn.
+                  (nnnnnは256から32,768の間)
+  /L:nnnn         内部バッファ長のサイズnnnn. (同時に/Pが必須)
+                  (nnnnは128から1,024の間)
+  /U:nnn          コマンド入力バッファのサイズnnn. (同時に/Pが必須)
+                  (nnnは128から256の間)
+  /P              新しいコマンドシェルを起動する. (終了できない)
+  /MSG            エラーメッセージをメモリに読み込む. (同時に/Pが必須)
+  /LOW            コマンドシェルを下位メモリへ強制的に読み込ませる.
+  /Y              /Cまたは/Kで指定されたバッチプログラムをステップ実行する.
+  /C command      指定されたコマンドを実行して終了する.
+  /K command      指定されたコマンドを実行してセッションを継続する.
 .
 
 :TEXT_CMDHELP_COPY
-Copies one or more files to another location.
+ひとつ以上のファイルを複写します.
 
 COPY [/A | /B] source [/A | /B] [+ source [/A | /B] [+ ...]] [destination
   [/A | /B]] [/V] [/Y | /-Y]
 
-  source       Specifies the file or files to be copied.
-  /A           Indicates an ASCII text file.
-  /B           Indicates a binary file.
-  destination  Specifies the directory and/or filename for the new file(s).
-  /V           Verifies that new files are written correctly.
-  /Y           Suppresses prompting to confirm you want to overwrite an
-               existing destination file.
-  /-Y          Causes prompting to confirm you want to overwrite an
-               existing destination file.
+  source       複写元のファイル.
+  /A           ASCIIファイル指定.
+  /B           バイナリファイル指定.
+  destination  複写先のディレクトリ, またはファイル名.
+  /V           複写後にベリファイします.
+  /Y           上書き時に確認を行います.
+  /-Y          上書き時に確認を行いません.
 
-The switch /Y may be preset in the COPYCMD environment variable.
-This may be overridden with /-Y on the command line.
+スイッチ /Y は環境変数COPYCMDで指定可能です.
+ただし, コマンドライン上での/-Yの方が優先されます.
 
-To append files, specify a single file for destination, but multiple files
-for source (using wildcards or file1+file2+file3 format).
+ワイルドカードもしくはfile1+file2+file3の形式で指定した複数のファイルを
+複写元とし, 複写先にひとつのファイルを指定することで, ファイルを結合する
+ことができます.
 .
 
 :TEXT_CMDHELP_CTTY
-Changes the terminal device used to control your system.
+システムを操作するのに使う端末デバイスを変更します.
 
 CTTY device
 
-  device   The terminal device you want to use, such as COM1.
+  device   COM1のような, 使用したい端末デバイスを指定します.
 .
 
 :TEXT_CMDHELP_DATE#1
-Displays or sets the date.
+日付の表示, または変更を行ないます.
 
 DATE [/D] [date]
 
-Type DATE without parameters to display the current date setting and a
-prompt for a new one.  Press ENTER to keep the same date.
+パラメータを指定しなければ, 現在の日付と, 設定用のプロンプトを表示します.
+日付を変えない場合は, そのままENTERを押してください.
 
-/D prevents DATE to become interactive.
+/D 設定用のプロンプトを表示しません.
 .
 
 :TEXT_CMDHELP_DEL#2
-Deletes one or more files.
+ファイル(複数可)を削除します.
 
 DEL [drive:][path]filename [/P] [/V]
 ERASE [drive:][path]filename [/P] [/V]
 
-  [drive:][path]filename  Specifies the file(s) to delete.  Specify multiple
-                          files by using wildcards.
-  /P	Prompts for confirmation before deleting each file.
-  /V	Displays all deleted files.
+  [drive:][path]filename  削除するファイルを指定します.
+                          ワイルドカードで複数のファイルも指定できます.
+  /P        ファイルを削除する前にプロンプトで確認します.
+  /V        削除するファイルを表示します.
 .
 
 :TEXT_CMDHELP_DIR#4
-Displays a list of files and subdirectories in a directory.
+ディレクトリ内のファイルやサブディレクトリの一覧を表示します.
 
 DIR [drive:][path][filename] [/P] [/W] [/A[[:]attributes]]
   [/O[[:]sortorder]] [/S] [/B] [/L] [/V]
 
   [drive:][path][filename]
-            Specifies drive, directory, and/or files to list.
-            (Could be enhanced file specification or multiple filespecs.)
- /P         Pauses after each screenful of information.
- /W         Uses wide list format.
- /A         Displays files with specified attributes. (Defaults to /ADHSRA)
- attributes  D  Directories                R  Read-only files
-             H  Hidden files               A  Files ready for archiving
-             S  System files               -  Prefix meaning not
- /O         List by files in sorted order.
- sortorder   N  By name (alphabetic)       S  By size (smallest first)
-             E  By extension (alphabetic)  D  By date & time (earliest first)
-             G  Group directories first    -  Prefix to reverse order
-             U  Unsorted		   Defaults to /ONG
- /S         Displays files in specified directory and all subdirectories.
- /B         Uses bare format (no heading information or summary).
- /L         Uses lowercase.
- /Y or /4   Display 4-digit year.
+        表示したいドライブ, ディレクトリまたはファイルを指定します.
+        (拡張ファイル指定, または複数のファイル指定も可能です)
+ /P     一画面ごとに停止します.
+ /W     ファイル名のみを横に詰めて表示します.
+ /A     表示するファイルの属性を指定します.
+   属性  D      ディレクトリ               R  読み込み専用ファイル
+         H      隠しファイル               A  アーカイブファイル
+         S      システムファイル           -  その他の属性
+ /O     ファイルの表示順序を変更します.(まだ実装されていません)
+   順番  N      ファイル名(アルファベット) S  ファイルサイズ(小さいものから)
+         E      拡張子(アルファベット)     D  時間(新しいものから)
+         G      ディレクトリから           -  逆順にする
+         A      最後にアクセスしたものから(最近のものから)
+ /S     指定されたディレクトリと, その配下のサブディレクトリを表示します.
+ /B     ファイル名のみを表示します.
+ /L     ファイル名を小文字で表示します.
+ /Y     年を四桁で表示します.
 
-Switches may be preset in the DIRCMD environment variable.  Override
-preset switches by prefixing any switch with - (hyphen)--for example, /-W.
+環境変数DIRCMDにスイッチを指定することができます. ただし, コマンドライン
+から-(ハイフン)を指定することでスイッチを無効にできます. (例：/-W)
 .
 
 :TEXT_CMDHELP_DOSKEY#1
-The external DOSKEY utility had been incorporated into FreeCOM.
-Use cursor UP,& DOWN keys to recall the history and HISTORY to display it.
-Use cursor LEFT,& RIGHT and the END and HOME keys to navigate within
-the command line and toggle INSERT between overstrike and insert mode.
-Use the TAB key to complete the current word as filename; use it twice
-to show all matching files.
+外部ユーティリティDOSKEYは, FreeCOMに取り込まれました. 上下カーソルキー
+を用いて履歴を呼び出し, 内容を表示します. 上下カーソル, END, HOMEキーを
+用いてコマンドライン上を移動したり, INSERTキーで挿入と上書きを切り替え
+ながら編集することができます.
+ファイル名の補完にはTABキーが使えますし, 二度押せば補完候補のファイルを
+一覧表示することができます.
 .
 
 :TEXT_CMDHELP_ORIGINAL_DOSKEY#1
-Edits command lines, recalls command lines, and creates macros
+コマンドラインの編集, 履歴呼び出し, マクロの作成を行ないます.
 
 DOSKEY [/switch ...] [macroname=[text]]
 
-  /BUFSIZE:size Sets size of macro and command buffer            (default:512)
-  /ECHO:on|off  Enables/disables echo of macro expansions        (default:on)
-  /FILE:file    Specifies file containing a list of macros
-  /HISTORY      Displays all commands stored in memory
-  /INSERT       Inserts new characters into line when typing
-  /KEYSIZE:size Sets size of keyboard type-ahead buffer          (default:15)
-  /LINE:size    Sets maximum size of line edit buffer            (default:128)
-  /MACROS       Displays all DOSKey macros
-  /OVERSTRIKE   Overwrites new characters onto line when typing  (default)
-  /REINSTALL    Installs a new copy of DOSKey
-  macroname     Specifies a name for a macro you create
-  text          Specifies commands you want to assign to the macro
+  /BUFSIZE:size マクロとコマンドバッファーのサイズを指定します. (初期値:512)
+  /ECHO:on|off  マクロ展開の表示の有効／無効を指定します.       (初期値:on)
+  /FILE:file    マクロリストを記載したファイルを指定します.
+  /HISTORY      メモリに格納されたすべてのコマンドを表示します.
+  /INSERT       コマンドラインへの入力が挿入モードになります.
+  /KEYSIZE:size キーボードtype-aheadバッファサイズを指定します. (初期値:15)
+  /LINE:size    ライン編集バッファの最大数を指定します.         (初期値:128)
+  /MACROS       すべてのDOSKEYマクロを表示します.
+  /OVERSTRIKE   コマンドラインへの入力が上書きモードになります. (初期値)
+  /REINSTALL    DOSKEYを再インストールします.
+  macroname     作成するマクロ名を指定します.
+  text          マクロに対応するコマンドを指定します.
 
-  UP,DOWN arrows recall commands
-      Esc clears current command
-       F7 displays command history
-   Alt+F7 clears command history
-[chars]F8 searches for command beginning with [chars]
-       F9 selects a command by number
-  Alt+F10 clears macro definitions
+  上下カーソル コマンドの履歴を呼び出します.
+    エスケープ 現在のコマンドを削除します.
+        F7キー コマンドの履歴を表示します.
+    ALT+F7キー コマンドの履歴を削除します.
+[文字列]F8キー [文字列]で始まるコマンドを検索します.
+        F9キー 番号でコマンドを選択します.
+    ALT+F7キー マクロ定義を削除します.
 
-The following are special codes you can use in DOSKey macro definitions:
-  $T     Command separator: allows multiple commands in a macro
-  $1-$9  Batch parameters: equivalent to %1-%9 in batch programs
-  $*     Symbol replaced by everything following macro name on the command line
+以下にDOSKEYマクロで使用できるコードを示します.
+  $T     コマンドセパレータ: マクロで複数のコマンドを記述できます.
+  $1-$9  バッチパラメータ: バッチファイルの%1-%9と同等です.
+  $*     コマンドライン上でマクロ名に続くテキストで置き換えられるシンボル.
 .
 
 :TEXT_CMDHELP_ECHO
-Displays messages, or turns command-echoing on or off.
+メッセージを表示したり, コマンドエコーの有無を設定したりします.
 
   ECHO [ON | OFF]
   ECHO [message]
 
-Type ECHO without parameters to display the current echo setting.
+パラメータを指定しなければ, 現在のECHOの設定を表示します.
 .
 
 :TEXT_CMDHELP_EXIT
-Quits the FreeDOS command shell unless loaded with /P.
+FreeDOSコマンドシェルを終了します unless loaded with /P.
 
 EXIT
 .
 
 :TEXT_CMDHELP_FOR
-Runs a specified command for each file in a set of files.
+指定されたコマンドをファイルセットの各ファイルに実行します.
 
 FOR %variable IN (set) DO command [command-parameters]
 
-  %variable  Specifies a replaceable parameter.
-  (set)      Specifies a set of one or more files.  Wildcards may be used.
-  command    Specifies the command to carry out for each file.
-  command-parameters
-             Specifies parameters or switches for the specified command.
+  %variable           置き換えられるパラメータを指定します.
+  (set)               ひとつ以上のファイルセット. ワイルドカードも使えます.
+  command             それぞれのファイルに対して実行すべきコマンド.
+  command-parameters  コマンドに必要なパラメータやスイッチ.
 
-To use the FOR command in a batch program, specify %%variable instead of
-%variable.
+バッチファイルでFOR文を使用するときは, %variableのかわりに%%variableを
+使用します.
 
 For example:
   FOR %f IN (---start--- a*.* ---end---) DO ECHO - %f -
 .
 
 :TEXT_CMDHELP_GOTO
-Directs the command shell to a labelled line in a batch program.
+バッチファイル内で, ラベルで指定された行へ処理を移します.
 
 GOTO label
 
-  label   Specifies a text string used in the batch program as a label.
+  label   バッチファイル内にあるラベルを指定します.
 
-You type a label on a line by itself, beginning with a colon.
+ラベルはコロン":"で始まる文字列です.
 .
 
 :TEXT_CMDHELP_HISTORY#1
-History command.
+ヒストリバッファを表示, 変更します.
 
 HISTORY [size]
 
-Without "size" the current contents of the command line history
-buffer is displayed.
-With the size, the size of the history buffer is changed.
+"size"を指定しなければ現在のコマンドラインヒストリバッファが表示されます.
+サイズを指定すると, ヒストリバッファのサイズが変更されます.
 .
 
 :TEXT_CMDHELP_IF
-Performs conditional processing in batch programs.
+バッチファイルで条件判定を行います.
 
 IF [NOT] ERRORLEVEL number command
 IF [NOT] string1==string2 command
 IF [NOT] EXIST filename command
 
-  NOT               Specifies that the command shell should carry out the
-                    command only if the condition is false.
-  ERRORLEVEL number Specifies a true condition if the last program run
-                    returned an exit code equal to or greater than the
-                    number specified.
-  command           Specifies the command to carry out if the condition is
-                    met.
-  string1==string2  Specifies a true condition if the specified text
-                    strings match.
-  EXIST filename    Specifies a true condition if the specified filename
-                    exists.
+  NOT               条件が成り立たないときにのみコマンドを実行します.
+  ERRORLEVEL number 最後に実行されたプログラムの終了コードが指定された数
+                    かそれ以上であれば, コマンドを実行します.
+  command           条件が成立した際に実行するコマンド.
+  string1==string2  文字列が一致した場合にコマンドを実行します.
+  EXIST filename    ファイル名で指定されたファイルが存在すれば, コマンド
+                    を実行します.
 .
 
 :TEXT_CMDHELP_LFNFOR
@@ -1232,151 +1232,148 @@ LFNFOR setting.
 .
 
 :TEXT_CMDHELP_LH
-Loads a program into the upper memory area.
+ハイメモリ空間にプログラムを読み込み, 実行します.
 
 LOADHIGH [drive:][path]filename [parameters]
 LOADHIGH [/L:region1[,minsize1][;region2[,minsize2]...] [/S]]
          [drive:][path]filename [parameters]
 
 /L:region1[,minsize1][;region2[,minsize2]]...
-            Specifies the region(s) of memory into which to load the
-            program.  Region1 specifies the number of the first memory
-            region; minsize1 specifies the minimum size, if any, for
-            region1.  Region2 and minsize2 specify the number and minimum
-            size of the second region, if any.  You can specify as many
-            regions as you want.
+        region1には最初の記憶領域候補の番号を指定します. region1の最小
+        空きメモリ容量はminsize1に指定します. region2, minsize2には同じく
+        次に候補となる記憶領域の番号と最小空きメモリ容量を指定します.
+        候補はいくつでも指定することができます.
 
-/S          Shrinks a UMB to its minimum size while the program is
-            loading.
+/S      プログラムをロードしている間, UMBの空き容量を指定された最小空き
+        容量に見せかけます.
 
 [drive:][path]filename
-            Specifies the location and name of the program.
+        プログラムの場所と名前を指定します.
 .
 
 :TEXT_CMDHELP_LOADFIX
-Loads a program above the first 64K of memory, and runs the program.
+プログラムをメモリの先頭64Kに読み込んで, 実行します.
 
 LOADFIX [drive:][path]filename
 
-Use LOADFIX to load a program if you have received the message "Packed
-file corrupt" when trying to load it in low memory.
+もし, 低位メモリにロードしようとして「パックされたファイルが不正です」
+というメッセージを返されたら, LOADFIXを使用してください.
 .
 
 :TEXT_CMDHELP_MD
-Creates a directory.
+ディレクトリを作成します.
 
 MKDIR [drive:]path
 MD [drive:]path
 .
 
 :TEXT_CMDHELP_PATH
-Displays or sets a search path for executable files.
+実行ファイルの検索パスを表示, 設定します.
 
 PATH [[drive:]path[;...]]
 PATH ;
 
-Type PATH ; to clear all search-path settings and direct the command shell
-to search only in the current directory.
-Type PATH without parameters to display the current path.
+PATH ; を実行するとカレントディレクトリ以外のパス設定をクリアします.
+
+パラメータを指定しなければ, 現在のパス設定を表示します.
 .
 
 :TEXT_CMDHELP_PAUSE
-Suspends processing of a batch program and displays the message:
-"Press any key to continue...." or an optional specified message.
+バッチファイルのプロセスを停止し「継続する場合は, 何かキーを押してください」
+というメッセージもしくは指定されたメッセージを表示します.
 
 PAUSE [message]
 .
 
 :TEXT_CMDHELP_PROMPT
-Changes the command prompt.
+コマンドプロンプトを変更します.
 
 PROMPT [text]
 
-  text    Specifies a new command prompt.
+  text    コマンドプロンプトを指定します.
 
-Prompt can be made up of normal characters and the following special
-codes:
+プロンプトは通常の文字と, 以下に示す特殊コードで構成されます.
 
-  $Q   = (equal sign)
-  $$   $ (dollar sign)
-  $T   Current time
-  $D   Current date
-  $P   Current drive and path
-  $V   the FreeDOS command shell version number
-  $N   Current drive
-  $G   > (greater-than sign)
-  $L   < (less-than sign)
-  $B   | (pipe)
-  $H   Backspace (erases previous character)
-  $E   Escape code (ASCII code 27)
-  $_   Carriage return and linefeed
+  $Q   = (等号)
+  $$   $ (ドル記号)
+  $T   現在の時刻
+  $D   現在の日付
+  $P   現在のドライブとディレクトリ
+  $V   FreeDOSコマンドシェルのバージョン番号
+  $N   現在のドライブ
+  $G   > (不等号：大なり)
+  $L   < (不等号：小なり)
+  $B   | (パイプ記号)
+  $H   バックスペース (直前の一文字削除)
+  $E   エスケープコード (ASCIIコード 27)
+  $_   改行
 
-Type PROMPT without parameters to reset the prompt to the default setting.
+パラメータを指定しなければ, 初期状態へ戻します.
 .
 
 :TEXT_CMDHELP_PUSHD
-Pushes current directory onto the directory stack, with the option to
-change current working directory.
+現在のディレクトリをディレクトリスタックへ格納し, 指定されたディレクトリ
+に移動します.
 
 PUSHD [[drive:]path]
-  Where [drive:]path is a path to which you wish to change.
+  移動先を[[drive:]path]に指定します.
 .
 
 :TEXT_CMDHELP_POPD
-Pops a directory off of the directory stack, and changes to it.
+ディレクトリスタックからディレクトリを取得し, そちらに移動します.
 
 POPD [*]
-  The '*' parameter clears the directory stack.
+  '*'を指定すると, ディレクトリスタックをクリアします.
 .
 
 :TEXT_CMDHELP_DIRS
-Displays the contents of the directory stack.
+ディレクトリスタックの内容を表示します.
 
 DIRS
 .
 
 :TEXT_CMDHELP_RD
-Removes (deletes) an empty directory.
+ディレクトリを削除します.
 
 RMDIR [drive:]path
 RD [drive:]path
 .
 
 :TEXT_CMDHELP_REM
-Records comments (remarks) in a batch file or CONFIG.SYS.
+バッチファイルやCONFIG.SYSにおいて, コメント行であることを示します.
 
 REM [comment]
 .
 
 :TEXT_CMDHELP_REN
-Renames a file/directory or files/directories.
+ファイル(複数可)またはディレクトリの名前を変更します.
 
 RENAME [drive:][path][directoryname1 | filename1] [directoryname2 | filename2]
 REN [drive:][path][directoryname1 | filename1] [directoryname2 | filename2]
 
-Note that you cannot specify a new drive or path for your destination. Use
-the MOVE command for that purpose.
+変更先にドライブやディレクトリは指定できません.
+その場合はMOVEコマンドを使用します.
 .
 
 :TEXT_CMDHELP_SET#1
-Displays, sets, or removes environment variables.
+環境変数を表示, 設定, または削除します.
 
 SET [/C] [/P] [/E] [/U] [variable[=[string]]]
 
-  variable  Specifies the environment-variable name.
-  string    Specifies a series of characters to assign to the variable.
+  variable  環境変数名.
+  string    環境変数に割り付ける値.
 
-* If no string is specified, the variable is removed from the environment.
+* もし値が指定されなければ, 指定された環境変数を削除します.
 
-Type SET without parameters to display the current environment variables.
+パラメータを指定しない場合, 現在の環境変数とその値を表示します.
 
 Type SET VAR to display the value of VAR
 
-/C forces to keep the case of the variable; by default the variable is
-uppercased, if it is not located in the environment already, otherwise
-the case is retained.
+/C は変数の文字の大小を変えないように指定します. 要するに, すでに環境変数
+として登録されていなければ, 変数はデフォルトで大文字に変換されます. そうで
+ない場合は, 文字の大小は変わりません.
 
-/P prompt the user with string, and assigns the user input to the variable.
+/P プロンプトに文字列を示し、入力された値を変数に設定します.
 
 /E sets the given variable to the first line of output of the command
 pointed to by [string].
@@ -1385,138 +1382,137 @@ pointed to by [string].
 .
 
 :TEXT_CMDHELP_SHIFT#1
-Changes the position of replaceable parameters in a batch file.
+バッチファイル内で, 変数の順番をシフトします.
 
 SHIFT [DOWN]
 
-DOWN shifts the argument window toward the beginning (%0); otherwise
-toward the end.
+DOWNを指定すると番号の小さいほう(%0)にシフトします.
+指定しなければ番号の大きいほうにシフトします.
 .
 
 :TEXT_CMDHELP_TIME#1
-Displays or sets the system time.
+システムの時間を表示, 設定します.
 
 TIME [/T] [time]
 
-Type TIME with no parameters to display the current time setting and a
-prompt for a new one.  Press ENTER to keep the same time.
+パラメータを指定しなければ, 現在の時刻と, 設定用のプロンプトを表示します.
+時刻を変更しない場合は, そのままENTERを押してください.
 
-/T prevents TIME from becoming interactive.
+  /T  設定用のプロンプトを表示しません.
 .
 
 :TEXT_CMDHELP_TRUENAME
-Displays the full path name of the path specified.
+指定されたパスのフルパスを表示します.
 
 TRUENAME [drive:][path][filename]
 .
 
 :TEXT_CMDHELP_TYPE
-Displays the contents of text files.
+指定されたテキストファイルを表示します.
 
 TYPE [drive:][path]filename
 .
 
 :TEXT_CMDHELP_VER
-Displays the FreeDOS command shell version and other information.
+FreeDOSコマンドシェルのバージョンやそれ以外の情報を表示します.
 
 VER [/R] [/W] [/D] [/C]
 
- /R         Shows kernel version and other information.
- /W         FreeDOS command shell warranty.
- /D         FreeDOS command shell redistribution information.
- /C         FreeDOS command shell contributors.
+ /R         カーネルバージョンやそれ以外の情報を表示します.
+ /W         FreeDOS コマンドシェルの免責    〃
+ /D         FreeDOS コマンドシェルの再配布  〃
+ /C         FreeDOS コマンドシェルの製作者  〃
 .
 
 :TEXT_CMDHELP_VERIFY
-Tells the FreeDOS file system whether to verify that your files are
-written correctly to a disk.
+FreeDOSのファイルシステムがファイルをディスクに書き込む際に, ベリファイを
+行うかどうかを指定します.
 
 VERIFY [ON | OFF]
 
-Type VERIFY without a parameter to display the current VERIFY setting.
+パラメータを指定しなければ, 現在のVERIFYの設定を表示します.
 .
 
 :TEXT_CMDHELP_FDDEBUG
-If debugging is compiled into FreeDOS, this command will turn debug
-output on or off, or tell you if it is on or off.
+FreeDOSをコンパイルしてデバッグする場合は, このコマンドでデバッグの出力を
+するかしないか指定してください.
 
 FDDEBUG [ON | OFF | file]
 
-Type FDDEBUG without a parameter to display the current debug output
-setting.
-If a file is specified, all debug output is redirected into that file;
-the output is appended to the file, if it already exists. The special
-names "stdout" and "stderr" may be used to redirect the output
-to the standard output or standard error stream.
+パラメータを指定しなければ, 現在のFDDBUGの設定を表示します.
+もしファイルを指定すれば, そのファイルにデバッグ情報が出力されます.
+ファイルがすでに存在する場合は, そのファイルにデバッグ情報が追加されます.
+また, stdoutかstderrに指定された場合は, 標準出力か標準エラー出力に
+デバッグ情報が出力されます.
 .
 
 :TEXT_CMDHELP_VOL
-Displays the disk volume label and serial number, if they exist.
+ディスクのシリアル番号と, (指定されていれば)ボリュームラベルを表示します.
 
 VOL [drive:]
 .
 
 :TEXT_CMDHELP_QUESTION#1
-Displays a list of commands and features available with in the shell.
+シェルの全コマンドと利用可能な機能の一覧を表示します.
 
 ?
 ?command [argument]
 
-The first variant displays any available internal command and feature.
-The second one will prompt whether or not to execute the specified
-command as if trace mode would be active.
+上のものは, 使用できる内部コマンドの一覧を表示します.
+下のものは, トレースモードがアクティブであってもなくても, 指定されたコマンドを
+実行するかどうかを確認するプロンプトを表示します.
+
 .
 
 :TEXT_CMDHELP_WHICH
-Searches and displays the executable file for each specified command.
+指定されたコマンドの実行可能ファイルがどこにあるかを調べます.
 
 WHICH command...
 .
 
 :TEXT_CMDHELP_MEMORY#1
-Displays the internal memory used by FreeCOM internally.
+FreeCOMの内部メモリの状況を表示します.
 
 MEMORY
 
 .
 
 :TEXT_ERROR_COPY_PLUS_DESTINATION#1
-The COPY destination must not contain plus ('+') characters.
+コピー先にプラス記号('+')を含んではいけません.
 .
 
 :TEXT_DELETE_FILE#1%
-Deleting file "%s".
+削除しています. - "%s%
 .
 
 :TEXT_ERROR_WRITE_FILE_DISC_FULL#0%
-Unable to write to file '%s';
-probably disc full? (%lu bytes required)
+ファイル '%s' が書き込めません.
+ディスクは十分に空いていますか? (%lu バイト以上が必要です)
 .
 
 # Displayed for BIGcopy(), when copying takes quite a long time.
 # **_NO_END if the input file size is unknown.
 # Both must end in \r rather than \n!!
 :TEXT_COPY_COPIED_NO_END#0%
-copied %luKB/???KB\r\
+複写中 %luKB/???KB\r\
 .
 :TEXT_COPY_COPIED#0%
-copied %luKB/%luKB\r\
+複写中 %luKB/%luKB\r\
 .
 
 :TEXT_ERROR_FCOM_IS_DEVICE#0%
-FreeCOM cannot be a device: "%s"
+FreeCOMの扱える装置ではありません. : "%s"
 .
 :TEXT_ERROR_FCOM_INVALID#0%
-This file is no valid FreeCOM or of an incompatible version:
+このファイルは有効なFreeCOMでないか、あるいは非互換性のあるバージョンです.
 %s
 .
 
 :TEXT_ERROR_LOADING_STRINGS
-Failed to load the strings resource into memory, the location
-pointed to in %COMSPEC% seems to be invalid. Please specify another
-location of FreeCOM to try to load the strings from, e.g.:
+文字列リソースをメモリに読み込めませんでした,%COMSPEC%で示されている場所は無効
+であると思われます.文字列を読み込むFreeCOMの別の場所を指定して下さい.例:
 C:\\COMMAND.COM
-or just hit enter to cancel to load the strings.
+または、文字列の読み込みを取り消す為にenterのみを入力して下さい.
 .
 
 :TEXT_TERMINATING
