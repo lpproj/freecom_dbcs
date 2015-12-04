@@ -165,7 +165,11 @@ ok:
 	statString = getString(deviceIn
 		? TEXT_COPY_COPIED_NO_END
 		: TEXT_COPY_COPIED);
+#if defined(IBMPC)
 	startTime = *(unsigned far *)MK_FP(0x40,0x6c);
+#else
+	startTime = 0;
+#endif
 
 	ctrlz = 0;
 	while((rd = farread(fdin, buffer, size)) != 0) {
@@ -188,7 +192,11 @@ ok:
 						/* statistics */
 		copied += rd;	
 			
+#if defined(IBMPC)
 		now = *(unsigned far *)MK_FP(0x40,0x6c);
+#else
+		now = 0;
+#endif
 		
 		if(!doStat
 		 && now - startTime > 15 * 18
