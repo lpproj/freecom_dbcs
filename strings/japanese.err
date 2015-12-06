@@ -4,7 +4,7 @@
 #
 #	Language: Japanese
 #	Codepage: 932
-#	Author:   akm
+#	Author:   akm, lpproj
 # 
 # The critical error (criter) handler receives some information
 # from the kernel about what error condition happens, generates some
@@ -81,7 +81,7 @@ FAT: FAT
 S6
 ROOT: ルート
 S7
-DATA: data
+DATA: データ
 
 ## action strings
 S8
@@ -108,10 +108,10 @@ DELIMITER: , %.
 UNKNOWN: 無効なエラーコード
 S15
 0: 書き込み保護違反です
-1: 無効なドライバユニットです
+1: 無効なユニット番号です
 2: ドライブの準備ができていません
 3: 無効なコマンドがドライバに渡されました
-4: エータエラーです(無効なCRC)
+4: データエラーです(無効なCRC)
 5: 無効なデバイスドライバ要求です
 6: シークエラーです
 7: 無効なメディアの種類です
