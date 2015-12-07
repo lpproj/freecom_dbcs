@@ -14,8 +14,6 @@
 #include "../include/keys.h"
 #include "../include/misc.h"
 
-static unsigned orgx, orgy;		/* start of current line */
-
 #if defined(NEC98)
 unsigned mywherex (void) {
     return 1U + *(unsigned char far *)MK_FP(0x60, 0x11c);
@@ -37,6 +35,26 @@ unsigned mywherey (void) {
     return _scr_pos_array [_scr_page].row + 1;
 }
 #endif
+
+
+/* Print string to current cursor position
+	Updates cursor position
+ */
+void outs(const char * const s)
+{	assert(s);
+	printf("%s", s);
+}
+
+/* Print a character to current cursor position
+	Updates cursor postion
+ */
+void outc(char c)
+{
+	if (c == '\n') dos_write(1, "\r\n", 2); else dos_write(1, &c, 1);
+}
+
+
+#ifdef FEATURE_ENHANCED_INPUT
 
 /* set cursor state for insert/overwrite mode */
 #if defined(NEC98)
@@ -86,13 +104,6 @@ static int isworddelimiter(unsigned c)
 	return c == ' ' || c == '\t';
 }
 
-/* Print a character to current cursor position
-	Updates cursor postion
- */
-void outc(char c)
-{
-	if (c == '\n') dos_write(1, "\r\n", 2); else dos_write(1, &c, 1);
-}
 /* Print a blank to current cursor postion
 	Updates cursor position
  */
@@ -100,13 +111,6 @@ static void outblank(void)
 {	outc(' ');
 }
 
-/* Print string to current cursor position
-	Updates cursor position
- */
-void outs(const char * const s)
-{	assert(s);
-	printf("%s", s);
-}
 /* Print string to cursor position and append one blank
 	Updates cursor postion
  */
@@ -118,6 +122,7 @@ static void outsblank(const char * const s)
 /* read in a command line */
 void readcommandEnhanced(char * const str, const int maxlen)
 {
+	static unsigned orgx, orgy;		/* start of current line */
 	unsigned char insert = 1;
 	unsigned ch;
 #ifdef FEATURE_FILENAME_COMPLETION
@@ -429,3 +434,5 @@ void readcommandEnhanced(char * const str, const int maxlen)
 
 	setcursorstate(insert);
 }
+
+#endif /* defined FEATURE_ENHANCED_INPUT */

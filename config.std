@@ -28,6 +28,10 @@ NASMFLAGS =
 __XMS_SWAP = -DXMS_SWAP
 !endif
 
+!if $(NO_ENH_INP)0 == 10
+__ENH_INP = -DIGNORE_ENHANCED_INPUT
+!endif
+
 !if $(NEC98)0 == 10
 __TARGET = -DNEC98
 !else
@@ -52,7 +56,7 @@ $(CFG): $(CFG_DEPENDENCIES) ..\CONFIG.MAK
 	..\scripts\echoto $(CFG) $(CFLAGS1)
 	..\scripts\echoto $(CFG) $(INCLUDEPATH)
 	..\scripts\echoto $(CFG) -m$(SHELL_MMODEL) $(MMODEL)
-	..\scripts\echoto $(CFG) $(DEBUG) $(__XMS_SWAP)
+	..\scripts\echoto $(CFG) $(DEBUG) $(__XMS_SWAP) $(__ENH_INP)
 	..\scripts\echoto $(CFG) $(__TARGET) $(__DBCS)
 
 #		*Implicit Rules*
