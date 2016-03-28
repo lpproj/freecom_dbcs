@@ -57,7 +57,7 @@ typedef enum {
  #define MAX_Y (*(unsigned char far *)MK_FP(0x0060, 0x0112))
 #else
 #define MAX_X (*(unsigned int  far*)MK_FP(0x40, 0x4a))
-#define MAX_Y (*(unsigned char far*)MK_FP(0x40, 0x84))
+#define MAX_Y (*(unsigned char far*)MK_FP(0x40, 0x84) == 0 ? 25 : *(unsigned char far*)MK_FP(0x40, 0x84)) /* when 0040:0084 contains 0, assume 25 rows (CGA...) */
 #endif
 #define SCREEN_COLS MAX_X
 #define SCREEN_ROWS (MAX_Y + 1)
