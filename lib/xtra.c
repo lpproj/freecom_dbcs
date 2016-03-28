@@ -49,7 +49,8 @@ unsigned char nec98_inp_gdc(int port)
 	return inp(port);
 }
 
-void nec98_setcursorblink(int blink_rate)
+#if 0
+void nec98_setcursorblinkrate(int blink_rate)
 {
 	int show_cursor, do_blink;
 	unsigned char cursor_rows, top, bottom;
@@ -80,6 +81,7 @@ void nec98_setcursorblink(int blink_rate)
 	nec98_wait_gdc();
 	enable();
 }
+#endif
 
 /* roughly delay (ticked by VSYNC) */
 /*

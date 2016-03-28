@@ -61,9 +61,22 @@ void outc(char c)
 
 static void setcursorstate_nec98(int insert)
 {
+	IREGS r;
+
+	/* set cursor blink state (and hide cursor) */
+	r.r_ax = insert ? 0x1001 : 0x1000;
+	intrpt(0x18, &r);
+	if (*(unsigned char far *)MK_FP(0x60, 0x11b))
+	{
+		/* (re-)show cursor */
+		r.r_ax = 0x1100;
+		intrpt(0x18, &r);
+	}
+#if 0
 	extern void nec98_setcursorblink(int blink_rate);
 	nec98_setcursorblink(insert ? 0xff : 0x0d);
 	goxy(mywherex(), mywherey());
+#endif
 }
 
 # define setcursorstate setcursorstate_nec98
