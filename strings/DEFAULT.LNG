@@ -1546,3 +1546,8 @@ terminated by critical error\
 :TEXT_EXIT_REASON_3
 gone resident\
 .
+
+# (for prompt $P)
+:TEXT_MSG_CURRENT_DRIVE_NOT_VALID
+Current drive is not valid now\
+.

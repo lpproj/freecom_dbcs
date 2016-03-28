@@ -1555,3 +1555,8 @@ DOS API エラー\
 :TEXT_EXIT_REASON_3
 常駐終了\
 .
+
+# (for prompt $P)
+:TEXT_MSG_CURRENT_DRIVE_NOT_VALID
+現在の作業ドライブが有効でない状態です\
+.
