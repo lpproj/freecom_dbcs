@@ -171,6 +171,13 @@ Country *nlsInfo(void)
 void nlsWriteFallback(Country *nls)
 {
 	static char illchars[] = "\"+,./:;<=>[\\]|";
+#if defined(DBCS)
+# if defined(JAPANESE)
+	static unsigned char dbcstbl[] = { 0x81, 0x9f, 0xe0, 0xfc, 0, 0 };
+# else
+	static unsigned char dbcstbl[] = { 0, 0, 0, 0, 0, 0 };
+# endif
+#endif
 	
 	nls->country = 1;
 	nls->charset = 437;
@@ -199,6 +206,9 @@ void nlsWriteFallback(Country *nls)
 	nls->exclFirst = 0; nls->exclLast = 0x20;
 	nls->illegalLen = strlen(illchars);
 	nls->illegalChars = (char far *)illchars;
+#if defined(DBCS)
+	nls->dbcsTbl = (unsigned char far *)dbcstbl;
+#endif
 }
 
 Country *nlsNewInfo(void)
@@ -307,6 +317,15 @@ Country *nlsNewInfo(void)
 		cpybyte(exclLast, 7);
 		suppl_cntry.illegalLen= getbyte(9); 
 	}
+
+#if defined(DBCS)
+	r.r_ax = 0x6300;
+	r.r_ds = r.r_si = 0;
+	intrpt(0x21, &r);
+	if ( !(r.r_flags & 1) && r.r_ds && r.r_si ) {
+		suppl_cntry.dbcsTbl = MK_FP(r.r_ds, r.r_si);
+	}
+#endif
 
 	suppl_cntry.initialized = 1;
 
