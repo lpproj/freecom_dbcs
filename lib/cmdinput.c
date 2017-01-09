@@ -13,6 +13,9 @@
 #include "../include/command.h"
 #include "../include/keys.h"
 #include "../include/misc.h"
+#if defined(DBCS)
+#include "../suppl/nls_c.h"
+#endif
 
 #if defined(NEC98)
 unsigned mywherex (void) {
@@ -132,6 +135,56 @@ static void outsblank(const char * const s)
 	outblank();
 }
 
+#if defined(NEC98)
+struct skeystate {
+	unsigned keynum;
+	unsigned char newkey[6];
+	unsigned char oldkey[6];
+};
+static struct skeystate skeys[] = {
+	{ 0x19, { 0xff, 0x3a, 0 }, { 0 } },	/* up */
+	{ 0x1a, { 0xff, 0x3b, 0 }, { 0 } },	/* left */
+	{ 0x1b, { 0xff, 0x3c, 0 }, { 0 } },	/* right */
+	{ 0x1c, { 0xff, 0x3d, 0 }, { 0 } },	/* down */
+	{ 0x1d, { 0xff, 0x3e, 0 }, { 0 } },	/* HOME CLR */
+	{ 0x1e, { 0xff, 0x3f, 0 }, { 0 } },	/* HELP */
+};
+
+void prepareSpecialKeys(void)
+{
+	IREGS r;
+	unsigned n;
+	for(n=0; n<sizeof(skeys)/sizeof(skeys[0]); ++n) {
+		r.r_ax = skeys[n].keynum;
+		if (r.r_ax >= 0x15 && r.r_ax <= 0x1f) {
+			r.r_cx = 0x0c;
+			r.r_ds = FP_SEG(&(skeys[n].oldkey[0]));
+			r.r_dx = FP_OFF(&(skeys[n].oldkey[0]));
+			intrpt(0xdc, &r);
+			r.r_cx = 0x0d;
+			r.r_ax = skeys[n].keynum;
+			r.r_ds = FP_SEG(&(skeys[n].newkey[0]));
+			r.r_dx = FP_OFF(&(skeys[n].newkey[0]));
+			intrpt(0xdc, &r);
+		}
+	}
+}
+void restoreSpecialKeys(void)
+{
+	IREGS r;
+	unsigned n;
+	for(n=0; n<sizeof(skeys)/sizeof(skeys[0]); ++n) {
+		r.r_ax = skeys[n].keynum;
+		if (r.r_ax >= 0x15 && r.r_ax <= 0x1f) {
+			r.r_cx = 0x0d;
+			r.r_ds = FP_SEG(&(skeys[n].oldkey[0]));
+			r.r_dx = FP_OFF(&(skeys[n].oldkey[0]));
+			intrpt(0xdc, &r);
+		}
+	}
+}
+#endif
+
 /* read in a command line */
 void readcommandEnhanced(char * const str, const int maxlen)
 {
@@ -166,6 +219,9 @@ void readcommandEnhanced(char * const str, const int maxlen)
 
 #ifdef FEATURE_HISTORY
 	histGet(histLevel - 1, prvLine, sizeof(prvLine));
+#endif
+#if defined(NEC98)
+	prepareSpecialKeys();
 #endif
 
 	do {
@@ -445,6 +501,9 @@ void readcommandEnhanced(char * const str, const int maxlen)
 #endif
 	} while(ch != KEY_ENTER);
 
+#if defined(NEC98)
+	restoreSpecialKeys();
+#endif
 	setcursorstate(insert);
 }
 

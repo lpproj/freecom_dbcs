@@ -71,10 +71,13 @@ static int key_to_scan(int k)
 		{ 0x1b50, KEY_INS /* KEY_F8 */ },
 		{ 0x1b51, KEY_F9 },
 		{ 0x1b5a, KEY_F10 },
-		{ 0x000b, KEY_UP },
-		{ 0x000a, KEY_DOWN },
+		{ 0xff3a, KEY_UP },
+		{ 0xff3d, KEY_DOWN },
+		{ 0xff3b, KEY_LEFT },
+		{ 0xff3c, KEY_RIGHT },
 		{ 0x1b44, KEY_DEL },
-		{ 0x001a, KEY_HOME },
+		{ 0xff3e, KEY_HOME },
+		{ 0xff3f, KEY_END },
 		{ 0, 0 }
 	};
 	int n = 0;
@@ -101,31 +104,29 @@ static int mykbhit_and_getch(IREGS *r)
 int cgetchar(void)
 {
 	IREGS r;
-	int c = 0;
+	int c = 0, c2, doskbhit;
 	
 	do {
-		int doskbhit = mykbhit_and_getch(&r);
+		doskbhit = mykbhit_and_getch(&r);
 		if (doskbhit) {
 			c = doskbhit & 0xff;
 			switch(c) {
 			case 0x1b:	/* ESC (and prefix for extra key) */
-				if (!kb_ky_sts(0, 0x01)) {
-					/* if not real ESC key was pressed, get next stroke */
-					c = mykbhit_and_getch(&r);
-					c = c ? (0x1b00 | (c & 0xff)) : 0x001b;
+				if (kb_ky_sts(0, 0x01)) break;
+				/* if not real ESC key was pressed, get next stroke */
+				/* fall-through */
+			case 0xff:	/* internal use for extra key */
+				c2 = mykbhit_and_getch(&r);
+				if (c2) {
+					c = (c << 8) | (c2 & 0xff);
 				}
-				break;
-			case 0x08:	/* LEFT (and BackSpace) */
-				if (kb_ky_sts(7, 0x08))
-					c = isCtrlPressed ? KEY_CTRL_LEFT : KEY_LEFT;
-				break;
-			case 0x0c:	/* RIGHT */
-				if (kb_ky_sts(7, 0x10))
-					c = isCtrlPressed ? KEY_CTRL_RIGHT : KEY_RIGHT;
 				break;
 			}
 			c = key_to_scan(c);
-			if (c) break;
+			if (isCtrlPressed) {
+				if (c == KEY_LEFT) c = KEY_CTRL_LEFT;
+				else if (c == KEY_RIGHT) c = KEY_CTRL_RIGHT;
+			}
 			break;
 		}
 		/* intrpt(0x28, &r); */
@@ -135,7 +136,7 @@ int cgetchar(void)
 }
 
 
-#else
+#else /* IBMPC */
 
 static int mygetch( void )
 {
