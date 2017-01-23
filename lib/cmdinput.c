@@ -40,6 +40,22 @@ unsigned mywherey (void) {
 #endif
 
 
+#if defined(NEC98)
+void outc(char c)
+{
+	if (c == '\n') dos_write(1, "\r\n", 2);
+	else dos_write(1, &c, 1);
+	if (mywherex() > MAX_X) {
+	  dos_write(1, "\b\r\n", 3);	/* NEC98: force break */
+	}
+}
+void outs(const char * const s)
+{
+	const char *s1 = (const char *)s;
+	assert(s);
+	while(*s) outc(*s++);
+}
+#else
 /* Print string to current cursor position
 	Updates cursor position
  */
@@ -55,7 +71,7 @@ void outc(char c)
 {
 	if (c == '\n') dos_write(1, "\r\n", 2); else dos_write(1, &c, 1);
 }
-
+#endif
 
 #ifdef FEATURE_ENHANCED_INPUT
 
@@ -185,6 +201,32 @@ void restoreSpecialKeys(void)
 }
 #endif
 
+static int outs_xyfix(const char * const str, unsigned *ox, unsigned *oy)
+{
+	unsigned max_c = (unsigned)MAX_Y * MAX_X;
+	unsigned where_c = (unsigned)(wherey()-1) * MAX_X + (wherex()-1);
+	unsigned len = strlen(str);
+	int feed = 0;
+	
+	outs(str);
+	where_c += len;
+	if (where_c >= max_c) {
+	  feed = (where_c - max_c) / MAX_X + 1;
+	  *oy -= feed;
+	}
+	return feed;
+}
+
+static void clrcmdline_oxy(char * const str, const int maxlen, unsigned ox, unsigned oy)
+{
+	unsigned len = strlen(str);
+	goxy(ox, oy);
+	while(len-- > 0) outc(' ');
+	goxy(ox, oy);
+	memset(str, 0, maxlen);
+}
+#define clrcmdline(s,m,ox,oy,cpos)	clrcmdline_oxy(s,m,ox,oy)
+
 /* read in a command line */
 void readcommandEnhanced(char * const str, const int maxlen)
 {
@@ -310,9 +352,7 @@ void readcommandEnhanced(char * const str, const int maxlen)
 				current = charcount;
 
 				goxy(orgx, orgy);
-				outs(str);
-				if ((strlen(str) > (MAX_X - orgx)) && (orgy == MAX_Y + 1))
-				  orgy--;
+				outs_xyfix(str, &orgx, &orgy);
 			  } else {                 /* if second TAB, list matches */
 				if (show_completion_matches(str, charcount))
 				{
@@ -341,7 +381,7 @@ void readcommandEnhanced(char * const str, const int maxlen)
 		case KEY_CTL_C:       		/* ^C */
 		case KEY_ESC:              /* clear str  Make this callable! */
 
-			clrcmdline(str, maxlen);
+			clrcmdline(str, maxlen, orgx, orgy, current);
 			current = charcount = 0;
 
 			if(ch == KEY_CTL_C && !echo) {
@@ -388,27 +428,27 @@ void readcommandEnhanced(char * const str, const int maxlen)
 			if(!histGet(--histLevel, prvLine, sizeof(prvLine)))
 				++histLevel;		/* failed -> keep current command line */
 			else {
-				clrcmdline(str, maxlen);
+				clrcmdline(str, maxlen, orgx, orgy, current);
 				strcpy(str, prvLine);
 				current = charcount = strlen(str);
-				outs(str);
+				outs_xyfix(str, &orgx, &orgy); // outs(str);
 				histGet(histLevel - 1, prvLine, sizeof(prvLine));
 			}
 			break;
 
 		case KEY_DOWN:             /* get next command from buffer */
 			if(histLevel) {
-				clrcmdline(str, maxlen);
+				clrcmdline(str, maxlen, orgx, orgy, current);
 				strcpy(prvLine, str);
 				histGet(++histLevel, str, maxlen);
 				current = charcount = strlen(str);
-				outs(str);
+				outs_xyfix(str, &orgx, &orgy); // outs(str);
 			}
 			break;
 
 		case KEY_F5: /* keep cmdline in F3/UP buffer and move to next line */
 			strcpy(prvLine, str);
-			clrcmdline(str, maxlen);
+			clrcmdline(str, maxlen, orgx, orgy, current);
 			outc('@');
 			if(orgy >= MAX_Y) {
 				outc('\n');			/* Force scroll */
@@ -474,11 +514,14 @@ void readcommandEnhanced(char * const str, const int maxlen)
 				for (count = charcount; count > current; count--)
 				  str[count] = str[count - 1];
 				str[current++] = ch;
-				curx = wherex() + 1;
+				curx = wherex();
 				cury = wherey();
-				outs(&str[current - 1]);
-				if ((strlen(str) > (MAX_X - orgx)) && (orgy == MAX_Y + 1))
-				  cury--;
+				cury -= outs_xyfix(&str[current - 1], &orgx, &orgy);
+				++curx;
+				if (curx > MAX_X) {
+				  curx = 1;
+				  ++cury;
+				}
 				goxy(curx, cury);
 				charcount++;
 			  }
@@ -487,10 +530,13 @@ void readcommandEnhanced(char * const str, const int maxlen)
 				if (current == charcount)
 				  charcount++;
 				str[current++] = ch;
+				curx = wherex();
+				cury = wherey();
 				outc(ch);
+				if (wherex() < curx && wherey() == cury) {
+				  orgy--;
+				}
 			  }
-			  if ((strlen(str) > (MAX_X - orgx)) && (orgy == MAX_Y + 1))
-				orgy--;
 			}
 			else
 			  beep();
