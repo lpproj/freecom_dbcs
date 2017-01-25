@@ -30,6 +30,8 @@ if "%1"=="tc"       goto special
 if "%1"=="tcpp"     goto special
 if "%1"=="bc"       goto special
 if "%1"=="nec98"    goto special
+if "%1"=="ibmpc"    goto special
+if "%1"=="generic"    goto special
 if "%1"=="dbcs"     goto special
 if "%1"=="no-enh"     goto special
 goto run
@@ -42,6 +44,8 @@ if "%1"=="tc"       set COMPILER=TC2
 if "%1"=="tcpp"     set COMPILER=TURBOCPP
 if "%1"=="bc"       set COMPILER=BC5
 if "%1"=="nec98"    set NEC98=1
+if "%1"=="ibmpc"    set IBMPC=1
+if "%1"=="generic"  set GENDOS=1
 if "%1"=="dbcs"     set DBCS=1
 if "%1"=="no-enh"   set NO_ENH_INP=1
 shift
@@ -56,6 +60,8 @@ echo -r: Rebuild -- Clean before proceed
 echo clean: Remove *.OBJ, *.COM, *.LIB, etc. files, then exit
 echo xms-swap: Build FreeCOM with XMS-Only Swap support
 echo debug: Build FreeCOM with debug settings.
+echo generic: Build DOS generic version of FreeCOM.
+echo ibmpc: Build FreeCOM for IBM PC series.
 echo nec98: Build FreeCOM for NEC PC-9801 series.
 echo dbcs: Build FreeCOM with double-byted characters support.
 echo no-enh: Disable enhanced line input (history and filename completion).
@@ -66,6 +72,11 @@ echo selects the German language. For available language see STRINGS\*.LNG
 goto ende
 
 :run
+if not "%GENDOS%" == "1" goto run2
+set NEC98=
+set IBMPC=
+set NO_ENH_INP=1
+:run2
 if not x%1==x set LNG=%1
 if "%lng%"=="" set LNG=english
 echo Building FreeCOM for language %LNG%

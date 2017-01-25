@@ -82,8 +82,17 @@ char *tmpfn(void)
     geninterrupt(0x21);
 #if defined(NEC98)
     buf[0] = _CFLAG ? 'A' : _DL + 'A' - 1;
-#else
+#elif defined(IBMPC)
     buf[0] = _CFLAG ? 'C' : _DL + 'A' - 1;
+#else
+    if (_CFLAG) {
+      buf[0] = '\\';
+      buf[1] = '\0';
+    } else {
+      buf[0] = _DL + 'A' - 1;
+      buf[1] = ':';
+      buf[2] = '\\';
+    }
 #endif
     fn = probefn(buf);          /* If fn is NULL still, no temporary
                                    file can be created */

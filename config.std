@@ -34,7 +34,8 @@ __ENH_INP = -DIGNORE_ENHANCED_INPUT
 
 !if $(NEC98)0 == 10
 __TARGET = -DNEC98
-!else
+!endif
+!if $(IBMPC)0 == 10
 __TARGET = -DIBMPC
 !endif
 

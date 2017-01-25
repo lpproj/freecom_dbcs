@@ -52,9 +52,9 @@
 
 #include "../include/misc.h"
 
+#if defined(NEC98)
 void goxy(const unsigned char x, const unsigned char y)
 {
-#if defined(NEC98)
 	static char s[] = "\x1b" "[" "01;01H";
 	if (x > 99) x = 99;
 	if (y > 99) y = 99;
@@ -63,7 +63,10 @@ void goxy(const unsigned char x, const unsigned char y)
 	s[5] = '0' + (x/10);
 	s[6] = '0' + (x%10);
 	cputs_int29(s);
-#else
+}
+#elif defined(IBMPC)
+void goxy(const unsigned char x, const unsigned char y)
+{
     USEREGS
     _AH = 0x0F;
     geninterrupt( 0x10 );
@@ -71,5 +74,6 @@ void goxy(const unsigned char x, const unsigned char y)
     _DH = ( y - 1 );
     _DL = ( x - 1 );
     geninterrupt( 0x10 );
-#endif
 }
+#endif
+

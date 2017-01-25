@@ -151,8 +151,11 @@ static int mygetch( void )
 int cgetchar(void)
 {	int c;
 
-	if((c = getch()) == 0)
+	c = getch();
+#if defined(IBMPC)
+	if(c == 0)
 		c = SCANCODE(getch());		/* Scan code */
+#endif
 
 	if(c == KEY_CTL_C) {
 		ctrlBreak = 1;

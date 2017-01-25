@@ -50,7 +50,7 @@ const char shellver[] = "0.84-pre2"
 #elif defined(NEC98)
 	" (PC98)"
 #else
-	" (unknown platform)"
+	" (DOS generic)"
 #endif
 #ifdef FEATURE_XMS_SWAP
 	" XMS_Swap"
