@@ -1,5 +1,99 @@
 /* readcommandEnhanced for DBCS */
 
+#if !defined(DBCS)
+#define MbLen(s) (1)
+#define isDbcsLead(ch) (0)
+#endif
+
+unsigned curposToXY(const char * const str_top, unsigned curpos, unsigned *offset_x0, unsigned *offset_y0)
+{
+	unsigned x_max0 = MAX_X - 1;
+	unsigned x = offset_x0 ? *offset_x0 : 0, y = offset_y0 ? *offset_y0 : 0;
+	unsigned pos = 0, spccnt = 0;
+	unsigned n, nx;
+
+	while(str_top[pos]) {
+	  n = MbLen(&str_top[pos]);
+	  nx = x + n;
+	  if (nx > x_max0 + 1) { /* double-byte characher wraparound */
+	    spccnt += (x_max0 - x + 1);
+	    x = 0;
+	    nx = n;
+	    ++y;
+	  }
+	  if (pos >= curpos) break;
+	  if (nx > x_max0) {
+	    spccnt += (x_max0 - x + 1);
+	    x = 0;
+	    nx = n;
+	    ++y;
+	  } else {
+	    x = nx;
+	    spccnt += n;
+	  }
+	  pos += n;
+	}
+	if (offset_x0) *offset_x0 = x;
+	if (offset_y0) *offset_y0 = y;
+	
+	return spccnt;
+}
+unsigned curposCalc(const char *const str_top, unsigned curpos, unsigned orgx, unsigned orgy, int do_move)
+{
+	unsigned x = orgx - 1, y = orgy - 1;
+	unsigned rc;
+	
+	rc = curposToXY(str_top, curpos, &x, &y);
+	if (do_move) goxy(x+1, y+1);
+	return rc;
+}
+
+#define curposUpdate(s,p,x,y) curposCalc(s,p,x,y,1)
+
+unsigned curposNext(const char * const str_top, unsigned curpos)
+{
+	return curpos + MbLen(&str_top[curpos]);
+}
+
+unsigned curposPrev(const char *const str_top, unsigned curpos)
+{
+	unsigned pos = 0;
+	unsigned n;
+	
+	while(str_top[pos]) {
+		n = MbLen(&str_top[pos]);
+		if (pos + n >= curpos) break;
+		pos += n;
+	}
+	return pos;
+}
+
+unsigned eraseLine(const char * const str_top, unsigned posfrom, unsigned posto, unsigned orgx, unsigned orgy)
+{
+	unsigned rc;
+	unsigned cpfrom, cpto, count;
+
+	if (cpto == (unsigned)(-1)) cpto = strlen((const char *)str_top);
+	cpto = curposCalc(str_top, posto, orgx, orgy, 0);
+	cpfrom = curposCalc(str_top, posfrom, orgx, orgy, 1);
+	
+	count = rc = cpfrom < cpto ? (cpto - cpfrom) : 0;
+	while(count--) outc(' ');
+	return rc;
+}
+
+
+static void clrcmdline_oxy_d(char * const str, const int maxlen, const unsigned charcount, unsigned orgx, unsigned orgy)
+{
+	eraseLine(str, 0, charcount, orgx, orgy);
+	goxy(orgx, orgy);
+	memset(str, 0, maxlen);
+}
+
+#undef clrcmdline
+#define clrcmdline(s,m,cc,ox,oy,cpos)	clrcmdline_oxy_d(s,m,cc,ox,oy)
+
+
 void readcommandEnhanced(char * const str, const int maxlen)
 {
 	static unsigned orgx, orgy;		/* start of current line */
@@ -17,6 +111,8 @@ void readcommandEnhanced(char * const str, const int maxlen)
 	int count;
 	unsigned current = 0;
 	unsigned charcount = 0;
+	unsigned leadch = 0;
+	unsigned prev, clen;
 
 	assert(str);
 	assert(maxlen <= MAX_INTERNAL_COMMAND_SIZE);
@@ -39,41 +135,36 @@ void readcommandEnhanced(char * const str, const int maxlen)
 #endif
 
 	do {
+		cury = wherey();
 		ch = cgetchar();
+		if (cury > wherey())
+		  orgy -= cury - wherey(); /* workaround for scroll-up by some FEP(IME)s */
 
 		if(cbreak)
 			ch = KEY_CTL_C;
+
+		if (leadch == 0 && ch >= 0x20 && ch <= 0xff && isDbcsLead((unsigned char)ch)) {
+		  leadch = ch;
+		  continue;
+		}
 
 		switch(ch) {
 		case KEY_BS:               /* delete character to left of cursor */
 
 			if(current > 0 && charcount > 0) {
-			  if(current == charcount) {     /* if at end of line */
-				str[current - 1] = 0;
-				if (wherex() != 1)
-				  outs("\b \b");
-				else
-				{
-				  goxy(MAX_X, wherey() - 1);
-				  outblank();
-				  goxy(MAX_X, wherey() - 1);
-				}
+			  prev = curposPrev(str, current);
+			  clen = current - prev;
+			  eraseLine(str, prev, charcount, orgx, orgy);
+			  if (clen > 0) {
+			    for(count = prev; count <= (charcount - clen); ++count)
+			      str[count] = str[count + clen];
+			    str[count] = '\0';
+			    curposUpdate(str, prev, orgx, orgy);
+			    outs(&str[prev]);
+			    current = prev;
+			    charcount -= clen;
+			    curposUpdate(str, current, orgx, orgy);
 			  }
-			  else
-			  {
-				for (count = current - 1; count < charcount; count++)
-				  str[count] = str[count + 1];
-				if (wherex() != 1)
-				  goxy(wherex() - 1, wherey());
-				else
-				  goxy(MAX_X, wherey() - 1);
-				curx = wherex();
-				cury = wherey();
-				outsblank(&str[current - 1]);
-				goxy(curx, cury);
-			  }
-			  charcount--;
-			  current--;
 			}
 			break;
 
@@ -86,12 +177,16 @@ void readcommandEnhanced(char * const str, const int maxlen)
 
 			if (current != charcount && charcount > 0)
 			{
-			  for (count = current; count < charcount; count++)
-				str[count] = str[count + 1];
-			  charcount--;
+			  unsigned clen = MbLen(&str[current]);
+			  eraseLine(str, current, charcount, orgx, orgy);
+			  charcount = (charcount > clen) ? charcount - clen : 0;
+			  for (count = current; count <= charcount; count++)
+			    str[count] = str[count + clen];
+			  str[charcount] = '\0';
+			  curposUpdate(str, current, orgx, orgy);
 			  curx = wherex();
 			  cury = wherey();
-			  outsblank(&str[current]);
+			  outs(&str[current]);
 			  goxy(curx, cury);
 			}
 			break;
@@ -168,11 +263,8 @@ void readcommandEnhanced(char * const str, const int maxlen)
 
 			if (current != charcount)
 			{
-			  current++;
-			  if (wherex() == MAX_X)
-				goxy(1, wherey() + 1);
-			  else
-				goxy(wherex() + 1, wherey());
+			  current = curposNext(str, current);
+			  curposUpdate(str, current, orgx, orgy);
 				break;
 			}
 			/* cursor-right at end of string grabs the next character
@@ -184,8 +276,14 @@ void readcommandEnhanced(char * const str, const int maxlen)
 #else
 		case KEY_F1:       /* get character from last command buffer */
 			  if (current < strlen(prvLine)) {
+#if 1
+			    /* todo */
+			    beep();
+			    break;
+#else
 				 outc(str[current] = prvLine[current]);
 				 charcount = ++current;
+#endif
 			  }
 			  break;
 			  
@@ -237,85 +335,103 @@ void readcommandEnhanced(char * const str, const int maxlen)
 
 		case KEY_LEFT:             /* move cursor left */
 			if(current > 0) {
-			  current--;
-			  if (wherex() == 1)
-				goxy(MAX_X, wherey() - 1);
-			  else
-				goxy(wherex() - 1, wherey());
+			  current = curposPrev(str, current);
+			  curposUpdate(str, current, orgx, orgy);
 			}
 			break;
 
 #if defined(KEY_CTRL_LEFT)
 		case KEY_CTRL_LEFT:	/* move cursor left to begin of word */
 			while(current > 0) {
-			  current--;
-			  if (wherex() == 1)
-				goxy(MAX_X, wherey() - 1);
-			  else
-				goxy(wherex() - 1, wherey());
+			  current = curposPrev(str, current);
+			  if (current == 0) break;
 
 			  if(isworddelimiter(str[current-1])	/* ignore current == 0 */
 			   && !isworddelimiter(str[current]))
 			     break;
 			}
+			curposUpdate(str, current, orgx, orgy);
 			break;
 #endif
 
 #if defined(KEY_CTRL_RIGHT)
 		case KEY_CTRL_RIGHT:	/* move cursor right to begin of word */
 			while(current < charcount) {
-			  current++;
-			  if (wherex() == MAX_X)
-				goxy(1, wherey() + 1);
-			  else
-				goxy(wherex() + 1, wherey());
+			  current = curposNext(str, current);
 
 			  if(isworddelimiter(str[current-1])
 			   && !isworddelimiter(str[current]))
 			     break;
 			}
+			curposUpdate(str, current, orgx, orgy);
 			break;
 #endif
 
 		default:                 /* insert character into string... */
 
-			if ((ch >= 32 && ch <= 255) && (charcount != (maxlen - 2)))
-			{
-			  if (insert && current != charcount)
-			  {
-				for (count = charcount; count > current; count--)
-				  str[count] = str[count - 1];
-				str[current++] = ch;
-				curx = wherex();
-				cury = wherey();
-				cury -= outs_xyfix(&str[current - 1], &orgx, &orgy);
-				++curx;
-				if (curx > MAX_X) {
-				  curx = 1;
-				  ++cury;
-				}
-				goxy(curx, cury);
-				charcount++;
+			if (leadch && (ch < 0x20 || ch >= 0xfe)) {
+			  beep();
+			  break;
+			}
+			clen = leadch ? 2 : 1;
+			if (ch < 32 || ch > 255 || charcount >= maxlen - clen) {
+			  beep();
+			}
+			else {
+			  unsigned char do_insert = (current < charcount) ? insert : 1;
+			  if (!do_insert) { /* overwrite */
+			    unsigned clen_org = MbLen(&str[current]);
+			    if (clen == clen_org) {
+			      /* same width: replace simply */
+			      if (leadch) {
+			        str[current] = leadch;
+			        str[current + 1] = ch;
+			      } else {
+			        str[current] = ch;
+			      }
+			      /* curposUpdate(str, current, orgx, orgy); */
+			      outs(&str[current]);
+			      current += clen;
+			      curposUpdate(str, current, orgx, orgy);
+			    }
+			    else {
+			      /* replace double-byte char with single-byte one, or vice versa */
+			      eraseLine(str, current, charcount, orgx, orgy);
+			      for(count = current + clen_org; count < charcount; ++count)
+			        str[count - clen_org] = str[count];
+			      charcount -= clen_org;
+			      str[charcount] = '\0';
+			      do_insert = 1;
+			      /* fallthrough to insert routine */
+			    }
 			  }
-			  else
-			  {
-				if (current == charcount)
-				  charcount++;
-				str[current++] = ch;
-				curx = wherex();
-				cury = wherey();
-				outc(ch);
-				if (wherex() < curx && wherey() == cury) {
-				  orgy--;
-				}
+			  if (do_insert) {
+			    prev = curposPrev(str, current);
+			    for (count = charcount; count > current; --count)
+			      str[count + clen - 1] = str[count - 1];
+			    if (leadch) str[current++] = leadch;
+			    str[current++] = ch;
+			    charcount += clen;
+			    str[charcount] = '\0';
+			    curposUpdate(str, prev, orgx, orgy);
+			    outs(&str[prev]);
+			    /* check scrolled-up and adjust pos-Y */
+			    curx = orgx - 1;
+			    cury = orgy - 1;
+			    curposToXY(str, charcount, &curx, &cury);
+			    if (cury >= MAX_Y) {
+			      orgy -= cury - (MAX_Y - 1);
+			    }
+			    curposUpdate(str, current, orgx, orgy);
 			  }
 			}
-			else
-			  beep();
 			break;
 		}
 #ifdef FEATURE_FILENAME_COMPLETION
 		lastch = ch;
+#endif
+#if defined(DBCS)
+		leadch = 0;
 #endif
 	} while(ch != KEY_ENTER);
 
@@ -324,3 +440,4 @@ void readcommandEnhanced(char * const str, const int maxlen)
 #endif
 	setcursorstate(insert);
 }
+
