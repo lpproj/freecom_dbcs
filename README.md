@@ -1,11 +1,13 @@
 # FreeCOM DBCS edition
 
-a fork of FreeCOM to support:
+a fork of FreeCOM (COMMAND.COM for FreeDOS) to support:
 * other platform(s) - like NEC PC-9801 series
 * handle DBCS (double-byte character set) parameters correctly
 * Japanese message
 
 (yes, all tasks are work-in-progess and unstable...)
+
+DBCS edition works on non-DBCS edition of DOSes (v3.1 or later). 
 
 source repository of FreeCOM DBCS edition:
 https://github.com/lpproj/freecom_dbcs/ (branch: dbcs)
@@ -18,20 +20,27 @@ http://sourceforge.net/p/freedos/svn/HEAD/tree/freecom/trunk/
 
 You need:
 
-* 100% DOS compatible environment (you will not build with DOSBox built-in command processor)
-* Borland Turbo C++ 1.01 (I guess you can also build with Turbo C 2.0)
+* 100% DOS compatible environment (On DOSBox, you will need to use external command.com because of incompatibility with built-in command processor)
+* Borland Turbo C++ 1.01 for IBM PC (I guess you can also build with Turbo C 2.0)
 * Netwide assembler (DOS version) - for 16bit DOS platform, latest version is 0.98.39 on http://sourceforge.net/projects/nasm/
 
 Build step is same as the original FreeCOM (copy config.b to config.bat, copy config.std to config.mak, modify config.mak and config.bat as you like, then invoke `build.bat`) but build.bat for DBCS editon has some extra options:
 
 * dbcs - build as DBCS edition
+* ibmpc - build for IBM PC platform
 * nec98 - build for NEC PC-98x1 platform
+* generic - build DOS generic platform (without access of platform specific memory area and BIOS)
 
-For example, to build FreeCOM DBCS edition for PC-98 with XMS-Swap, 
+Specifying a platform (either ibmpc, nec98 or generic) is needed.
+
+For example, to build FreeCOM DBCS edition for PC-98 with XMS-Swap and Japanese messages, 
 build command is:
 
   `build -r dbcs nec98 xms-swap japanese`
 
+To build DOS generic non-DBCS FreeCom with XMS-Swap (and english messages), build command is:
+
+  `build -r generic xms-swap`
 
 ## CREDITS
 
