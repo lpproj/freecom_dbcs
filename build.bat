@@ -21,9 +21,11 @@ if "%1"=="-r" shift
 if "%1"=="clean" clean.bat
 if "%1"=="clean" goto ende
 if "%1"=="-h" goto help
+if "%1"=="-?" goto help
 
 :loop_commandline
 if "%1"=="xms-swap" goto special
+if "%1"=="xmsswap"  goto special
 if "%1"=="debug"    goto special
 if "%1"=="wc"       goto special
 if "%1"=="tc"       goto special
@@ -38,6 +40,7 @@ goto run
 
 :special
 if "%1"=="xms-swap" set XMS_SWAP=1
+if "%1"=="xmsswap"  set XMS_SWAP=1
 if "%1"=="debug"    set DEBUG=1
 if "%1"=="wc"       set COMPILER=WATCOM
 if "%1"=="tc"       set COMPILER=TC2
