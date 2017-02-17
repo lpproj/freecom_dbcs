@@ -113,6 +113,7 @@ void readcommandEnhanced(char * const str, const int maxlen)
 	unsigned charcount = 0;
 	unsigned leadch = 0;
 	unsigned prev, clen;
+	unsigned char do_insert;
 
 	assert(str);
 	assert(maxlen <= MAX_INTERNAL_COMMAND_SIZE);
@@ -147,6 +148,7 @@ void readcommandEnhanced(char * const str, const int maxlen)
 		  leadch = ch;
 		  continue;
 		}
+		do_insert = insert;
 
 		switch(ch) {
 		case KEY_BS:               /* delete character to left of cursor */
@@ -259,33 +261,7 @@ void readcommandEnhanced(char * const str, const int maxlen)
 			}
 			break;
 
-		case KEY_RIGHT:            /* move cursor right */
-
-			if (current != charcount)
-			{
-			  current = curposNext(str, current);
-			  curposUpdate(str, current, orgx, orgy);
-				break;
-			}
-			/* cursor-right at end of string grabs the next character
-				from the previous line */
-			/* FALL THROUGH */
-
-#ifndef FEATURE_HISTORY
-			break;
-#else
-		case KEY_F1:       /* get character from last command buffer */
-			  if (current < strlen(prvLine)) {
-#if 1
-			    /* todo */
-			    beep();
-			    break;
-#else
-				 outc(str[current] = prvLine[current]);
-				 charcount = ++current;
-#endif
-			  }
-			  break;
+#ifdef FEATURE_HISTORY
 			  
 		case KEY_F3:               /* get previous command from buffer */
 			if(charcount < strlen(prvLine)) {
@@ -367,6 +343,50 @@ void readcommandEnhanced(char * const str, const int maxlen)
 			break;
 #endif
 
+		case KEY_RIGHT:            /* move cursor right */
+
+			if (current != charcount)
+			{
+			  current = curposNext(str, current);
+			  curposUpdate(str, current, orgx, orgy);
+				break;
+			}
+#ifndef FEATURE_HISTORY
+			break;
+#endif
+			/* cursor-right at end of string grabs the next character
+				from the previous line */
+			/* FALL THROUGH to KEY_F1 */
+
+#ifdef FEATURE_HISTORY
+		case KEY_F1:       /* get character from last command buffer */
+			{
+			  unsigned curdbc = 0;
+			  for(count = 0; str[count];) {
+			    if (count >= current) break;
+			    count += MbLen(&str[count]);
+			    ++curdbc;
+			  }
+			  for(prev = 0; prvLine[prev];) {
+			    if (curdbc <= 0) break;
+			    prev += MbLen(&prvLine[prev]);
+			    --curdbc;
+			  }
+			  /* get keyvalue from prevLine */
+			  ch = prvLine[prev];
+			  if (ch == 0) break;
+			  
+			  if (MbLen(&prvLine[prev]) > 1) {
+			    leadch = ch;
+			    ch = prvLine[prev + 1];
+			  } else {
+			    leadch = 0;
+			  }
+			  do_insert = 0;
+			}
+			/* fallthrough to default keyinput */
+#endif
+
 		default:                 /* insert character into string... */
 
 			if (leadch && (ch < 0x20 || ch >= 0xfe)) {
@@ -378,7 +398,7 @@ void readcommandEnhanced(char * const str, const int maxlen)
 			  beep();
 			}
 			else {
-			  unsigned char do_insert = (current < charcount) ? insert : 1;
+			  if (current >= charcount) do_insert = 1;
 			  if (!do_insert) { /* overwrite */
 			    unsigned clen_org = MbLen(&str[current]);
 			    if (clen == clen_org) {
