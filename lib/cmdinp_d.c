@@ -433,14 +433,20 @@ void readcommandEnhanced(char * const str, const int maxlen)
 			    str[current++] = ch;
 			    charcount += clen;
 			    str[charcount] = '\0';
-			    curposUpdate(str, prev, orgx, orgy);
-			    outs(&str[prev]);
-			    /* check scrolled-up and adjust pos-Y */
-			    curx = orgx - 1;
-			    cury = orgy - 1;
-			    curposToXY(str, charcount, &curx, &cury);
-			    if (cury >= MAX_Y) {
-			      orgy -= cury - (MAX_Y - 1);
+			    {
+			      unsigned cpto = curposCalc(str, charcount, orgx, orgy, 0);
+			      unsigned cpfrom = curposCalc(str, prev, orgx, orgy, 1);
+			      count = cpfrom < cpto ? (cpto - cpfrom) : 0;
+			      while(count--) {
+			        curx = wherex();
+			        cury = wherey();
+			        outc(' ');
+			        if (wherex() < curx && wherey() <= cury) {
+			          orgy -= cury - wherey() + 1; /* wrap-arount (and scrolling up) */
+			        }
+			      }
+			      curposUpdate(str, prev, orgx, orgy);
+			      outs(&str[prev]);
 			    }
 			    curposUpdate(str, current, orgx, orgy);
 			  }
