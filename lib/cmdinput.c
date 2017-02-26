@@ -217,6 +217,12 @@ static int outs_xyfix(const char * const str, unsigned *ox, unsigned *oy)
 	return feed;
 }
 
+/* read in a command line */
+#if defined(DBCS)
+# include "cmdinp_d.c"
+#else
+
+
 static void clrcmdline_oxy(char * const str, const int maxlen, const unsigned charcount, unsigned ox, unsigned oy)
 {
 	unsigned len = charcount ? charcount : strlen(str);
@@ -227,10 +233,6 @@ static void clrcmdline_oxy(char * const str, const int maxlen, const unsigned ch
 }
 #define clrcmdline(s,m,cc,ox,oy,cpos)	clrcmdline_oxy(s,m,cc,ox,oy)
 
-/* read in a command line */
-#if defined(DBCS)
-# include "cmdinp_d.c"
-#else
 void readcommandEnhanced(char * const str, const int maxlen)
 {
 	static unsigned orgx, orgy;		/* start of current line */
