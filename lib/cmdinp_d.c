@@ -426,6 +426,7 @@ void readcommandEnhanced(char * const str, const int maxlen)
 			    }
 			  }
 			  if (do_insert) {
+			    unsigned cpto, cpfrom;
 			    prev = curposPrev(str, current);
 			    for (count = charcount; count > current; --count)
 			      str[count + clen - 1] = str[count - 1];
@@ -433,21 +434,18 @@ void readcommandEnhanced(char * const str, const int maxlen)
 			    str[current++] = ch;
 			    charcount += clen;
 			    str[charcount] = '\0';
-			    {
-			      unsigned cpto = curposCalc(str, charcount, orgx, orgy, 0);
-			      unsigned cpfrom = curposCalc(str, prev, orgx, orgy, 1);
-			      count = cpfrom < cpto ? (cpto - cpfrom) : 0;
-			      while(count--) {
-			        curx = wherex();
-			        cury = wherey();
-			        outc(' ');
-			        if (wherex() < curx && wherey() <= cury) {
-			          orgy -= cury - wherey() + 1; /* wrap-arount (and scrolling up) */
-			        }
-			      }
-			      curposUpdate(str, prev, orgx, orgy);
-			      outs(&str[prev]);
+			    cpto = curposCalc(str, charcount, orgx, orgy, 0);
+			    cpfrom = curposCalc(str, prev, orgx, orgy, 1);
+			    count = cpfrom < cpto ? (cpto - cpfrom) : 0;
+			    while(count--) {
+			      curx = wherex();
+			      cury = wherey();
+			      outc(' ');
+			      if (wherex() < curx && wherey() <= cury)
+			        orgy -= cury - wherey() + 1; /* wrap-around (and scrolling up) */
 			    }
+			    curposUpdate(str, prev, orgx, orgy);
+			    outs(&str[prev]);
 			    curposUpdate(str, current, orgx, orgy);
 			  }
 			}
