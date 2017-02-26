@@ -9,7 +9,15 @@
 #include <dos.h>
 #include <io.h>
 #include <stdio.h>
+#include <limits.h>
+#if defined(__WATCOMC__)
+# include <i86.h>
+#endif
 #include "../include/misc.h"
+#if defined(__TURBOC__)
+# define _enable enable
+# define _disable disable
+#endif
 
 int mymachine = MYMACHINE_UNKNOWN;
 
@@ -135,19 +143,69 @@ void nec98_nosound(void)
 
 #elif defined(IBMPC)
 
-void mydelay(unsigned ms)
+#define ibmpc_delay	mydelay
+#define ibmpc_sound	mysound
+#define ibmpc_nosound	mynosound
+
+static void ibmpc_iowait(void)
 {
-	delay(ms);
+	(void)inp(0x61);
 }
 
-void mysound(unsigned f)
+void ibmpc_delay(unsigned ms)
 {
-	sound(f);
+	/*
+	  msec to ibm-ticks:
+	  PIT clk = 14.31818 / 12 = 1.193181666...(MHz)
+	      ticker = clk / 65536 = 18.20650736490885(Hz) 
+	             = 54.9254164984656(ms)
+	    then:
+	      msec_to_tick = (ms * 14318180.0) / (1000.0 * 12.0 * 65536.0)
+	  roughy calculation by integer:
+	      msec_to_tick = (ms * 14318) / (12 * 65536)
+	*/
+	if (ms > 0) {
+		unsigned long tick = 0, tickend = (14318UL * ms) / 786432UL;
+		unsigned t_prev = peekw(0x40, 0x6c);
+		_enable();
+		while(tick < tickend) {
+			unsigned t_cur = peekw(0x40, 0x6c); /* read BIOS ticker */
+			if (t_cur != t_prev) {
+				tick += t_cur > t_prev ? (t_cur - t_prev) : (((~t_prev & 0xffffU) + 1U) + t_cur);
+				t_prev = t_cur;
+			}
+			ibmpc_iowait(); /* just for stablity of some emulators */
+		}
+	}
 }
 
-void mynosound(void)
+void ibmpc_nosound(void)
 {
-	nosound();
+	outp(0x61, inp(0x61) & 0xfc);
+}
+
+void ibmpc_sound(unsigned f)
+{
+	/*
+	  msec to ibm-ticks:
+	  PIT clk = 14318180 / 12 = 1193181.666...(Hz)
+	      divider = clk / freq
+	        19    = clk / 62799.0350877193
+	       65535  = clk / 18.2067851784034
+	*/
+
+	if (f == 0) ibmpc_nosound();
+	else {
+		unsigned divider;
+		if (f < 19) f = 19; /* limit divider within 16bits width */
+		divider = (unsigned)(14318180UL / (12UL * f));
+		_disable();
+		outp(0x43, 0xb6); /* PIT: write 16bit to counter 2 and set mode 3 */
+		outp(0x42, divider & 0xff); /* bit 0~7 */
+		outp(0x42, divider >> 8); /* bit 8~15 */
+		outp(0x61, inp(0x61) | 0x03);
+		_enable();
+	}
 }
 
 #endif
