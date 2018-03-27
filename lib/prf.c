@@ -32,6 +32,7 @@
 #include <io.h>
 #include <string.h>
 #include <../include/misc.h>
+#include <fmemory.h>
 
 #define FALSE 0
 #define TRUE 1
@@ -43,8 +44,6 @@ static char * ltob(long, char *, int);
 static int do_printf(FILE *f, const char *, register va_list);
 
 FILE *stdin = (FILE *)0, *stdout= (FILE *)1, *stderr = (FILE *)2;
-#undef fileno
-#define fileno(f) ((int)(f))
 
 static void flushbuf(FILE *f)
 {
@@ -158,7 +157,8 @@ int vsprintf(char *buff, const char * fmt, va_list arg)
 int do_printf(FILE *f, const char * fmt, va_list arg)
 {
   int base;
-  char s[11], far * p;
+  char s[11];
+  char far * p;
   int c, flag, size, fill, precision;
   int longarg;
   long currentArg;
@@ -235,9 +235,9 @@ int do_printf(FILE *f, const char * fmt, va_list arg)
 
       case 'p':
         {
-          unsigned short w0 = va_arg(arg, unsigned short);
+          unsigned short w0 = va_arg(arg, unsigned int);
           char *tmp = charp;
-          sprintf(s, "%04x:%04x", va_arg(arg, unsigned short), w0);
+          sprintf(s, "%04x:%04x", va_arg(arg, unsigned int), w0);
           p = s;
           charp = tmp;
           goto do_outputstring;

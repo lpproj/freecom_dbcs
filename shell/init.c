@@ -48,7 +48,9 @@ static unsigned oldPSP;
 #endif
 char *ComPath;                   /* absolute filename of COMMAND shell */
 
-#ifdef DEBUG
+#if defined(__WATCOMC__)
+unsigned _heaplen = 0; /* NOT in BSS */
+#elif defined(DEBUG)
 extern unsigned _heaplen;
 #endif
 
@@ -183,8 +185,8 @@ int initialize(void)
 
 	/* Give us shell privileges */
 #ifdef FEATURE_XMS_SWAP
-	myPID = _psp;
 	residentCS = _CS;
+	myPID = _psp;
 	termAddr = pspTermAddr;
 	pspTermAddr = terminateFreeCOMHook;
 #endif
@@ -199,9 +201,15 @@ int initialize(void)
 	/* There is no special handler for FreeCOM currently
 		--> activate the real one */
 	set_isrfct(0x24, lowlevel_err_handler);
+#ifdef __GNUC__
+	{	extern word criter_repeat_checkarea asm("_criter_repeat_checkarea");
+		registerCriterRepeatCheckAddr(&RESIDENT(criter_repeat_checkarea));
+	}
+#else
 	{	extern word far criter_repeat_checkarea;
 		registerCriterRepeatCheckAddr(&criter_repeat_checkarea);
 	}
+#endif
 #else
 	set_isrfct(0x24, dummy_criter_handler);
 #endif
@@ -210,6 +218,11 @@ int initialize(void)
     because then DOS won't terminate them, e.g. when a Critical Error
     occurs that is not detected by COMMAND.COM */
 
+#ifdef __WATCOMC__
+	/* minimum block size requested for HEAP from DOS */
+	_amblksiz = _heaplen;
+#endif
+	
 	dbg_printmem();
 #ifdef DEBUG
 	{ void* p;
@@ -487,7 +500,7 @@ int initialize(void)
 	/* overlPtr2;		not used by this exec */
 #else
 	/* re-use the already loaded Module */
-	set_isr(0x24, (void interrupt(*)())
+	set_isrfct(0x24,
 	 MK_FP(FP_SEG(kswapContext->cbreak_hdlr), kswapContext->ofs_criter));
 #endif
 

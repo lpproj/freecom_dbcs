@@ -29,7 +29,11 @@ unsigned long minSize;
 
 struct {
 	unsigned alias, hist, dirs, bufsize, extraSpace;
+#ifdef __LP64__
+	unsigned int heapPos;
+#else
 	unsigned long heapPos;
+#endif
 } ival;
 
 #define PTCHSIZE
@@ -123,7 +127,7 @@ void addUns_(unsigned long *minVal, unsigned val)
 		*minVal += val;
 }
 
-void addSize(unsigned *size, char * const Xp)
+void addSize(unsigned short *size, char * const Xp)
 {	unsigned long n;
 	char *p = Xp;
 
@@ -170,7 +174,7 @@ void addSize(unsigned *size, char * const Xp)
 
 int main(int argc, char **argv)
 {	struct EXE_header exe;
-	unsigned tosize;
+	unsigned short tosize;
 
 	if(argc <= 1) {
 		puts("Patch heap size into FreeCOM executable\n"
@@ -187,7 +191,7 @@ int main(int argc, char **argv)
 		return 127;
 	}
 
-	if(enumFileResources(argv[1], RES_ID_INFO, (int(*)())getInfo, 0) != 1) {
+	if(enumFileResources(argv[1], RES_ID_INFO, getInfo, 0) != 1) {
 		puts("Failed to locate FreeCOM's info resource\n"
 			"Possible errors:\n"
 			"\tAn error is issued above.\n"
@@ -225,7 +229,11 @@ int main(int argc, char **argv)
 		return 71;
 	}
 
-	if(argc == 2 || ival.heapPos == ~0) {
+	if(argc == 2
+#ifndef GCC
+	   || ival.heapPos == ~0
+#endif
+	   ) {
 		prUns(ival.alias, "Aliases");
 		prUns(ival.hist, "Command line history");
 		prUns(ival.dirs, "Directory stack");
@@ -265,8 +273,16 @@ int main(int argc, char **argv)
 
 	printf("Patching '%s' to heap size of %u bytes\n"
 	 , argv[1], tosize);
-	if(tosize)
+#if defined(__TURBOC__) || defined(GCC)
+	/* Watcom already has extraMin minimal and dynamically adjusts its MCB*/
+	if(tosize) {
+#ifdef GCC
+		/* need to adjust SP */
+		unsigned startbss = 0x10000 - exe.extraMax * 16;
+		exe.fSP = startbss + ival.extraSpace * 16 + tosize;
+#endif
 		exe.extraMin = exe.extraMax = ival.extraSpace + tosize / 16;
+	}
 	else {
 		exe.extraMax = 0xffff;
 		exe.extraMin = ival.extraSpace;
@@ -277,7 +293,9 @@ int main(int argc, char **argv)
 			"File most probably corrupted now: %s\n", argv[1]);
 		return 77;
 	}
+#endif
 
+#ifndef GCC
 	if(fseek(freecom, ival.heapPos, SEEK_SET) != 0) {
 		printf("Failed to seek to heap size offset in %s\n", argv[1]);
 		return 42;
@@ -288,6 +306,7 @@ int main(int argc, char **argv)
 			"File most probably corrupted now: %s\n", argv[1]);
 		return 75;
 	}
+#endif
 
 	fflush(freecom);
 	if(ferror(freecom)) {

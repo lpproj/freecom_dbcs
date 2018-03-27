@@ -165,7 +165,9 @@
 #include <sys/types.h>
 
 /* Not available with TURBOC++ 1.0 or earlier: */
-#if ( (!defined(__WATCOMC__) && !defined(__TURBOC__)) || (__TURBOC__ > 0x297) )
+#if defined __GNUC__
+#define pause cmdpause
+#elif ( (!defined(__WATCOMC__) && !defined(__TURBOC__)) || (__TURBOC__ > 0x297) )
 #include <dirent.h>
 #endif
 
@@ -821,7 +823,7 @@ static int DisplaySingleDirEntry(struct ffblk *file, struct currDir *cDir)
     }
     else
     {
-      char buffer[sizeof(long) * 4 + 2], *ext;
+      char buffer[sizeof(long) * 4 + 2], *ext = "";
 
       if (file->ff_name[0] == '.')
         displayString(TEXT_DIR_LINE_FILENAME_SINGLE, file->ff_name);
@@ -995,7 +997,7 @@ static int dir_list(int pathlen
   struct currDir cDir = {0};
   
 #define MAX_ORDER (0xffff / sizeof(struct ffblk))
-  int *orderIndex;
+  int *orderIndex = NULL;
   int  orderCount;
 
   assert(path);
@@ -1103,13 +1105,14 @@ static int dir_list(int pathlen
     rv = incline();
   }
 
-	if(rv == E_None)
+	if(rv == E_None) {
 		if(filecount || dircount)
 			rv = print_summary(filecount, bytecount);
 		else if(!optS) {
 			error_file_not_found();
 			rv = E_Other;
 		}
+	}
 
   if(rv == E_None       /* no error */
    && optS) {            /* do recursively */
@@ -1121,8 +1124,8 @@ static int dir_list(int pathlen
         if((file.ff_attrib & FA_DIREC) != 0 /* is directory */
          && strcmp(file.ff_name, ".") != 0  /* not cur dir */
          && strcmp(file.ff_name, "..") != 0) {  /* not parent dir */
-        if (optL)
-          strlwr(file.ff_name);
+          if (optL)
+            strlwr(file.ff_name);
           strcpy(&path[pathlen], file.ff_name);
           rv = dir_list(pathlen + strlen(file.ff_name) + 1, pattern
            , &dircount, &filecount, &bytecount
@@ -1225,6 +1228,7 @@ static int dir_print_body(char *arg, unsigned long *dircount)
  */
 int cmd_dir (char * rest) {
   char **argv;
+  char *p;
   int argc, opts;
   int rv;                       /* return value */
   unsigned long dircount;
@@ -1238,9 +1242,12 @@ int cmd_dir (char * rest) {
   attrMay = ATTR_DEFAULT;
 
   /* read the parameters from env */
-  if ((argv = scanCmdline(getEnv("DIRCMD"), opt_dir, 0, &argc, &opts))
-   == 0)
+  if ((argv = scanCmdline(p = getEnv("DIRCMD"), opt_dir, 0, &argc, &opts))
+   == 0) {
+    free(p);
     return 1;
+  }
+  free(p);
   freep(argv);    /* ignore any parameter from env var */
 
   line = 0;

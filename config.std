@@ -1,6 +1,15 @@
+# defaults for DOS; can be overridden in compiler makefiles
+DIRSEP = \ #a backslash
+RMFILES = ..\scripts\rmfiles
+RMFILES2 = ..\..\scripts\rmfiles
+ECHOTO0 = echoto
+ECHOTO = ..\scripts\echoto
+CP = copy
+CLO =
+
 ## Where the pre-compiled SUPPL files are located
 ## See DOCS\SUPPL.TXT for more information about this library
-SUPPL_INC_PATH = ..\SUPPL
+SUPPL_INC_PATH = ..$(DIRSEP)suppl
 SUPPL_LIB_PATH = $(SUPPL_INC_PATH)
 
 ## Memory model of FreeCOM
@@ -11,6 +20,10 @@ DEBUG=-DDEBUG
 SHELL_MMODEL=s
 DEBUG=-UDEBUG -DNDEBUG
 !endif
+SHELL_MMODEL_COMP=$(SHELL_MMODEL)
+
+## Add -DDEBUG=1 below to enable debug support for assembly files
+NASMFLAGS =
 
 !include "$(TOP)/mkfiles/$(COMPILER).mak"
 
@@ -19,8 +32,6 @@ INCLUDEPATH = $(INCLUDEPATH) -I$(SUPPL_INC_PATH)
 ## Which programs to use
 NASM = $(XNASM)
 
-## Add -DDEBUG=1 below to enable debug support for assembly files
-NASMFLAGS =
 ## Add -DDEBUG=1 below to enable FreeCOM-debug support for C files
 ## Add -DNDEBUG=1 below to disable any debug (even assert)
 
@@ -37,13 +48,13 @@ __XMS_SWAP = -DXMS_SWAP
 ##
 ## (*) Note: Should be detected by CONFIG.H automatically for Turbo C
 ##     and Borland C compilers.
-$(CFG): $(CFG_DEPENDENCIES) ..\CONFIG.MAK
-	..\scripts\rmfiles $(CFG)
-	..\scripts\echoto $(CFG) $(CFLAGS1)
-	..\scripts\echoto $(CFG) $(INCLUDEPATH)
-	..\scripts\echoto $(CFG) -m$(SHELL_MMODEL) $(MMODEL)
-	..\scripts\echoto $(CFG) $(DEBUG) $(__XMS_SWAP)
+$(CFG): $(CFG_DEPENDENCIES) ../config.mak
+	$(RMFILES) $(CFG)
+	$(ECHOTO) $(CFG) $(CFLAGS1)
+	$(ECHOTO) $(CFG) $(INCLUDEPATH)
+	$(ECHOTO) $(CFG) -m$(SHELL_MMODEL_COMP) $(MMODEL)
+	$(ECHOTO) $(CFG) $(DEBUG) $(__XMS_SWAP)
 
 #		*Implicit Rules*
 .asm.obj:
-	$(NASM) $(NASMFLAGS) -f obj -DMODEL=$(SHELL_MMODEL) $<
+	$(NASM) -f obj $(NASMFLAGS) -DMODEL=$(SHELL_MMODEL) $<

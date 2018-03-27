@@ -1,1 +1,1 @@
-FreeCom version 0.84-pre XMS_Swap [Jul 20 2005 09:46:02]
+FreeCom version 0.84-pre4 - WATCOMC - XMS_Swap [Feb 21 2018 22:36:00]

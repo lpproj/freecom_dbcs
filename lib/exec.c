@@ -64,29 +64,51 @@
 
 #include "algnbyte.h"
 
-#ifdef __WATCOMC__
+#if defined(__WATCOMC__) || defined(__GNUC__)
 struct fcb     {
 	char    bytes[0x25];
 };
 
+#ifdef __WATCOMC__
 char *parsfnm(const char *cmdline, struct fcb far *fcbptr, int option);
 #pragma aux parsfnm = \
 	"mov ah, 29h" \
 	"int 21h" \
+	"inc al" \
+	"jnz ok" \
+	"xor si, si" \
+	"ok:" \
 	parm [si] [es di] [ax] value [si] modify [ax es]
+#else /* __GNUC__ */
+static char *parsfnm(const char *cmdline, struct fcb far *fcbptr, int option)
+{
+  char *ret;
+  unsigned char opt = option;
+  asm volatile("int $0x21" :
+      "=S"(ret), "+Ral"(opt) :
+      "Rah"((unsigned char)0x29), "e"(FP_SEG(fcbptr)), "D"(FP_OFF(fcbptr)),
+      "Rds"(FP_SEG(cmdline)), "0"(cmdline) :
+      "cc", "memory");
+  return opt == 0xff ? NULL : ret;
+}
+#endif
 #endif
 
 struct ExecBlock
 {
   word segOfEnv;
   char far *cmdLine;
-  struct fcb far *fcb1,
-    far * fcb2;
+  struct fcb far *fcb1;
+  struct fcb far *fcb2;
 };
 
 #include "algndflt.h"
 
+#ifdef __GNUC__
+int lowLevelExec(char far * cmd, struct ExecBlock far * bl, ...) asm("_lowLevelExec");
+#else
 int cdecl lowLevelExec(char far * cmd, struct ExecBlock far * bl);
+#endif
 
 int exec(const char *cmd, char *cmdLine, const unsigned segOfEnv)
 {
@@ -124,7 +146,7 @@ int exec(const char *cmd, char *cmdLine, const unsigned segOfEnv)
 		_fmemcpy(dosFCB1, &fcb1, sizeof(fcb1));
 		_fmemcpy(dosFCB2, &fcb2, sizeof(fcb1));
 		assert(strlen(cmd) < 128);
-		_fstrcpy(dosCMDNAME, cmd);
+		_fstrcpy((char far *)dosCMDNAME, cmd);
 		dosParamDosExec.envSeg = segOfEnv; 
 
 		retval = XMSexec();

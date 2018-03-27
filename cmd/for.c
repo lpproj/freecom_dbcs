@@ -203,6 +203,7 @@ static int doFOR (char * varname, char * varE, char * param, char * paramE,
 			/* getEnv() will also update the varname array with the current
 				case of the particular characters */
 		rv = ecMkc("SET /C %@VERBATIM()", varname, "=", oldContents, (char*)0);
+		free(oldContents);
 	}
 
 	if(rv == E_None) {
@@ -256,13 +257,13 @@ int cmd_for(char *param)
 	case noCMD:
 		error_for_no_command();
 		return 1;
-#ifdef DEBUG
 	case OK:
 		break;
 	default:
+#ifdef DEBUG
 		dprintf(("[FOR: Invalid return value from checkFOR()]\n"));
-		return 1;
 #endif
+		return 1;
 	}
 
 	return doFOR(varname, varE, param, paramE, cmd, flags);

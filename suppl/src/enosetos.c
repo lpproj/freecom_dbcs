@@ -58,7 +58,7 @@ static char const rcsid[] =
 	"$Id$";
 #endif
 
-#ifdef __TURBOC__
+#if defined(__TURBOC__) || defined(__GNUC__)
 extern char _dosErrorToSV [];
 #elif __WATCOMC__
 extern  int __set_errno_dos(unsigned int err);
@@ -85,9 +85,9 @@ int eno_setOSerror(int errnr)
 
 	errno = eno;
 
-	DBG_RETURN_BI(_doserrno = errnr)
+	_doserrno = errnr;
 #elif __WATCOMC__
 	 __set_errno_dos(errnr);
-	 DBG_RETURN_I( errnr)
 #endif
+	 DBG_RETURN_I( errnr)	
 }

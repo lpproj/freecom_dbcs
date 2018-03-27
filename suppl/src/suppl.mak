@@ -6,7 +6,7 @@ TOP=../..
 SUPPL=suppl_$(SHELL_MMODEL)
 CC = $(CC) -I..
 
-all : ..\$(SUPPL).lib
+all : ../$(SUPPL).lib
 
 OBJ1 = addu.obj byte2par.obj cntry.obj dfndeli2.obj dfndelim.obj dfnexpan.obj \
 dfnfnam.obj
@@ -28,7 +28,8 @@ OBJ9 = fmemchr.obj fmemcmp.obj fmemcpy.obj fmemove.obj fnorm.obj fputmc.obj \
 fstrcpy.obj
 OBJ10= fstrdup.obj fstrlen.obj _getdcwd.obj mcb_1st.obj mcb_is.obj \
 mcb_leng.obj  mcb_nxt.obj
-OBJ11= mcb_walk.obj stpcat.obj stpcpy.obj toupperx.obj
+OBJ11= mcb_walk.obj stpcat.obj stpcpy.obj toupperx.obj filefind.obj \
+invokedo.obj intr.obj
 
 DOBJ1 = app_ievx.obj app_ini_.obj app_name.obj app_namx.obj app_vars.obj \
 dbgf_chg.obj
@@ -50,12 +51,12 @@ gm_res.obj
 DOBJ10 = gm_dup.obj gm_chgm.obj gm_gtmem.obj nlstime.obj strnum.obj \
 s_skipws.obj s_skipwd.obj
 
-echolib.bat: ..\..\scripts\echolib.bat
-	copy ..\..\scripts\echolib.bat
+echolib.bat: ../../scripts/echolib.bat
+	$(CP) ..$(DIRSEP)..$(DIRSEP)scripts$(DIRSEP)echolib.bat .
 
 # Prepare Linker Response File
 objlist.txt: echolib.bat suppl.mak
-	..\..\scripts\rmfiles objlist.txt
+	$(RMFILES2) objlist.txt
 	$(ECHOLIB) objlist.txt $(OBJ1)
 	$(ECHOLIB) objlist.txt $(OBJ2)
 	$(ECHOLIB) objlist.txt $(OBJ3)
@@ -79,8 +80,8 @@ objlist.txt: echolib.bat suppl.mak
 	$(ECHOLIB) objlist.txt $(DOBJ10)
 
 # Create the library
-..\$(SUPPL).lib: $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5) $(OBJ6) \
+../$(SUPPL).lib: $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5) $(OBJ6) \
 $(OBJ7) $(OBJ8) $(OBJ9) $(OBJ10) $(OBJ11) $(DOBJ1) $(DOBJ2) $(DOBJ3) $(DOBJ4) \
 $(DOBJ5) $(DOBJ6) $(DOBJ7) $(DOBJ8) $(DOBJ9) $(DOBJ10) objlist.txt
-	..\..\scripts\rmfiles ..\$(SUPPL).lib
-	$(AR) /C ..\$(SUPPL).LIB @objlist.txt $(LIBLIST)..\$(SUPPL).lst
+	$(RMFILES2) ..$(DIRSEP)$(SUPPL).lib
+	$(AR) ..$(DIRSEP)$(SUPPL).lib @objlist.txt $(LIBLIST)..$(DIRSEP)$(SUPPL).lst

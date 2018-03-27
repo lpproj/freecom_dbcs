@@ -24,19 +24,21 @@
 #include "../err_fcts.h"
 #include "../include/kswap.h"
 
+#define FD_MAGIC 0x4446 /* 'FD' */
+
 /* Lock kswap feature within kernel and invalidate a previous external prg
     Return:  FALSE  no swap feature within kernel */
 int kswapInit(void)
 {   IREGS r;
 
     r.r_ax = 0x4bfe;        /* Get kswap argument structure segm */
-    r.r_dx = 'FD';
+    r.r_dx = FD_MAGIC;
     intrpt(0x21, &r);
 
     if(!( r.r_flags & 1 )) {
         dprintf(("[KSWAP: using kernel swapping support (KSSF eventually at %04x)]\n", r.r_ax));
         if(r.r_bx)   {          /* segment found */
-            kswapContext = (kswap_p)r.r_bx;
+            kswapContext = (kswap_p)MK_SEG_PTR(kswap_t, r.r_bx);
                 /* invalidate external program if this shell
                                 aborts accidently */
             kswapContext->prg = 0;
@@ -47,7 +49,7 @@ int kswapInit(void)
     } else if(r.r_ax == 5) {    /* Access denied -> there exists a
                         static context with embedded Criter, but this
                         copy of FreeCOM is NOT allowed to alter it */
-        kswapContext = (kswap_p)r.r_bx;
+        kswapContext = (kswap_p)MK_SEG_PTR(kswap_t, r.r_bx);
         dprintf(("[KSWAP: static context found at 0x%04x]\n", r.r_bx));
     }
 
@@ -63,7 +65,7 @@ static void kswapSetISR(void)
         as it is an internal one (no part of the module) */
     *(void far* far*)MK_FP(_psp, 0x12) =
      MK_FP(FP_SEG(kswapContext->cbreak_hdlr), kswapContext->ofs_criter);
-    set_isr(0x24, (void interrupt(*)())
+    set_isrfct(0x24,
      MK_FP(FP_SEG(kswapContext->cbreak_hdlr), kswapContext->ofs_criter));
 }
 
@@ -82,7 +84,7 @@ void kswapRegister(kswap_p ctxt)
 
     r.r_ax = 0x4bfd;    /* Set kswap argument structure segm */
     r.r_bx = (word)ctxt;
-    r.r_dx = 'FD';
+    r.r_dx = FD_MAGIC;
     intrpt(0x21, &r);
     if(r.r_flags & 1) { /* failed */
         swapOnExec = ERROR;     /* cannot register -> cannot use */
@@ -157,7 +159,7 @@ unsigned kswapMkStruc(const char * const prg, const char * const cmdline)
     kswapContext->canexit = canexit;
     kswapContext->dfltSwap = defaultToSwap;
 #ifdef NDEBUG
-    kswapContext->debug = stderr;
+    kswapContext->debug = (word)stderr;
 #else
     kswapContext->debug = fddebug;
 #endif

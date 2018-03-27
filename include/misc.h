@@ -15,6 +15,8 @@
 #undef stdout
 #undef stderr
 extern FILE *stdin, *stdout, *stderr;
+#undef fileno
+#define fileno(f) ((int)(f))
 
 #include "../include/datefunc.h"
 #include "../include/timefunc.h"
@@ -89,7 +91,14 @@ int mk_rd_dir(char *param, int (*func) (const char *), char *fctname);
 void cutBackslash(char * const s);
 int cd_dir(char *param, int cdd, const char * const fctname);
 enum OnOff onoffStr(char *line);
-#ifdef __TURBOC__
+#if defined(__TURBOC__) || defined(__GNUC__)
+#if defined(__GNUC__)
+#define stricmp strcasecmp
+#define strcmpi strcasecmp
+#define strnicmp strncasecmp
+#define memicmp strncasecmp
+#define lseek _lseek
+#endif
 #define sfn_open _open
 #define sfn_creat _creat
 #define dos_read _read

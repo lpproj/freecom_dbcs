@@ -18,18 +18,24 @@
 
 #include "algnbyte.h"
 
-typedef unsigned res_minorid_t;	/* must be exactly unsigned 16bit */
+typedef unsigned short res_minorid_t;	/* must be exactly unsigned 16bit */
+#ifdef __LP64__
+typedef unsigned int res_length_t;
+#else
+typedef unsigned long res_length_t;
+#endif
 
-typedef enum {
+enum {
 	RES_ID_NONE = -0x7ffe,
 	RES_ID_ANY = -0x7fff,
 	RES_ID_STRINGS = 0,
 	RES_ID_CRITER,
 	RES_ID_INFO
-} res_majorid_t;
+};
+typedef short res_majorid_t;
 
 typedef struct {		/* type of a control area */
-	unsigned long res_length;
+	res_length_t res_length;
 	res_majorid_t res_majorID;
 	res_minorid_t res_minorID;
 	unsigned char res_cookie[8];	/* NOT '\0' terminated! */
@@ -49,7 +55,7 @@ typedef int (*res_callbackp_t)(res_majorid_t, res_minorid_t
 
 
 int enumFileResources(const char * const fnam, res_majorid_t id
- , int (*fct)(), void * const arg);
+ , res_callbackp_t fct, void * const arg);
 void startResource(FILE *f, res_majorid_t majorID, res_minorid_t minorID);
 void endResource(FILE *f);
 

@@ -5,6 +5,7 @@
 
 #include "../config.h"
 
+#include <stdlib.h>
 
 #include "../include/command.h"
 #include "../include/misc.h"
@@ -17,4 +18,5 @@ void printprompt(void)
 	pr = getEnv(PROMPTVAR);        /* get PROMPT environment var. */
 
 	displayPrompt(pr? pr: DEFAULT_PROMPT);
+	free(pr);
 }

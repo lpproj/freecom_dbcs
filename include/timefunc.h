@@ -25,7 +25,7 @@
 #ifndef H__TIMEFUNC_
 #define H__TIMEFUNC_
 
-#if defined _NO__DOS_TIME || (defined __TURBOC__ && __TURBOC__ <= 0x296) /* TC/TC++ 1.01 */
+#if defined _NO__DOS_DATE || (defined __TURBOC__ && __TURBOC__ <= 0x296) || defined(__GNUC__) /* TC/TC++ 1.01 or GCC */
 
 /* The time structure, compatible with dostime_t */
 struct dostime_t
@@ -38,6 +38,10 @@ struct dostime_t
 
 unsigned _dos_settime(struct dostime_t *);
 void _dos_gettime(struct dostime_t *);
+
+#ifdef __GNUC__
+void delay(unsigned ms);
+#endif
 
 #endif /* _NO__DOS_TIME */
 #endif /* H__TIMEFUNC_ */

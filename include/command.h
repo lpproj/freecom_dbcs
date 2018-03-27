@@ -5,12 +5,15 @@
 #ifndef FREECOM_COMMAND_H
 #define FREECOM_COMMAND_H
 
+#define MAX_INTERNAL_COMMAND_SIZE 256
+
+#ifndef MKINFRES
 #include <dos.h>
 #include <stdio.h>
+#include <portable.h>
 #include <fmemory.h>
 #include "../include/misc.h"
 
-#define MAX_INTERNAL_COMMAND_SIZE 256
 #define MAX_EXTERNAL_COMMAND_SIZE 125
 	/* The maximal external command line is:
 		  128: overall space for the command line)
@@ -62,22 +65,46 @@ enum
 };
 
 /* prototypes for INIT.C */
-extern void ASMINTERRUPT dummy_criter_handler();
-extern void ASMINTERRUPT cbreak_handler();
+extern void ASMINTERRUPT dummy_criter_handler()
+#ifdef __GNUC__
+asm("_dummy_criter_handler")
+#endif
+;
+extern void ASMINTERRUPT cbreak_handler()
+#ifdef __GNUC__
+asm("_cbreak_handler")
+#endif
+;
 /* extern void initCBreak(void);*/
 
 /* prototypes for COMMAND.C */
 extern int interactive_command;
 extern int persistentMSGs;
+#ifdef __GNUC__
+#ifdef FEATURE_XMS_SWAP
+#define RESIDENT(x) (*(typeof(x) far *)MK_FP(residentCS, (size_t)&(x)))
+#else
+#define RESIDENT(x) (*(typeof(x) far *)MK_FP(_CS, (size_t)&(x)))
+#endif
+extern int CBreakCounter asm("_CBreakCounter");
+extern word residentCS asm("_residentCS");
+#define ctrlBreak RESIDENT(CBreakCounter)
+#else
 extern int far CBreakCounter;
 #define ctrlBreak CBreakCounter
+#endif
 /* extern int ctrlBreak;*/
 extern int exitflag;
 extern unsigned int echo;       /* The echo flag */
 extern int tracemode;                   /* debug script? */
 extern int autofail;
 #ifdef FEATURE_XMS_SWAP
+#ifdef __GNUC__
+extern byte canexit asm("_canexit");
+#define canexit RESIDENT(canexit)
+#else
 extern byte far canexit;
+#endif
 #else
 extern int canexit;
 #endif
@@ -195,5 +222,6 @@ int cmd_beep(char *);
 int get_redirection(char *, char **, char **, int *);
 
 int batch(char *, char *, char *);
+#endif
 
 #endif
