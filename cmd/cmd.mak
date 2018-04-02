@@ -47,11 +47,11 @@ OBJ5 =	rmdir.obj \
 	verify.obj \
 	which.obj 
 
-echolib.bat : ..\scripts\echolib.bat
-	copy ..\scripts\echolib.bat
+echolib.bat : ../scripts/echolib.bat
+	$(CP) ..$(DIRSEP)scripts$(DIRSEP)echolib.bat .
 
 cmds.rsp : echolib.bat cmd.mak
-	..\scripts\rmfiles cmds.rsp
+	$(RMFILES) cmds.rsp
 	$(ECHOLIB) cmds.rsp $(OBJ1)
 	$(ECHOLIB) cmds.rsp $(OBJ2)
 	$(ECHOLIB) cmds.rsp $(OBJ3)
@@ -59,5 +59,5 @@ cmds.rsp : echolib.bat cmd.mak
 	$(ECHOLIB) cmds.rsp $(OBJ5)
 
 cmds.lib : $(CFG) $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5) cmds.rsp
-	..\scripts\rmfiles cmds.lib
-	$(AR) cmds.lib /c @cmds.rsp $(LIBLIST) cmds.lst 
+	$(RMFILES) cmds.lib
+	$(AR) cmds.lib @cmds.rsp $(LIBLIST) cmds.lst 

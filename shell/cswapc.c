@@ -78,6 +78,7 @@ static enum {
 	,INIT_FAILED
 	,INIT_SUCCEEDED
 } initialized = INIT_NO;
+word residentCS;
 
 int XMSisactive(void)
 {	return initialized == INIT_SUCCEEDED;
@@ -106,13 +107,15 @@ static int XMScopy(
 /*	asm push si;
 	asm lea si,length
 	asm mov ah,0bh;	*/
-#ifdef __TURBOC__
+#if defined(__TURBOC__)
 	_SI = (unsigned)&length;
 	_AH = 0xb;
 	XMSrequest();
 /*	asm pop si; */
 
 	return _AX;		/* shut up warning */
+#elif defined(__GNUC__)
+	return XMSrequest(0xb00, 0, &length);
 #else
 	return XMSdriverAdress(0xb00, 0, &length);
 #endif
@@ -125,10 +128,13 @@ static int XMScopy(
 void XMSinit(void)
 {
 	USEREGS
-#ifdef __WATCOMC__
+#if defined(__WATCOMC__)
 	unsigned long res;
 	unsigned long (far *xmsaddr)(unsigned request, unsigned dx, void *si);
 	#pragma aux xmsaddr = parm [ax] [dx] [si]
+#elif defined(__GNUC__)
+	unsigned long res;
+	void far *xmsaddr;
 #else
 	unsigned (far *xmsaddr)(void);
 #endif
@@ -171,6 +177,7 @@ void XMSinit(void)
 /*   asm     mov word ptr xmsaddr+2, es;	*/
 	if(!xmsaddr)		return;		/* sanity check */
 
+	XMSdriverAdress = xmsaddr;
 	SwapResidentSize =
 		 FP_SEG(&SWAPresidentEnd)
 		 + (FP_OFF(&SWAPresidentEnd) + 0x0f) / 16
@@ -190,13 +197,17 @@ void XMSinit(void)
 
 #ifdef __WATCOMC__
 	res = xmsaddr(0x900, xms_block_size + 1, NULL);
-	_AX = res & 0xffff;
-	_DX = res >> 16;
+#elif defined(__GNUC__)
+	res = XMSrequest(0x900, xms_block_size + 1, NULL);
 #else
 	_DX = xms_block_size + 1;
 	_AH = 9;
 
 	(*xmsaddr)();
+#endif
+#if defined(__WATCOMC__) || defined(__GNUC__)
+	_AX = res & 0xffff;
+	_DX = res >> 16;	
 #endif
 
 	if(_AX) {			/* Got the XMS block */
@@ -207,7 +218,6 @@ void XMSinit(void)
 		xmshandle = _DX;
 
 		XMSsave.length = SwapTransientSize * 16l;
-		XMSdriverAdress = xmsaddr;
 /*		XMSsave.shandle = 0;			default value */
 /*		XMSsave.soffset = (long)MK_FP(_psp,0); */
 		XMSsave.soffset = SEG2PHYS_ADDR(_psp);
@@ -215,6 +225,12 @@ void XMSinit(void)
 /*		XMSsave.doffset = 0;			default value */
 		XMSsave.doffset = msglen * 16l;	/* STRINGS resource preceeds the
 											FreeCOM swap area */
+
+		/* restore: same as above with d and s swapped */
+		XMSrestore.length = SwapTransientSize * 16l;
+		XMSrestore.doffset = SEG2PHYS_ADDR(_psp);
+		XMSrestore.shandle = xmshandle;
+		XMSrestore.soffset = msglen * 16l;
 
 		swapOnExec = FALSE;				/* to swap is allowed now */
 		defaultToSwap = TRUE;			/* make it the default for XMSwap */
@@ -272,8 +288,10 @@ void XMSexit(void)
 		asm     mov dx, XMSsave.dhandle;
 		asm     mov ah, 0ah;   			/* free XMS memory */
 #endif
-#ifdef __WATCOMC__
+#if defined(__WATCOMC__)
 		XMSdriverAdress(0xa00, XMSsave.dhandle, NULL);
+#elif defined(__GNUC__)
+		XMSrequest(0xa00, XMSsave.dhandle, NULL);
 #else
 		_DX = XMSsave.dhandle;
 		_AH = 0xa;   			/* free XMS memory */
@@ -415,7 +433,9 @@ DoExec(char *command,char *cmdtail)
 #undef FREECOM_NEED_EXIT
 #endif
 #endif
-
+#ifdef __GNUC__
+#undef FREECOM_NEED_EXIT
+#endif
 
 #ifdef FREECOM_NEED_EXIT
 /* Using the original exit() function crashes in TC++ v1.01 */

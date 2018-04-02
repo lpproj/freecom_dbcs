@@ -85,7 +85,7 @@ optScanFct(opt_copy)
 
 optScanFct(opt_copy1)
 {
-  int ec, *opt, *optReset;
+  int ec, *opt = NULL, *optReset = NULL;
 
   (void)arg;
   switch(ch) {
@@ -538,9 +538,12 @@ int cmd_copy(char *rest)
   optA = optB = optV = optY = 0;
 
   /* read the parameters from env */
-  if ((argv = scanCmdline(getEnv("COPYCMD"), opt_copy, 0, &argc, &opts))
-   == 0)
+  if ((argv = scanCmdline(p = getEnv("COPYCMD"), opt_copy, 0, &argc, &opts))
+   == 0) {
+    free(p);
     return 1;
+  }
+  free(p);
   freep(argv);    /* ignore any parameter from env var */
 
   if((argv = scanCmdline(rest, opt_copy, 0, &argc, &opts)) == 0)

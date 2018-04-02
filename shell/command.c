@@ -16,7 +16,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <io.h>
-#include <sys\stat.h>
+#include <sys/stat.h>
 
 #include <suppl.h>
 #include <dfn.h>
@@ -81,6 +81,22 @@ int swapContext = TRUE;					/* may destroy external context */
 
 #ifdef FEATURE_LONG_FILENAMES
 unsigned char __supportlfns = 1;
+#endif
+
+#ifdef __GNUC__
+int dup(int fd)
+{
+  int ret;
+  asm volatile("int $0x21" : "=a"(ret): "Rah"((char)0x45), "b"(fd));
+  return ret;
+}
+
+int dup2(int oldfd, int newfd)
+{
+  asm volatile("int $0x21" :
+	       : "Rah"((char)0x46), "b"(oldfd), "c"(newfd): "ax");
+  return 0;
+}
 #endif
 
 #ifdef FEATURE_SWITCHAR
@@ -182,7 +198,7 @@ static void execute(char *first, char *rest)
 #endif
 		/* Install the dummy (always abort) handler */
 #ifdef FEATURE_XMS_SWAP
-    set_isr(0x23, (void interrupt(*)())
+    set_isrfct(0x23,
             MK_FP(FP_SEG(lowlevel_cbreak_handler)-0x10,
             FP_OFF(lowlevel_cbreak_handler)+0x100));
     /*
@@ -190,14 +206,14 @@ static void execute(char *first, char *rest)
      * command.com PSP, but FreeCOM is an exe...
      */
 #else
-	set_isr(0x23, (void interrupt(*)()) kswapContext->cbreak_hdlr);
+	set_isrfct(0x23, kswapContext->cbreak_hdlr);
 #endif
 #ifdef FEATURE_XMS_SWAP
     {
     isr v;
     get_isr(0x2e, v);
     if( *(unsigned char far *)v == 0xCF && !canexit) /* IRET? */
-        set_isr( 0x2E, ( void interrupt(*)() )
+        set_isrfct( 0x2E,
                  MK_FP(FP_SEG(lowlevel_int_2e_handler)-0x10,
                  FP_OFF(lowlevel_int_2e_handler)+0x100));
     }
@@ -316,13 +332,9 @@ static void docommand(char *line)
     if(cmdptr && cmdptr->name) {    /* internal command found */
 
 #ifdef FEATURE_INSTALLABLE_COMMANDS
-	cp = realloc(buf, ARGS_BUFFER_SIZE);
-#ifndef NDEBUG
-	if(cp != buf) {
-		dprintf( ("[INTERNAL error: realloc() returned wrong result]") );
-		buf = cp;
-	}
-#endif
+	rest = strdup(rest);
+	free(buf);
+	buf = rest;
 #else
 	free(buf);  buf = 0;	/* no further useage of this buffer */
 #endif
@@ -411,7 +423,7 @@ void parsecommandline(char *s, int redirect)
      * prevent redirecting FreeCOM prompts to user file, temporarily
      * revert redirection.
      */
-    int redir_fdin, redir_fdout, answer;
+    int redir_fdin = -1, redir_fdout = -1, answer;
 
     if (oldinfd != -1) {
         redir_fdin = dup (0);
@@ -620,6 +632,7 @@ int expandEnvVars(char *ip, char * const line)
 				if(cp >= parsedMax(strlen(evar)))
 				  return 0;
 				cp = stpcpy(cp, evar);
+				free(evar);
 			  } else if(matchtok(ip, "ERRORLEVEL")) {
 				/* overflow check: parsedline has that many character
 				  "on reserve" */
@@ -691,9 +704,11 @@ int process_input(int xflag, char *commandline)
   do
   {
 #ifdef FEATURE_LONG_FILENAMES
-    if( toupper( *getEnv( "LFN" ) ) == 'N' )
+    char *lfn = getEnv("LFN");
+    if( lfn && toupper( *lfn ) == 'N' )
          __supportlfns = 0;
     else __supportlfns = 1;
+    free(lfn);
 #endif
   	interactive_command = 0;		/* not directly entered by user */
   	echothisline = tracethisline = 0;
@@ -710,9 +725,10 @@ int process_input(int xflag, char *commandline)
       if (0 == (ip = readbatchline(&echothisline, readline,
                       MAX_INTERNAL_COMMAND_SIZE)))
       { /* if no batch input then... */
+      int attr;
       if (xflag   /* must not go interactive */
-       || (fdattr(0) & 0x84) == 0x84  /* input is NUL device */
-       || feof(stdin))    /* no further input */
+       || ((attr = fdattr(0)) & 0x84) == 0x84  /* input is NUL device */
+       || (attr & 0xc0) == 0x80) /* no further input */
       {
         free(readline);
         break;
@@ -843,7 +859,13 @@ static void hangForever(void)
   }
 }
 
-int _Cdecl my2e_parsecommandline( char *s ) {
+#ifdef __GNUC__
+int my2e_parsecommandline( char *s, ... ) asm("_my2e_parsecommandline");
+int my2e_parsecommandline( char *s, ... )
+#else
+int _Cdecl my2e_parsecommandline( char *s )
+#endif
+{
     s[ (unsigned char)s[ 0 ] ] = '\0';
 /*    printf("_my2e_parsecommandline( %s )\n", s );*/
     parsecommandline( &s[ 1 ], 1 );

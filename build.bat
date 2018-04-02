@@ -123,7 +123,10 @@ echo.
 cd strings
 %MAKE%strings.mak all
 if errorlevel 1 goto ende
-cd ..
+cd strings
+%MAKE%strings.mak all
+if errorlevel 1 goto ende
+cd ..\..
 
 echo.
 echo Making CRITER resource

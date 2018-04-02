@@ -103,7 +103,7 @@ void unloadMsgs(void)
 
 static int loadStrings (res_majorid_t major,
 		        res_minorid_t minor,
-		        long length,
+		        unsigned long length,
 			int fd,
 			void *const arg) {
 	loadStatus *ls = arg;
@@ -224,6 +224,11 @@ unsigned msgSegment(void)              /* load messages into memory */
 			break;
 #else	/* Even in non-debugging, an error should
 							be displayed */
+		case STRINGS_NOT_FOUND:
+		case STRINGS_ID_MISMATCH:
+		case STRINGS_READ_ERROR:
+		case STRINGS_SIZE_MISMATCH:
+			break;
 		case STRINGS_OUT_OF_MEMORY:
 			assert(msgSegm == 0);
 			puts("[Out of memory loading STRINGS.]");
@@ -241,7 +246,7 @@ unsigned msgSegment(void)              /* load messages into memory */
 			{	char *buf = malloc(128 + 1);
 
 				if(!buf) {
-					dos_write(2, TEXT_ERROR_OUT_OF_MEMORY,
+					dos_write(2, (void *)TEXT_ERROR_OUT_OF_MEMORY,
 					   strlen(TEXT_ERROR_OUT_OF_MEMORY));
 					break;
 				} else {

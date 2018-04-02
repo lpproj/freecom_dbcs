@@ -18,3 +18,7 @@ icmd_2.icd : icmd_inc.inc icmd_2.nas
 
 icmd_3.icd : icmd_inc.inc icmd_3.nas
 	$(NASM) $(NASMFLAGS) $(__TARGET) $(__DBCS) -o icmd_3.icd icmd_3.nas
+
+load_icd.exe: load_icd.obj
+	$(CL) $(CLO) load_icd.obj $(SUPPL_LIB_PATH)$(DIRSEP)suppl_$(SHELL_MMODEL).lib
+

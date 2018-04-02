@@ -26,7 +26,7 @@
 #ifndef __FMEMORY_H
 #define __FMEMORY_H
 
-#include <SUPL_DEF.H>
+#include <supl_def.h>
 
 #ifdef _MICROC_				/* for use for Micro-C only */
 
@@ -40,7 +40,7 @@
 #include <string.h>
 
 #else	/* !_TC_LATER_ */
-#if defined(_PAC_NOCLIB_) || defined(_TC_EARLY_)
+#if defined(_PAC_NOCLIB_) || defined(_TC_EARLY_) || defined(__GNUC__)
 
 #ifdef _PAC_NOCLIB_
 #include <stdlib.h>
@@ -62,7 +62,7 @@ int _fstrcmp(const char far * const dst, const char far * const src);
 int _fstricmp(const char far * const dst, const char far * const src);
 void _fstrcpy(char far * const dst, const char far * const src);
 
-#endif	/* defined(_PAC_NOCLIB_) || defined(_TC_EARLY_) */
+#endif /* defined(_PAC_NOCLIB_) || defined(_TC_EARLY_) || defined(__GNUC__) */
 #endif		/* _TC_LATER_ */
 
 #if defined(HI_TECH_C) || defined(_TC_EARLY_)

@@ -26,9 +26,25 @@
 ;
 ;
 
-;                %include "segs.inc"
+%include "../include/model.inc"
 
-segment _TEXT class=CODE
+segment _BSS 			; transient data (in DS)
+
+ 	global _SwapResidentSize
+_SwapResidentSize  resw 1
+
+	global _XMSsave
+_XMSsave	resw 8
+%define currentSegmOfFreeCOMsave	_XMSsave+8
+
+execSS resw 1
+execSP resw 1
+
+segment _DATA
+
+resize_free db 4ah
+
+segment _TEXT
 
 	global _dosFCB1,_dosFCB2
 _dosFCB1 times 37 db 0
@@ -51,24 +67,20 @@ _dosParamDosExec times 22	db 0
 _XMSdriverAdress dd 0
 %define callXMS		call far [_XMSdriverAdress]
 
- 	global _SwapResidentSize
-_SwapResidentSize  dw 0
-
  	global _SwapTransientSize
 _SwapTransientSize  dw 0
 
-	global _XMSsave, _XMSrestore
-_XMSsave	times 8 DW 0
-%define currentSegmOfFreeCOM	_XMSsave+8
-%define xms_handle	_XMSsave+10
+	global _XMSrestore
+_XMSrestore	times 8 DW 0
+%define xms_handle	_XMSrestore+4
+%define currentSegmOfFreeCOM	_XMSrestore+14
 
 	global _termAddr
 _termAddr:
 terminationAddressOffs	DW 0
 terminationAddressSegm	DW 0
-	global _myPID, _residentCS
+	global _myPID
 _myPID	DW 0
-_residentCS DW 0
 	global _origPPID
 _origPPID DW 0
 	global _canexit
@@ -78,85 +90,11 @@ _canexit	DB 0		; 1 -> can exit; _else_ --> cannot exit
 _mySS DW 0
 _mySP DW 0
 
-execSS dw 0
-execSP dw 0
-
 execRetval dw 0
 
-first_time db 1
-
-global SWAPXMSdirection
-
-;;TODO make XMSsave two structures in order to drop this subroutine
-SWAPXMSdirection:
-	push word [_XMSsave+4]
-	push word [_XMSsave+6]
-	push word [_XMSsave+8]
-
-	push word [_XMSsave+10]
-	push word [_XMSsave+12]
-	push word [_XMSsave+14]
-
-
-	pop  word [_XMSsave+8]
-	pop  word [_XMSsave+6]
-	pop  word [_XMSsave+4]
-
-	pop  word [_XMSsave+14]
-	pop  word [_XMSsave+12]
-	pop  word [_XMSsave+10]
-
-	ret
-
-
-;;TODO: DS ought to be equal to SS, DS could be reconstructed from
-;;	SS at the end of the XMSexec function
 ;	global real_XMSexec
 real_XMSexec:
-						; save ALL registers needed later
-		push si
-		push di
-		push bp
-		push ds
-
-		mov cx, cs
-		mov ds, cx
-
-        mov [_mySS],ss  ; 2E
-        mov [_mySP],sp  ; 2E
-		mov [execSS],ss
-		mov [execSP],sp
-
-		mov ss, cx		; this stack is definitely large enough AND present
-        mov  sp,localStack
-						; save everything to XMS
-		mov ah,0bh
-		mov si,_XMSsave
-		callXMS
-
-;;TODO: test of result
-
-		mov es,[currentSegmOfFreeCOM]
-						; first time: shrink current psp
-		cmp byte [first_time],1
-		jne second_time
-
-;;TODO: first_time either 04ah or 049h --> no jumps
-		mov ah,04ah						; resize memory block
-		mov bx,[_SwapResidentSize]
-		int 21h
-
-		mov byte [first_time],0
-		jmp save_done
-
-second_time:							; this memory was allocated
-										; and may be freed
-
-		mov ah,049h						; free memory block
-		int 21h
-
-save_done:
-
+		int 21h	; shrink/free: first thing done from resident code
 
 		; do exec
 
@@ -190,7 +128,7 @@ exec_error:
 
         mov cx, cs
         mov ss, cx
-        mov  sp,localStack
+        mov  sp,localStack-6	; location on stack of return cs:ip and ds
 
 		; restore:
 
@@ -230,34 +168,18 @@ exec_error:
 		push bx					;
 		mov  [currentSegmOfFreeCOM],ax	; new prog address
 
-		call SWAPXMSdirection
 								; restore everything to XMS
 		mov ah,0bh
-		mov si,_XMSsave
+		mov si,_XMSrestore
 		callXMS
 
-		call SWAPXMSdirection	; re-construct the XMSsave area
 		pop bx                  ; get relocation factor back
 
 		cmp ax,1
 		jnz XMS_trouble_while_swapping_in
 
-                                    ; relocate segment registers
-		mov ax,[execSS]
-		add ax,bx
-		mov ss,ax
-		mov sp,[execSP]
-
 		mov bp,sp
-		add [bp+0],bx				; ds
-		add [bp+10],bx				; ret addr
-
-		mov ax,[execRetval]
-
-		pop ds
-		pop bp
-		pop di
-		pop	si
+		add [bp+2],bx		; relocate return segment
 
 		retf						; done
 
@@ -431,6 +353,14 @@ exec_error2:
 	;; Note: Because [CS:driverAdress] == [residentCS:driverAdress]
 	;; we need not use a similiar approach as with XMSexec
 _XMSrequest:
+%ifidn __OUTPUT_FORMAT__,elf 	; GCC, calling near with stdcall conv.
+		pop cx		; return address
+		pop ax		; AX
+		pop dx		; DX
+		pop si		; SI
+		push cs
+		push cx		; far return from XMS driver
+%endif
 		jmp far [cs:_XMSdriverAdress]
 
 ;; Added here to make it more easier for the C-part to call functions
@@ -440,10 +370,72 @@ _XMSrequest:
 ;;		nop
 ;;		push cs			<-> WRONG!!
 ;;		call _XMSexec
+;; now also used to contain code that does not need to be resident.
 
-;; ALL To be called with _far_!!
+;;TODO: DS ought to be equal to SS, DS could be reconstructed from
+;;	SS at the end of the XMSexec function
 		global	_XMSexec
 _XMSexec:
-		push WORD [CS:_residentCS]
+		extern _residentCS
+						; save ALL registers needed later
+%ifidn __OUTPUT_FORMAT__,elf 	; GCC: need to preserve es
+		push es
+%endif
+		push si
+		push di
+		push bp
+
+		mov [execSS],ss
+		mov [execSP],sp
+
+						; save everything to XMS
+		mov ah,0bh
+		mov si,_XMSsave
+		call far [cs:_XMSdriverAdress]
+
+;;TODO: test of result
+
+		mov es,[currentSegmOfFreeCOMsave]
+						; first time: shrink current psp
+		mov ah,[resize_free]
+		mov bx,[_SwapResidentSize]
+
+		mov dx, ds
+		mov cx, [_residentCS]
+		mov ds, cx
+
+        mov [_mySS],ss  ; 2E
+        mov [_mySP],sp  ; 2E
+
+		mov ss, cx		; this stack is definitely large enough AND present
+        mov  sp,localStack
+
+		push dx			; save DS of transient portion
+		push cs			; save segment of transient portion
+		push WORD ret_from_resident
+		push cx
 		push WORD real_XMSexec
 		retf
+
+ret_from_resident:
+		mov ax,[execRetval]
+
+                                    ; relocate segment registers
+		add [bp+4],bx				; ds
+		pop ds
+
+		mov byte [resize_free],49h ; change to "free" for next times
+
+		add [currentSegmOfFreeCOMsave],bx
+		mov cx,[execSS]
+		add cx,bx
+		mov ss,cx
+		mov sp,[execSP]
+
+		pop bp
+		pop di
+		pop	si
+%ifidn __OUTPUT_FORMAT__,elf 	; GCC: need to preserve es
+		pop es
+%endif
+		retn						; done (really)

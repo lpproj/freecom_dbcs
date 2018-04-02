@@ -4,32 +4,18 @@ MMODEL = -mc
 TOP=..
 !include "$(TOP)/config.mak"
 
-all : strings.h strings.err strings.lib
+all : strings.h strings.err
 
-strings.h : default.lng fixstrs.exe
+strings.h : DEFAULT.LNG fixstrs.exe
 	fixstrs.exe /lib $(LNG)
-	copy strings.h ..
+	$(CP) strings.h ..
 
-strings.err : default.err critstrs.exe
-	critstrs.exe $(LNG)
-
-strings.lib: strings.h strings.err
-	cd strings
-	echo Making STRINGS library
-	..\..\scripts\rmfiles $(CFG)
-	$(CL) -c *.c
-	..\..\scripts\rmfiles strings.lib
-	$(AR) strings.lib /c @strings.rsp $(LIBLIST) strings.lst
-	copy strings.lib ..
-	copy strings.lst ..
-	echo Purging temporary directory of strings library
-	..\..\scripts\rmfiles strings.*	makefile errlist *.obj *.c
-	cd ..
-	rmdir strings
+strings.err : DEFAULT.err CRITSTRS.exe
+	CRITSTRS.exe $(LNG)
 
 fixstrs.exe: $(CFG) fixstrs.c
 
-critstrs.exe: $(CFG) critstrs.c
+CRITSTRS.exe: $(CFG) CRITSTRS.C
 
 #		*Individual File Dependencies*
 fixstrs.obj: $(CFG) fixstrs.c
