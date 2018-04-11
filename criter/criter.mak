@@ -10,9 +10,9 @@ context.def : context.x
 	$(CP) context.h_c ..
 	$(CP) context.inc ..
 
-criter : criter.asm dmy_cbrk.asm ..\include\stuff.inc context.def
+criter : criter.asm dmy_cbrk.asm ../include/stuff.inc context.def
 	$(NASM) $(NASMFLAGS) $(__TARGET) $(__DBCS) -f bin -o criter criter.asm
 
-criter1 : criter.asm dmy_cbrk.asm ..\include\stuff.inc context.def
+criter1 : criter.asm dmy_cbrk.asm ../include/stuff.inc context.def
 	$(NASM) $(NASMFLAGS) $(__TARGET) $(__DBCS) -DAUTO_FAIL -f bin -o criter1 criter.asm
 

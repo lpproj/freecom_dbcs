@@ -80,7 +80,7 @@
 #include <assert.h>
 #include <string.h>	/* memcmp */
 #include <fcntl.h>
-#if !defined(__GNUC__) || !defined(PTCHSIZE)
+#if !defined(__GNUC__) || !defined(PTCHSIZE) || !defined(__MINGW32__)
 #include <io.h>		/* filelength */
 #endif
 
@@ -89,7 +89,7 @@
 #define dos_open open
 #define dos_read read
 #define dos_close close
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__MINGW32__)
 #define O_BINARY 0
 #include <sys/types.h>
 #include <unistd.h>
