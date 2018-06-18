@@ -201,15 +201,9 @@ int initialize(void)
 	/* There is no special handler for FreeCOM currently
 		--> activate the real one */
 	set_isrfct(0x24, lowlevel_err_handler);
-#ifdef __GNUC__
-	{	extern word criter_repeat_checkarea asm("_criter_repeat_checkarea");
-		registerCriterRepeatCheckAddr(&RESIDENT(criter_repeat_checkarea));
-	}
-#else
 	{	extern word far criter_repeat_checkarea;
 		registerCriterRepeatCheckAddr(&criter_repeat_checkarea);
 	}
-#endif
 #else
 	set_isrfct(0x24, dummy_criter_handler);
 #endif
@@ -223,7 +217,6 @@ int initialize(void)
 	_amblksiz = _heaplen;
 #endif
 	
-	dbg_printmem();
 #ifdef DEBUG
 	{ void* p;
 		if((p = malloc(5*1024)) == 0)
@@ -231,6 +224,7 @@ int initialize(void)
 		else free(p);
 	}
 #endif
+	dbg_printmem();
 
 #ifdef FEATURE_KERNEL_SWAP_SHELL
 	if(kswapInit()) {		/* re-invoked */

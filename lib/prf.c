@@ -43,7 +43,9 @@ static void handle_char(int, FILE *);
 static char * ltob(long, char *, int);
 static int do_printf(FILE *f, const char *, register va_list);
 
+#ifndef DEBUG
 FILE *stdin = (FILE *)0, *stdout= (FILE *)1, *stderr = (FILE *)2;
+#endif
 
 static void flushbuf(FILE *f)
 {
