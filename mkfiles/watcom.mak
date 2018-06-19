@@ -11,6 +11,9 @@ CC_BASE_PATH = $(WATCOM)
 !ifdef __LINUX__
 BINPATH = $(CC_BASE_PATH)/binl
 LD = $(CL) -l=dos -fe=command.exe $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(LIBS) -\"op map,statics,verbose,stack=4k\" $#
+!else ifdef __NT__
+BINPATH = $(CC_BASE_PATH)\BINNT
+LD = wlinker /ma/nologo
 !else
 BINPATH = $(CC_BASE_PATH)\BINW
 LD = wlinker /ma/nologo
@@ -32,9 +35,12 @@ CFLAGS1 = -os-s-wx
 .SUFFIXES: .c .asm .com .exe .obj
 .c.exe:
   gcc -x c -D__GETOPT_H -I../suppl $< -o $@
-!else
+!else ifdef __MSDOS__
 .obj.exe:
   $(BINPATH)\wlink sys DOS f $< lib $(SUPPL_LIB_PATH)\SUPPL_$(SHELL_MMODEL).LIB op q
+!else
+.c.exe:
+  wcl386 -zq -D__GETOPT_H -I..$(DIRSEP)suppl $< -fe=$@
 !endif
 .c.obj:
   $(CC) $< -bt=dos @$(CFG)
