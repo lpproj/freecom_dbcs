@@ -75,9 +75,9 @@ void nec98_setcursorblinkrate(int blink_rate)
 	f[2] = ((bottom & 0x1f) << 3) | ((blink_rate >> 2) & 7);
 	/* wait for GDC ready (FIFO Empty) */
 	while(1) {
-		enable();
+		_enable();
 		nec98_wait_gdc();
-		disable();
+		_disable();
 		if (nec98_inp_gdc(GDC_STATUS) & 0x04) break;
 	}
 	/* write command and parameters to GDC */
@@ -87,7 +87,7 @@ void nec98_setcursorblinkrate(int blink_rate)
 	nec98_outp_gdc(GDC_FIFOWRITE, f[2]);
 
 	nec98_wait_gdc();
-	enable();
+	_enable();
 }
 #endif
 
@@ -115,7 +115,7 @@ void nec98_delay(unsigned ms)
 
 	onetick = (10000UL * 1000UL * 100U) / vsyncHz_x100;
 
-	enable();
+	_enable();
 	for(ticks = 0; ticks < ms_x10000; ticks += onetick) {
 		/* you can abort by pressing the STOP key... */
 		if (*(unsigned char far *)MK_FP(0, 0x536) & 1) break;

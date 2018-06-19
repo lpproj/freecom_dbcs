@@ -53,11 +53,11 @@
 #include "../include/misc.h"
 
 #if defined(NEC98)
-void goxy(const unsigned char x, const unsigned char y)
+void goxy(const unsigned char xo, const unsigned char yo)
 {
 	static char s[] = "\x1b" "[" "01;01H";
-	if (x > 99) x = 99;
-	if (y > 99) y = 99;
+	unsigned char x = (xo <= 99) ? xo : 99;
+	unsigned char y = (yo <= 99) ? yo : 99;
 	s[2] = '0' + (y/10);
 	s[3] = '0' + (y%10);
 	s[5] = '0' + (x/10);

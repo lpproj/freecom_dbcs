@@ -53,7 +53,7 @@ void outs(const char * const s)
 {
 	const char *s1 = (const char *)s;
 	assert(s);
-	while(*s) outc(*s++);
+	while(*s1) outc(*s1++);
 }
 #else
 /* Print string to current cursor position
