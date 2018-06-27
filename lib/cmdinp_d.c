@@ -73,7 +73,6 @@ unsigned eraseLine(const char * const str_top, unsigned posfrom, unsigned posto,
 	unsigned rc;
 	unsigned cpfrom, cpto, count;
 
-	if (cpto == (unsigned)(-1)) cpto = strlen((const char *)str_top);
 	cpto = curposCalc(str_top, posto, orgx, orgy, 0);
 	cpfrom = curposCalc(str_top, posfrom, orgx, orgy, 1);
 	

@@ -136,6 +136,7 @@ static int isworddelimiter(unsigned c)
 	return c == ' ' || c == '\t';
 }
 
+#if !defined(DBCS)
 /* Print a blank to current cursor postion
 	Updates cursor position
  */
@@ -150,6 +151,7 @@ static void outsblank(const char * const s)
 {	outs(s);
 	outblank();
 }
+#endif
 
 #if defined(NEC98)
 struct skeystate {
