@@ -6,6 +6,7 @@
  *
  */
 
+#include <conio.h>
 #include <dos.h>
 #include <io.h>
 #include <stdio.h>

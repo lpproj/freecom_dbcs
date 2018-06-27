@@ -34,7 +34,7 @@ CFLAGS1 = -os-s-wx
 .SUFFIXES:
 .SUFFIXES: .c .asm .com .exe .obj
 .c.exe:
-  gcc -x c -D__GETOPT_H -I../suppl $< -o $@
+  gcc -x c -D__GETOPT_H $(__DBCS) -I../suppl $< -o $@
 !else ifdef __MSDOS__
 .obj.exe:
   $(BINPATH)\wlink sys DOS f $< lib $(SUPPL_LIB_PATH)\SUPPL_$(SHELL_MMODEL).LIB op q
