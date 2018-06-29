@@ -71,13 +71,13 @@ static int key_to_scan(int k)
 		{ 0x1b50, KEY_INS /* KEY_F8 */ },
 		{ 0x1b51, KEY_F9 },
 		{ 0x1b5a, KEY_F10 },
-		{ 0xff3a, KEY_UP },
-		{ 0xff3d, KEY_DOWN },
-		{ 0xff3b, KEY_LEFT },
-		{ 0xff3c, KEY_RIGHT },
+		{ (int)0xff3a, KEY_UP },
+		{ (int)0xff3d, KEY_DOWN },
+		{ (int)0xff3b, KEY_LEFT },
+		{ (int)0xff3c, KEY_RIGHT },
 		{ 0x1b44, KEY_DEL },
-		{ 0xff3e, KEY_HOME },
-		{ 0xff3f, KEY_END },
+		{ (int)0xff3e, KEY_HOME },
+		{ (int)0xff3f, KEY_END },
 		{ 0, 0 }
 	};
 	int n = 0;

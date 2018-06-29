@@ -367,7 +367,7 @@ void readcommandEnhanced(char * const str, const int maxlen)
 			    ++curdbc;
 			  }
 			  for(prev = 0; prvLine[prev];) {
-			    if (curdbc <= 0) break;
+			    if ((int)curdbc <= 0) break;
 			    prev += MbLen(&prvLine[prev]);
 			    --curdbc;
 			  }
