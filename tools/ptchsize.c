@@ -17,6 +17,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
+#include <stdint.h>
+#endif
+#if !defined(INT16_MAX)
+# define INT16_MAX  SHRT_MAX
+#endif
+#if !defined(UINT16_MAX)
+# define UINT16_MAX USHRT_MAX
+#endif
+
 
 #include "../include/res.h"
 #include "../include/infores.h"
@@ -46,7 +56,7 @@ int getInfo (res_majorid_t major,
                     void *const arg) {
         (void)arg;
 	if(major == RES_ID_INFO && minor == 0) {
-		if(length >= INT_MAX) {
+		if(length >= INT16_MAX) {
 			puts("Info resource is too large");
 			return 100;
 		}
@@ -164,7 +174,7 @@ void addSize(unsigned short *size, char * const Xp)
 		}
 	}
 
-	if(n > UINT_MAX || (n + *size) > UINT_MAX) {
+	if(n > UINT16_MAX || (n + *size) > UINT16_MAX) {
 		puts("Sum of sizes exceed 64KB");
 		exit(104);
 	}
@@ -223,7 +233,7 @@ int main(int argc, char **argv)
 	addUns(ival.alias);
 	addUns(ival.hist);
 	addUns(ival.dirs);
-	if(minSize > UINT_MAX) {
+	if(minSize > UINT16_MAX) {
 		puts("Estimated minimum heap size exceeds 64KB.\n"
 			"There is most probably a corrupted info resource.");
 		return 71;

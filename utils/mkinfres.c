@@ -11,6 +11,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
+#include <stdint.h>
+#endif
+#if !defined(INT16_MAX)
+# define INT16_MAX  SHRT_MAX
+#endif
+#if !defined(UINT16_MAX)
+# define UINT16_MAX USHRT_MAX
+#endif
 
 #include "../config.h"
 #define MKINFRES
@@ -75,7 +84,7 @@ int scanMapFile(const char * const fnam
 
 				 	n = strtoul(w3, &p, 16);
 				 	if(p && (*p == 'H' || w1[0]=='.')) {
-				 		if(n > UINT_MAX || (n += *extraSpace) > UINT_MAX) {
+				 		if(n > UINT16_MAX || (n += *extraSpace) > UINT16_MAX) {
 				 			puts("Extra space exceeds range");
 				 			return 56;
 				 		}
