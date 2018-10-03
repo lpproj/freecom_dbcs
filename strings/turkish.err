@@ -2,22 +2,22 @@
 #
 # Critical error national customization file
 #
-#       Language: French
-#       Codepage: 850
-#       Author:   Mateusz Viste
-#
+#	Language: English
+#	Codepage: ASCII (7bit) / any codepage
+#	Author:   FreeCOM maintainer
+# 
 # The critical error (criter) handler receives some information
 # from the kernel about what error condition happens, generates some
 # human friendly message from it, requests the user's opinion about
 # how to proceed and, finally, returns to the kernel.
-#
+# 
 # The human friendly message is generated using one of the following
 # templates:
 # BLOCK_DEVICE (for criters on block devices)
 # 	Error %1 drive %A: %2 area: %3
 # -and- CHAR_DEVICE (for criters on character devices)
 # 	Error %1 device %A: %3
-#
+# 
 # Two-character sequences, which first character is a percent sign '%',
 # are placeholders for other information:
 # %% -> a single percent sign
@@ -28,12 +28,12 @@
 # 	a number 0 through N, and must correspond to the number passed in
 # 	lowbyte(DI) to the criter handler (see RBIL INT-24 for details)
 # %A -> drive letter (for block devices); name of device (character devices)
-#
+# 
 # Below the line describing the error the user is prompted for the action
 # to proceed. This line is dynamically constructed depending on which
 # action are available at all. The full line may look like this:
 # 	(A)bort, (I)gnore, (R)etry, (F)ail?_
-#
+# 
 # The individual words are defined by ABORT, IGNORE, RETRY, FAIL. They
 # should indicate which user response keys is associated with them;
 # suggested is to use the first letter and enclose it in parenthesises.
@@ -41,13 +41,13 @@
 # for all slots.
 # The "? " sequence is defined by QUESTION.
 # The order of the actions is fixed and cannot be customized.
-#
+# 
 # With each action a number of user response keys must be associated.
 # They can be enumerated with the KEYS_ABORT, KEYS_IGNORE, ...
 # strings. Because the key is searched in the same format as returned
 # by INT-16-00, both upper and lower case must be specified and
 # certain special keys cannot be used.
-#
+# 
 # The individual error strings are defined by the #: lines, where
 # the hash sign '#' refers to the number the kernel passes to the
 # criter handler. The UNKNOWN string is displayed for all error
@@ -63,15 +63,15 @@
 
 ## Primary strings
 S2
-BLOCK_DEVICE: Erreur %1 lecteur %A: %2 zone : %3
+BLOCK_DEVICE: Hata %1 sÅrÅcÅ %A: %2 alan: %3
 S3
-CHAR_DEVICE: Erreur %1 lecteur %A: %3
+CHAR_DEVICE: Hata %1 sÅrÅcÅ %A: %3
 
 ## kind of operation
 S0
-READ: lecture de
+READ: üundan okunuyor:
 S1
-WRITE: Çcriture vers
+WRITE: üuna yazçlçyor:
 
 ## kind of failed area of block devices
 S4
@@ -81,23 +81,23 @@ FAT: FAT
 S6
 ROOT: root
 S7
-DATA: donnÇes
+DATA: veri
 
 ## action strings
 S8
-IGNORE: (I)gnorer
+IGNORE: (Y)oksay
 S9
-RETRY: (R)ecommencer
+RETRY: (T)ekrar dene
 S10
-ABORT: (A)nnuler
+ABORT: (ò)ptal
 S11
-FAIL: (E)chec
+FAIL: (B)aüarçsçz
 ## keys associated with the actions
 S14 (compacted)
-KEYS_IGNORE: iI
-KEYS_RETRY:  rR
-KEYS_ABORT:  aA
-KEYS_FAIL:   eE
+KEYS_IGNORE: yY
+KEYS_RETRY:  tT
+KEYS_ABORT:  iò
+KEYS_FAIL:   bB
 ## embedded strings
 S12
 QUESTION:  ? %.
@@ -105,26 +105,26 @@ S13
 DELIMITER: , %.
 
 ## Error strings
-UNKNOWN: Code d'erreur inconnu
+UNKNOWN: Bilinmeyen hata kodu
 S15
-0: tentative de violation de protection en Çcriture
-1: unitÇ inconnue pour pilote
-2: lecteur non pràt
-3: commande inconnue donnÇe au pilote
-4: erreur de donnÇes (mauvais CRC)
-5: mauvaise structure de taille pour le requàte de pilote de pÇriphÇrique
-6: erreur de recherche
-7: type de support inconnu
-8: secteur non trouvÇ
-9: imprimante Ö court de papier
-10: erreur d'Çcriture
-11: erreur de lecture
-12: erreur gÇnÇrale
-13: violation de partage
-14: violation de verrou
-15: changement de disque invalide
-16: FCB indisponible
-17: tampon de partage saturÇ
-18: page de code manquante
-19: fin de l'entrÇe
-20: espace disque insuffisant
+0: yazma korumasç ihlal teüebbÅsÅ
+1: sÅrÅcÅ iáin bilinmeyen birim
+2: sÅrÅcÅ hazçr deßil
+3: sÅrÅcÅye bilinmeyen bir komut verildi
+4: veri hatasç (yanlçü CRC)
+5: yanlçü cihaz sÅrÅcÅsÅ talep yapçsç boyutu
+6: arama hatasç
+7: bilinmeyen ortam tÅrÅ
+8: kesim bulunamadç
+9: yazçcçda kaßçt kalmadç
+10: yazma hatasç
+11: okuma hatasç
+12: genel baüarçsçzlçk
+13: paylaüçm ihlali
+14: kilitleme ihlali
+15: geáersiz disk deßiüimi
+16: FCB mevcut deßil
+17: paylaüçm înbelleßi yetersiz
+18: sayfa kodu uyumsuzlußu
+19: giriü sonu
+20: yetersiz disk alanç
