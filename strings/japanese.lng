@@ -1555,6 +1555,9 @@ DOS API エラー\
 :TEXT_EXIT_REASON_3
 常駐終了\
 .
+:TEXT_ERROR_EXE_CORRUPT
+不正なEXEファイルです\
+.
 
 # (for prompt $P)
 :TEXT_MSG_CURRENT_DRIVE_NOT_VALID
