@@ -15,7 +15,11 @@ LD = $(CL) -l=dos -fe=command.exe $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(LIBS) -\"op 
 BINPATH = $(CC_BASE_PATH)\BINNT
 LD = wlinker /ma/nologo
 !else
+!ifdef __NT__
+BINPATH = $(CC_BASE_PATH)\BINNT
+!else
 BINPATH = $(CC_BASE_PATH)\BINW
+!endif
 LD = wlinker /ma/nologo
 !endif
 LIBPATH = $(CC_BASE_PATH)$(DIRSEP)lib
@@ -35,7 +39,10 @@ CFLAGS1 = -os-s-wx
 .SUFFIXES: .c .asm .com .exe .obj
 .c.exe:
   gcc -x c -D__GETOPT_H $(__DBCS) -I../suppl $< -o $@
-!else ifdef __MSDOS__
+!else ifdef __NT__
+.c.exe
+  $(BINPATH)\owcc $(__DBCS) -I../suppl $< -o $@
+!else
 .obj.exe:
   $(BINPATH)\wlink sys DOS f $< lib $(SUPPL_LIB_PATH)\SUPPL_$(SHELL_MMODEL).LIB op q
 !else

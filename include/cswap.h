@@ -39,17 +39,22 @@ extern int cdecl XMSexec(void);
 extern void far cdecl terminateFreeCOMHook(void);
 
 #ifdef __WATCOMC__
-extern unsigned long (far *far XMSdriverAdress)(unsigned request,
-						unsigned dx, void *si);
-#pragma aux XMSdriverAdress = parm [ax] [dx] [si]
+typedef unsigned long xmsfunc(unsigned request, unsigned dx, void *si);
+#pragma aux xmsfunc = parm [ax] [dx] [si] modify [bx cx]
+extern xmsfunc far *far XMSdriverAdress;
 #elif defined(__GNUC__)
 extern unsigned far *far XMSdriverAdress;
 static inline unsigned long XMSrequest(unsigned request, unsigned dx, void *si)
 {
 	long ret;
+	/* N.B. the XMS driver may clobber %bx even if the call is successful,
+	   so we need to mark %bx as clobbered.  Also include %cx, the flags,
+	   and main memory in the clobber list, for good measure.
+		-- tkchia 2018/08/24 */
 	asm volatile("lcall *%%cs:XMSdriverAdress" :
 		     "=A"(ret) :
-		     "a"(request), "d"(dx), "S"(si));
+		     "a"(request), "d"(dx), "S"(si), "Rds"(FP_SEG(si)) :
+		     "bx", "cx", "cc", "memory");
 	return ret;
 }
 #else
