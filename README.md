@@ -1,6 +1,7 @@
 # FreeCOM DBCS edition
 
 a fork of FreeCOM (COMMAND.COM for FreeDOS) to support:
+
 * other platform(s) - like NEC PC-9801 series
 * handle DBCS (double-byte character set) parameters correctly
 * Japanese message
@@ -9,16 +10,25 @@ a fork of FreeCOM (COMMAND.COM for FreeDOS) to support:
 
 DBCS edition works on non-DBCS edition of DOSes (v3.1 or later). 
 
-source repository of FreeCOM DBCS edition:
-https://github.com/lpproj/freecom_dbcs/ (branch: dbcs)
+source repository of FreeCOM DBCS edition:  
+
+https://github.com/lpproj/freecom_dbcs/ (branch: dbcs)  
 
 original (upstream) source repository of (official) FreeCOM:
-http://sourceforge.net/p/freedos/svn/HEAD/tree/freecom/trunk/
+
+old http://sourceforge.net/p/freedos/svn/HEAD/tree/freecom/trunk/  
+new https://github.com/FDOS/freecom  
 
 
 ## How to build (DBCS edition)
 
-You need:
+When you want to build freecom_dbcs with OpenWatcom, you need:
+
+* Windows (x86/x64)
+* OpenWatcom C++ (I'm using ow 1.9)
+* Netwide assembler Win32/Win64 version at https://www.nasm.us/
+
+When you want to build freecom_dbcs with Turbo C/C++, you need:
 
 * 100% DOS compatible environment (On DOSBox, you will need to use external command.com because of incompatibility with built-in command processor)
 * Borland Turbo C++ 1.01 for IBM PC (I guess you can also build with Turbo C 2.0)
