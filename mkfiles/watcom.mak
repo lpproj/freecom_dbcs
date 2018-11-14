@@ -45,9 +45,6 @@ CFLAGS1 = -os-s-wx
 !else
 .obj.exe:
   $(BINPATH)\wlink sys DOS f $< lib $(SUPPL_LIB_PATH)\SUPPL_$(SHELL_MMODEL).LIB op q
-!else
-.c.exe:
-  wcl386 -zq -D__GETOPT_H $(__DBCS) -I..$(DIRSEP)suppl $< -fe=$@
 !endif
 .c.obj:
   $(CC) $< -bt=dos @$(CFG)
